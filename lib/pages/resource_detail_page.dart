@@ -23,7 +23,7 @@ class ResourceDetailPage extends StatelessWidget {
         title: Text(resource["title"] ?? "Detail",
             style: TextStyle(
                 color: Colors.black,
-                fontSize: 22,
+                fontSize: 24,
                 fontFamily: "Raleway",
                 fontWeight: FontWeight.bold)),
       ),

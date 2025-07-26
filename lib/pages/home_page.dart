@@ -4,6 +4,8 @@ import 'package:ebucare_app/pages/confinement_lady_page.dart';
 import 'package:ebucare_app/pages/edu_page.dart';
 import 'package:ebucare_app/pages/login_page.dart';
 import 'package:ebucare_app/pages/reminder_page.dart';
+import 'package:ebucare_app/pages/resource_articles.dart';
+import 'package:ebucare_app/pages/resource_detail_page.dart';
 import 'package:ebucare_app/pages/traditional_page.dart';
 import 'package:ebucare_app/pages/home/widgets/header.dart';
 import 'package:flutter/material.dart';
@@ -333,6 +335,82 @@ Widget confinement(BuildContext context) {
   );
 }
 
+Widget article(context) {
+  return Container(
+    child: GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const EduPage(),
+            ));
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: Container(
+          width: 350,
+          height: 150,
+          decoration: BoxDecoration(
+            color: const Color.fromARGB(204, 246, 174, 74),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 8, right: 8, top: 0, bottom: 15),
+                        child: Text(
+                          "Resources",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w100,
+                              fontFamily: "Calsans",
+                              fontSize: 22,
+                              color: Colors.white),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 8, right: 8, top: 0, bottom: 4),
+                        child: Text(
+                          "Traditional/Modern medical postpartum care resources.",
+                          style: TextStyle(
+                              fontFamily: "Raleway",
+                              fontSize: 15,
+                              color: Colors.white),
+                          softWrap: true,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                          textAlign: TextAlign.center,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Icon(
+                    Icons.article_outlined,
+                    size: 45,
+                    color: Colors.white,
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
 Widget babyCare(BuildContext context) {
   return Container(
     width: 150,
@@ -478,15 +556,8 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 15.0, vertical: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      edu(context),
-                      tips2(context),
-                    ],
-                  ),
+                  padding: const EdgeInsets.only(top: 40),
+                  child: article(context),
                 ),
               ],
             ),

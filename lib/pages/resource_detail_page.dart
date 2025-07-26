@@ -19,25 +19,37 @@ class ResourceDetailPage extends StatelessWidget {
         : (imagePath.isNotEmpty ? getPublicImageUrl(imagePath) : null);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(resource["title"] ?? "Detail",
-            style: TextStyle(
-                color: Colors.black,
-                fontSize: 24,
-                fontFamily: "Raleway",
-                fontWeight: FontWeight.bold)),
-      ),
+      appBar: AppBar(),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              Text(
-                resource['description'] ?? "No description",
-                style: TextStyle(
-                    fontSize: 16,
-                    fontFamily: "Calsans",
-                    fontWeight: FontWeight.normal),
+              Text(resource["title"] ?? "Detail",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 26,
+                      fontFamily: "Calsans",
+                      fontWeight: FontWeight.bold)),
+              SizedBox(
+                height: 16,
+              ),
+              Container(
+                padding: const EdgeInsets.all(20.0),
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(255, 238, 195, 195),
+                  borderRadius: BorderRadius.circular(16.0),
+                ),
+                child: Text(
+                  resource['description'] ?? "No description",
+                  textAlign: TextAlign.justify,
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontFamily: "Calsans",
+                      fontWeight: FontWeight.normal),
+                ),
               ),
               SizedBox(
                 height: 16,

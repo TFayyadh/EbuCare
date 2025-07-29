@@ -1,5 +1,6 @@
 import 'package:ebucare_app/pages/edu_page.dart';
 import 'package:ebucare_app/pages/reminder_page.dart';
+import 'package:ebucare_app/pages/traditional_page.dart';
 import 'package:flutter/material.dart';
 
 class ResourceArticles extends StatefulWidget {
@@ -26,7 +27,7 @@ class _ResourceArticlesState extends State<ResourceArticles> {
         child: Column(
           children: [
             Text(
-              "Resources",
+              "Resources Articles",
               style: TextStyle(
                 fontSize: 35,
                 fontWeight: FontWeight.bold,
@@ -48,7 +49,7 @@ class _ResourceArticlesState extends State<ResourceArticles> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const EduPage(),
+                            builder: (context) => const TraditionalPage(),
                           ));
                     },
                     child: Padding(
@@ -73,11 +74,11 @@ class _ResourceArticlesState extends State<ResourceArticles> {
                                     padding: const EdgeInsets.only(
                                         left: 8, right: 8, top: 0, bottom: 0),
                                     child: Text(
-                                      "New Reminder",
+                                      "Traditional Care",
                                       style: TextStyle(
                                           fontWeight: FontWeight.w100,
                                           fontFamily: "Calsans",
-                                          fontSize: 18,
+                                          fontSize: 22,
                                           color: Colors.white),
                                     ),
                                   ),
@@ -85,7 +86,7 @@ class _ResourceArticlesState extends State<ResourceArticles> {
                                     padding: const EdgeInsets.only(
                                         left: 8, right: 8, top: 0, bottom: 4),
                                     child: Text(
-                                      "Make a new reminder for \nhydration/medication/appointment.",
+                                      "Resources on traditional care methods.",
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                           fontFamily: "Raleway",
@@ -139,11 +140,11 @@ class _ResourceArticlesState extends State<ResourceArticles> {
                                     padding: const EdgeInsets.only(
                                         left: 8, right: 8, top: 8, bottom: 0),
                                     child: Text(
-                                      "View Reminder",
+                                      "Modern Medical Care",
                                       style: TextStyle(
                                           fontWeight: FontWeight.w100,
                                           fontFamily: "Calsans",
-                                          fontSize: 18,
+                                          fontSize: 20,
                                           color: Colors.white),
                                     ),
                                   ),
@@ -152,7 +153,7 @@ class _ResourceArticlesState extends State<ResourceArticles> {
                                         left: 8, right: 8, top: 0, bottom: 4),
                                     child: Text(
                                       textAlign: TextAlign.center,
-                                      "View your existing reminders for \nhydration/medication/appointment.",
+                                      "Resources on modern medical practices.",
                                       style: TextStyle(
                                           fontFamily: "Raleway",
                                           fontSize: 12,

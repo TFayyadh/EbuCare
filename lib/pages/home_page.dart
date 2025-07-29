@@ -342,7 +342,7 @@ Widget article(context) {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const EduPage(),
+              builder: (context) => const ResourceArticles(),
             ));
       },
       child: Padding(

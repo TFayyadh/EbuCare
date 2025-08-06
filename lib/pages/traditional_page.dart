@@ -19,8 +19,20 @@ class _TraditionalPageState extends State<TraditionalPage> {
     return data;
   }
 
+  Future<Set<String>> fetchUserFavourites(String userId) async {
+    final data = await Supabase.instance.client
+        .from('favourites')
+        .select('article_id')
+        .eq('user_id', userId);
+
+    // Convert to a set of article IDs for fast lookup
+    return data.map<String>((fav) => fav['article_id'].toString()).toSet();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final String userId = Supabase.instance.client.auth.currentUser?.id ?? '';
+
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 207, 241, 238),
       appBar: AppBar(
@@ -70,63 +82,113 @@ class _TraditionalPageState extends State<TraditionalPage> {
                         }
 
                         final resources = snapshot.data!;
-                        return RefreshIndicator(
-                          onRefresh: () async {
-                            setState(() {});
-                          },
-                          child: ListView.builder(
-                            itemCount: resources.length,
-                            itemBuilder: (context, index) {
-                              final resource = resources[index];
-                              return Card(
-                                margin: EdgeInsets.symmetric(
-                                    vertical: 5, horizontal: 0),
-                                child: GestureDetector(
-                                  child: ListTile(
-                                    trailing: GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ResourceDetailPage(
-                                                resource: resource,
-                                              ),
-                                            ));
-                                      },
-                                      child: Icon(
-                                        Icons.arrow_forward_ios,
-                                        color:
-                                            Color.fromARGB(255, 173, 131, 152),
+
+                        return FutureBuilder<Set<String>>(
+                          future: fetchUserFavourites(userId),
+                          builder: (context, favSnapshot) {
+                            if (favSnapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const Center(
+                                  child: CircularProgressIndicator());
+                            }
+                            if (favSnapshot.hasError) {
+                              return Center(
+                                  child: Text("Error: ${favSnapshot.error}"));
+                            }
+                            final favourites = favSnapshot.data ?? {};
+
+                            return RefreshIndicator(
+                              onRefresh: () async {
+                                setState(() {});
+                              },
+                              child: ListView.builder(
+                                itemCount: resources.length,
+                                itemBuilder: (context, index) {
+                                  final resource = resources[index];
+
+                                  final String articleId =
+                                      resource['id'].toString();
+                                  final bool isFavourited =
+                                      favourites.contains(articleId);
+
+                                  return GestureDetector(
+                                    onTap: () => Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            ResourceDetailPage(
+                                                resource: resource),
                                       ),
                                     ),
-                                    title: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          resource["title"],
-                                          style: TextStyle(
-                                            fontFamily: "Calsans",
-                                            fontWeight: FontWeight.bold,
+                                    child: Card(
+                                      margin: EdgeInsets.symmetric(
+                                          vertical: 5, horizontal: 0),
+                                      child: ListTile(
+                                        trailing: IconButton(
+                                          icon: Icon(
+                                            isFavourited
+                                                ? Icons.favorite
+                                                : Icons
+                                                    .favorite_border_outlined,
+                                            color: Color.fromARGB(
+                                                255, 173, 131, 152),
                                           ),
+                                          onPressed: () async {
+                                            if (isFavourited) {
+                                              // Remove from favourites
+                                              await Supabase.instance.client
+                                                  .from('favourites')
+                                                  .delete()
+                                                  .eq('user_id', userId)
+                                                  .eq('article_id', articleId);
+                                            } else {
+                                              // Add to favourites
+                                              await Supabase.instance.client
+                                                  .from('favourites')
+                                                  .insert({
+                                                'user_id': userId,
+                                                'article_id': articleId,
+                                              });
+                                            }
+                                            setState(() {});
+                                          },
                                         ),
-                                        SizedBox(height: 5),
-                                        Text(
-                                          resource['description'] ?? "",
-                                          style: TextStyle(
-                                              fontFamily: "Raleway",
-                                              fontWeight: FontWeight.normal,
-                                              fontSize: 14),
-                                          maxLines: 4,
+                                        title: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                  resource["title"],
+                                                  style: TextStyle(
+                                                    fontFamily: "Calsans",
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(height: 5),
+                                            Text(
+                                              resource['description'] ?? "",
+                                              style: TextStyle(
+                                                  fontFamily: "Raleway",
+                                                  fontWeight: FontWeight.normal,
+                                                  fontSize: 14),
+                                              maxLines: 4,
+                                            ),
+                                          ],
                                         ),
-                                      ],
+                                      ),
                                     ),
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
+                                  );
+                                },
+                              ),
+                            );
+                          },
                         );
                       },
                     ),

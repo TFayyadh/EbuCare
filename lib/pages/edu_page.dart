@@ -97,6 +97,19 @@ class _EduPageState extends State<EduPage> {
                             }
                             final favourites = favSnapshot.data ?? {};
 
+                            resources.sort((a, b) {
+                              final aFav =
+                                  favourites.contains(a['id'].toString())
+                                      ? 1
+                                      : 0;
+                              final bFav =
+                                  favourites.contains(b['id'].toString())
+                                      ? 1
+                                      : 0;
+                              return bFav.compareTo(
+                                  aFav); // Descending: favourites first
+                            });
+
                             return RefreshIndicator(
                               onRefresh: () async {
                                 setState(() {});

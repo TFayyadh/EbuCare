@@ -1,5 +1,4 @@
 import 'package:ebucare_app/pages/edu_page.dart';
-import 'package:ebucare_app/pages/reminder_page.dart';
 import 'package:ebucare_app/pages/traditional_page.dart';
 import 'package:flutter/material.dart';
 

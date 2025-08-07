@@ -38,14 +38,14 @@ class ResourceDetailPage extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(20.0),
                 decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 238, 195, 195),
+                  color: const Color.fromARGB(255, 134, 61, 95),
                   borderRadius: BorderRadius.circular(16.0),
                 ),
                 child: Text(
                   resource['description'] ?? "No description",
                   textAlign: TextAlign.justify,
                   style: TextStyle(
-                      color: Colors.black,
+                      color: Colors.white,
                       fontSize: 16,
                       fontFamily: "Calsans",
                       fontWeight: FontWeight.normal),

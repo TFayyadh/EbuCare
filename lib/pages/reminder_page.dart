@@ -25,7 +25,7 @@ class _ReminderPageState extends State<ReminderPage> {
         child: Column(
           children: [
             Text(
-              "Set Reminders",
+              "Reminders",
               style: TextStyle(
                 fontSize: 35,
                 fontWeight: FontWeight.bold,

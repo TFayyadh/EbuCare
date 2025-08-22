@@ -1,4 +1,5 @@
 import 'package:ebucare_app/pages/reminder_page.dart';
+import 'package:ebucare_app/pages/set_reminder_page.dart';
 import 'package:flutter/material.dart';
 
 class NewReminderPage extends StatefulWidget {
@@ -41,7 +42,7 @@ class _NewReminderPageState extends State<NewReminderPage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const ReminderPage(),
+                          builder: (context) => const SetReminderPage(),
                         ));
                   },
                   child: Container(

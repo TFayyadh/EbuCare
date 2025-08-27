@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:ebucare_app/auth/auth_service.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:ebucare_app/service/noti_service.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 class SetReminderPage extends StatefulWidget {
-  const SetReminderPage({super.key});
+  final String title;
+  const SetReminderPage({super.key, required this.title});
 
   @override
   State<SetReminderPage> createState() => _SetReminderPageState();
@@ -15,6 +21,12 @@ class _SetReminderPageState extends State<SetReminderPage> {
   int selectedMinute = 0;
   String selectedPeriod = "PM";
   bool isDaily = false;
+
+  final NotiService notiService = NotiService();
+  final int notificationId = DateTime.now().millisecondsSinceEpoch % 2147483647;
+
+  final authService = AuthService();
+  final String userId = Supabase.instance.client.auth.currentUser!.id;
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +75,7 @@ class _SetReminderPageState extends State<SetReminderPage> {
                             style: TextStyle(
                               fontSize: 20,
                               fontFamily: "Calsans",
-                              color: const Color.fromARGB(255, 106, 63, 114),
+                              color: Colors.black,
                             ),
                           ),
                         ),
@@ -165,8 +177,7 @@ class _SetReminderPageState extends State<SetReminderPage> {
                                 style: TextStyle(
                                   fontSize: 20,
                                   fontFamily: "Calsans",
-                                  color:
-                                      const Color.fromARGB(255, 106, 63, 114),
+                                  color: Colors.black,
                                 ),
                               ),
                             ),
@@ -276,7 +287,70 @@ class _SetReminderPageState extends State<SetReminderPage> {
                                       fontFamily: "Calsans",
                                       color: Colors.black),
                                 ),
-                                onPressed: () {},
+                                onPressed: () async {
+                                  int hour24 = selectedHour % 12;
+                                  if (selectedPeriod == "PM") hour24 += 12;
+
+                                  final ReminderData = {
+                                    "title": widget.title,
+                                    "date": isDaily
+                                        ? null
+                                        : selectedDate
+                                            .toIso8601String()
+                                            .split("T")
+                                            .first,
+                                    "time":
+                                        "${hour24.toString().padLeft(2, '0')}:${selectedMinute.toString().padLeft(2, '0')}:00",
+                                    "is_daily": isDaily,
+                                    "user_id":
+                                        userId, // Replace with actual user ID
+                                  };
+
+                                  final response = await Supabase
+                                      .instance.client
+                                      .from('reminders')
+                                      .insert(ReminderData);
+
+                                  await notiService.initNotification();
+                                  if (isDaily) {
+                                    await notiService.scheduleNotification(
+                                      id: notificationId,
+                                      title: widget.title,
+                                      body: "Daily Reminder",
+                                      hour: hour24,
+                                      minute: selectedMinute,
+                                    );
+                                  } else {
+                                    final ScheduledDate = DateTime(
+                                      selectedDate.year,
+                                      selectedDate.month,
+                                      selectedDate.day,
+                                      hour24,
+                                      selectedMinute,
+                                    );
+
+                                    await notiService.notificationsPlugin
+                                        .zonedSchedule(
+                                      notificationId,
+                                      widget.title,
+                                      "One-time Reminder",
+                                      tz.TZDateTime.from(
+                                          ScheduledDate, tz.local),
+                                      notiService.notificationDetails(),
+                                      androidScheduleMode: AndroidScheduleMode
+                                          .inexactAllowWhileIdle,
+                                      matchDateTimeComponents: null,
+                                    );
+                                  }
+
+                                  if (mounted) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                            content: Text(
+                                                'Reminder Set Successfully!')));
+                                    Navigator.pop(context);
+                                  }
+                                },
                               ),
                             ),
                           ),

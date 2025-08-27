@@ -1,4 +1,5 @@
 import 'package:ebucare_app/auth/auth_gate.dart';
+import 'package:ebucare_app/service/noti_service.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -8,6 +9,11 @@ void main() async {
     anonKey:
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp1dGpzbXhmY3RjdnZyaG12bGd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU4OTY2MzMsImV4cCI6MjA2MTQ3MjYzM30.bdSIKduNEvY0T1yh8JHFwIu1wBYdhbHQ8khH2APcBrs",
   );
+
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final notiService = NotiService();
+  await notiService.initNotification();
 
   runApp(const MyApp());
 }

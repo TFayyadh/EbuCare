@@ -42,7 +42,9 @@ class _NewReminderPageState extends State<NewReminderPage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const SetReminderPage(),
+                          builder: (context) => SetReminderPage(
+                            title: "Hydration",
+                          ),
                         ));
                   },
                   child: Container(
@@ -85,7 +87,9 @@ class _NewReminderPageState extends State<NewReminderPage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const ReminderPage(),
+                          builder: (context) => SetReminderPage(
+                            title: "Medication",
+                          ),
                         ));
                   },
                   child: Container(
@@ -128,7 +132,9 @@ class _NewReminderPageState extends State<NewReminderPage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const ReminderPage(),
+                          builder: (context) => SetReminderPage(
+                            title: "Appointment",
+                          ),
                         ));
                   },
                   child: Container(

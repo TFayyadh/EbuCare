@@ -1,4 +1,3 @@
-import 'package:ebucare_app/pages/reminder_page.dart';
 import 'package:ebucare_app/pages/set_reminder_page.dart';
 import 'package:flutter/material.dart';
 
@@ -44,6 +43,7 @@ class _NewReminderPageState extends State<NewReminderPage> {
                         MaterialPageRoute(
                           builder: (context) => SetReminderPage(
                             title: "Hydration",
+                            reminder: null,
                           ),
                         ));
                   },
@@ -89,6 +89,7 @@ class _NewReminderPageState extends State<NewReminderPage> {
                         MaterialPageRoute(
                           builder: (context) => SetReminderPage(
                             title: "Medication",
+                            reminder: null,
                           ),
                         ));
                   },
@@ -134,6 +135,7 @@ class _NewReminderPageState extends State<NewReminderPage> {
                         MaterialPageRoute(
                           builder: (context) => SetReminderPage(
                             title: "Appointment",
+                            reminder: null,
                           ),
                         ));
                   },

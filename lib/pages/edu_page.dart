@@ -43,177 +43,164 @@ class _EduPageState extends State<EduPage> {
             },
             icon: Icon(Icons.arrow_back_ios_new_outlined)),
       ),
-      body: Container(
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                child: Text(
-                  "Educational Resources",
-                  style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: "Calsans",
-                      color: const Color.fromARGB(255, 106, 63, 114)),
-                ),
+      body: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 5.0),
+              child: Text(
+                "Educational Resources",
+                style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: "Calsans",
+                    color: const Color.fromARGB(255, 106, 63, 114)),
               ),
-              Expanded(
-                child: Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5.0),
-                    child: FutureBuilder<List<dynamic>>(
-                      future: fetchResources(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const Center(
-                              child: CircularProgressIndicator());
-                        }
-                        if (snapshot.hasError) {
-                          return Center(
-                              child: Text("Error: ${snapshot.error}"));
-                        }
+            ),
+            Expanded(
+              child: Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 5.0),
+                  child: FutureBuilder<List<dynamic>>(
+                    future: fetchResources(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                      if (snapshot.hasError) {
+                        return Center(child: Text("Error: ${snapshot.error}"));
+                      }
 
-                        final resources = snapshot.data!;
+                      final resources = snapshot.data!;
 
-                        return FutureBuilder<Set<String>>(
-                          future: fetchUserFavourites(userId),
-                          builder: (context, favSnapshot) {
-                            if (favSnapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return const Center(
-                                  child: CircularProgressIndicator());
-                            }
-                            if (favSnapshot.hasError) {
-                              return Center(
-                                  child: Text("Error: ${favSnapshot.error}"));
-                            }
-                            final favourites = favSnapshot.data ?? {};
+                      return FutureBuilder<Set<String>>(
+                        future: fetchUserFavourites(userId),
+                        builder: (context, favSnapshot) {
+                          if (favSnapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          }
+                          if (favSnapshot.hasError) {
+                            return Center(
+                                child: Text("Error: ${favSnapshot.error}"));
+                          }
+                          final favourites = favSnapshot.data ?? {};
 
-                            resources.sort((a, b) {
-                              final aFav =
-                                  favourites.contains(a['id'].toString())
-                                      ? 1
-                                      : 0;
-                              final bFav =
-                                  favourites.contains(b['id'].toString())
-                                      ? 1
-                                      : 0;
-                              return bFav.compareTo(
-                                  aFav); // Descending: favourites first
-                            });
+                          resources.sort((a, b) {
+                            final aFav =
+                                favourites.contains(a['id'].toString()) ? 1 : 0;
+                            final bFav =
+                                favourites.contains(b['id'].toString()) ? 1 : 0;
+                            return bFav.compareTo(
+                                aFav); // Descending: favourites first
+                          });
 
-                            return RefreshIndicator(
-                              onRefresh: () async {
-                                setState(() {});
-                              },
-                              child: ListView.builder(
-                                itemCount: resources.length,
-                                itemBuilder: (context, index) {
-                                  final resource = resources[index];
+                          return RefreshIndicator(
+                            onRefresh: () async {
+                              setState(() {});
+                            },
+                            child: ListView.builder(
+                              itemCount: resources.length,
+                              itemBuilder: (context, index) {
+                                final resource = resources[index];
 
-                                  final String articleId =
-                                      resource['id'].toString();
-                                  final bool isFavourited =
-                                      favourites.contains(articleId);
+                                final String articleId =
+                                    resource['id'].toString();
+                                final bool isFavourited =
+                                    favourites.contains(articleId);
 
-                                  return GestureDetector(
-                                    onTap: () => Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            ResourceDetailPage(
-                                          resource: resource,
-                                        ),
+                                return GestureDetector(
+                                  onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ResourceDetailPage(
+                                        resource: resource,
                                       ),
                                     ),
-                                    child: Card(
-                                      margin: EdgeInsets.symmetric(
-                                          vertical: 5, horizontal: 0),
-                                      child: ListTile(
-                                        trailing: IconButton(
-                                          icon: Icon(
-                                            isFavourited
-                                                ? Icons.favorite
-                                                : Icons
-                                                    .favorite_border_outlined,
-                                            color: Color.fromARGB(
-                                                255, 173, 131, 152),
-                                          ),
-                                          onPressed: () async {
-                                            if (isFavourited) {
-                                              // Remove from favourites
-                                              await Supabase.instance.client
-                                                  .from('favourites')
-                                                  .delete()
-                                                  .eq('user_id', userId)
-                                                  .eq('article_id', articleId);
-                                            } else {
-                                              // Add to favourites
-                                              await Supabase.instance.client
-                                                  .from('favourites')
-                                                  .insert({
-                                                'user_id': userId,
-                                                'article_id': articleId,
-                                              });
-                                            }
-                                            setState(() {});
-                                          },
+                                  ),
+                                  child: Card(
+                                    margin: EdgeInsets.symmetric(
+                                        vertical: 5, horizontal: 0),
+                                    child: ListTile(
+                                      trailing: IconButton(
+                                        icon: Icon(
+                                          isFavourited
+                                              ? Icons.favorite
+                                              : Icons.favorite_border_outlined,
+                                          color: Color.fromARGB(
+                                              255, 173, 131, 152),
                                         ),
-                                        title: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Expanded(
-                                                  child: Text(
-                                                    resource["title"],
-                                                    style: TextStyle(
-                                                      fontFamily: "Calsans",
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
+                                        onPressed: () async {
+                                          if (isFavourited) {
+                                            // Remove from favourites
+                                            await Supabase.instance.client
+                                                .from('favourites')
+                                                .delete()
+                                                .eq('user_id', userId)
+                                                .eq('article_id', articleId);
+                                          } else {
+                                            // Add to favourites
+                                            await Supabase.instance.client
+                                                .from('favourites')
+                                                .insert({
+                                              'user_id': userId,
+                                              'article_id': articleId,
+                                            });
+                                          }
+                                          setState(() {});
+                                        },
+                                      ),
+                                      title: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Expanded(
+                                                child: Text(
+                                                  resource["title"],
+                                                  style: TextStyle(
+                                                    fontFamily: "Calsans",
+                                                    fontWeight: FontWeight.bold,
                                                   ),
                                                 ),
-                                              ],
-                                            ),
-                                            SizedBox(height: 5),
-                                            Text(
-                                              resource['description'] ?? "",
-                                              style: TextStyle(
-                                                  fontFamily: "Raleway",
-                                                  fontWeight: FontWeight.normal,
-                                                  fontSize: 14),
-                                              maxLines: 4,
-                                            ),
-                                          ],
-                                        ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 5),
+                                          Text(
+                                            resource['description'] ?? "",
+                                            style: TextStyle(
+                                                fontFamily: "Raleway",
+                                                fontWeight: FontWeight.normal,
+                                                fontSize: 14),
+                                            maxLines: 4,
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                  );
-                                },
-                              ),
-                            );
-                          },
-                        );
-                      },
-                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          );
+                        },
+                      );
+                    },
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

@@ -9,7 +9,9 @@ import 'package:timezone/timezone.dart' as tz;
 
 class SetReminderPage extends StatefulWidget {
   final String title;
-  const SetReminderPage({super.key, required this.title});
+  final Map? reminder; // New parameter for editing
+  const SetReminderPage(
+      {super.key, required this.title, required this.reminder});
 
   @override
   State<SetReminderPage> createState() => _SetReminderPageState();
@@ -306,10 +308,20 @@ class _SetReminderPageState extends State<SetReminderPage> {
                                         userId, // Replace with actual user ID
                                   };
 
-                                  final response = await Supabase
-                                      .instance.client
-                                      .from('reminders')
-                                      .insert(ReminderData);
+                                  if (widget.reminder != null &&
+                                      widget.reminder!['reminder_id'] != null) {
+                                    // EDIT: Update existing reminder
+                                    await Supabase.instance.client
+                                        .from('reminders')
+                                        .update(ReminderData)
+                                        .eq('reminder_id',
+                                            widget.reminder!['reminder_id']);
+                                  } else {
+                                    // NEW: Insert new reminder
+                                    await Supabase.instance.client
+                                        .from('reminders')
+                                        .insert(ReminderData);
+                                  }
 
                                   await notiService.initNotification();
                                   if (isDaily) {

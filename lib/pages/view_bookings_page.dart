@@ -1,4 +1,3 @@
-import 'package:ebucare_app/pages/booking_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 

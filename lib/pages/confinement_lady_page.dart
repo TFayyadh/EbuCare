@@ -1,4 +1,5 @@
 import 'package:ebucare_app/pages/booking_page.dart';
+import 'package:ebucare_app/pages/confinement_services_pages.dart';
 import 'package:ebucare_app/pages/view_bookings_page.dart';
 import 'package:flutter/material.dart';
 
@@ -28,7 +29,7 @@ class _ConfinementLadyPageState extends State<ConfinementLadyPage> {
           child: Column(
             children: [
               Text(
-                "Confinement Lady Bookings",
+                "Confinement Lady",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 35,
@@ -51,7 +52,7 @@ class _ConfinementLadyPageState extends State<ConfinementLadyPage> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => BookingPage(),
+                              builder: (context) => ConfinementServicesPages(),
                             ));
                       },
                       child: Padding(

@@ -1,3 +1,6 @@
+import 'package:ebucare_app/pages/confinement_10days_page.dart';
+import 'package:ebucare_app/pages/confinement_14days_page.dart';
+import 'package:ebucare_app/pages/confinement_7days_page.dart';
 import 'package:ebucare_app/pages/reminder_page.dart';
 import 'package:flutter/material.dart';
 
@@ -103,7 +106,7 @@ class _ConfinementCarePageState extends State<ConfinementCarePage> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => ReminderPage(),
+                              builder: (context) => Confinement7daysPage(),
                             ));
                       },
                       child: Align(
@@ -201,7 +204,7 @@ class _ConfinementCarePageState extends State<ConfinementCarePage> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => ReminderPage(),
+                              builder: (context) => Confinement10daysPage(),
                             ));
                       },
                       child: Align(
@@ -299,7 +302,7 @@ class _ConfinementCarePageState extends State<ConfinementCarePage> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => ReminderPage(),
+                              builder: (context) => Confinement14daysPage(),
                             ));
                       },
                       child: Align(

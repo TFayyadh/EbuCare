@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ConfinementDetails14DaysPage extends StatefulWidget {
   const ConfinementDetails14DaysPage({super.key});
@@ -11,6 +12,7 @@ class ConfinementDetails14DaysPage extends StatefulWidget {
 class _ConfinementDetails14DaysPageState
     extends State<ConfinementDetails14DaysPage> {
   final TextEditingController addressController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
 
   DateTime? selectedDate;
 
@@ -181,7 +183,7 @@ class _ConfinementDetails14DaysPageState
                             icon: Icon(Icons.phone_android_rounded)),
                         Expanded(
                           child: TextField(
-                            controller: addressController,
+                            controller: phoneController,
                             decoration: InputDecoration(
                               hintText: 'Enter your phone number',
                               hintStyle: TextStyle(
@@ -200,8 +202,46 @@ class _ConfinementDetails14DaysPageState
               ),
               SizedBox(height: 20),
               ElevatedButton(
-                onPressed: () {
-                  // Handle submission logic here
+                onPressed: () async {
+                  if (selectedDate == null ||
+                      addressController.text.isEmpty ||
+                      phoneController.text.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Please fill all fields")));
+                  }
+                  final userId = Supabase.instance.client.auth.currentUser!.id;
+                  if (userId == null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("User not logged in")));
+                    return;
+                  }
+
+                  final bookingData = {
+                    'user_id': userId,
+                    'package_type': '14 Days Care Package',
+                    'start_date':
+                        selectedDate!.toIso8601String().split('T').first,
+                    'end_date': selectedDate!
+                        .add(Duration(days: 13))
+                        .toIso8601String()
+                        .split('T')
+                        .first,
+                    'address': addressController.text,
+                    'phone': phoneController.text,
+                    'status': 'Pending',
+                    'created_at': DateTime.now().toIso8601String(),
+                  };
+
+                  final response = await Supabase.instance.client
+                      .from('confinement_bookings')
+                      .insert(bookingData);
+
+                  if (mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text("Booking submitted successfully")),
+                    );
+                    Navigator.pop(context);
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color.fromARGB(255, 251, 182, 183),

@@ -90,51 +90,33 @@ class _ViewBookingsPageState extends State<ViewBookingsPage> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        resource["name"],
+                                        resource["package_type"],
                                         style: TextStyle(
-                                          fontFamily: "Calsans",
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                            fontFamily: "Calsans",
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20),
                                       ),
                                       SizedBox(height: 5),
                                       Text(
-                                        resource['start_date'] ?? "",
+                                        resource['status'],
                                         style: TextStyle(
-                                            fontFamily: "Raleway",
-                                            fontWeight: FontWeight.normal,
+                                            fontFamily: "Calsans",
+                                            fontWeight: FontWeight.bold,
                                             fontSize: 14),
                                         maxLines: 4,
                                       ),
                                       SizedBox(height: 5),
                                       Text(
-                                        resource['end_date'] ?? "",
+                                        "${resource['start_date']} - ${resource['end_date']}",
                                         style: TextStyle(
                                             fontFamily: "Raleway",
                                             fontWeight: FontWeight.normal,
-                                            fontSize: 14),
+                                            fontSize: 16),
                                         maxLines: 4,
                                       ),
                                       SizedBox(height: 5),
                                       Text(
-                                        resource['package_type'] ?? "",
-                                        style: TextStyle(
-                                            fontFamily: "Raleway",
-                                            fontWeight: FontWeight.normal,
-                                            fontSize: 14),
-                                        maxLines: 4,
-                                      ),
-                                      SizedBox(height: 5),
-                                      Text(
-                                        resource['address'] ?? "",
-                                        style: TextStyle(
-                                            fontFamily: "Raleway",
-                                            fontWeight: FontWeight.normal,
-                                            fontSize: 14),
-                                        maxLines: 4,
-                                      ),
-                                      SizedBox(height: 5),
-                                      Text(
-                                        resource['notes'] ?? "",
+                                        resource['phone'],
                                         style: TextStyle(
                                             fontFamily: "Raleway",
                                             fontWeight: FontWeight.normal,

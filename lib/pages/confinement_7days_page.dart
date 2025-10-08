@@ -1,3 +1,4 @@
+import 'package:ebucare_app/pages/confinement_details_7days_page.dart';
 import 'package:flutter/material.dart';
 
 class Confinement7daysPage extends StatefulWidget {
@@ -73,7 +74,12 @@ class _Confinement7daysPageState extends State<Confinement7daysPage> {
               ),
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ConfinementDetails7DaysPage()));
+              },
               style: ButtonStyle(
                 backgroundColor:
                     WidgetStatePropertyAll(Color.fromARGB(255, 174, 121, 183)),

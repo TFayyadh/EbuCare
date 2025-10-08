@@ -257,7 +257,6 @@ class _BabySleepPageState extends State<BabySleepPage> {
                               fontWeight: FontWeight.bold,
                               fontFamily: "Raleway")),
                       SizedBox(height: 24),
-
                       TextField(
                         controller: notesController,
                         decoration: InputDecoration(

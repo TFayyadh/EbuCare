@@ -1,6 +1,7 @@
 import 'package:ebucare_app/auth/auth_service.dart';
 import 'package:ebucare_app/pages/home_page.dart';
 import 'package:ebucare_app/pages/register_page.dart';
+import 'package:ebucare_app/pages/start_decider.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -29,11 +30,9 @@ class _LoginPageState extends State<LoginPage> {
       final user = Supabase.instance.client.auth.currentUser;
       final userId = user?.id;
 
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const HomePage(),
-          ));
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (_) => const StartDecider()),
+          (route) => false);
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context)

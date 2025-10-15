@@ -8,12 +8,20 @@ import 'package:ebucare_app/pages/resource_articles.dart';
 import 'package:ebucare_app/pages/traditional_page.dart';
 import 'package:ebucare_app/pages/home/widgets/header.dart';
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:ebucare_app/pages/onboarding_birthdate_page.dart'; // <-- your screen
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
+}
+
+int _calculatePostpartumWeek(DateTime birthDate) {
+  final now = DateTime.now();
+  final days = now.isAfter(birthDate) ? now.difference(birthDate).inDays : 0;
+  return (days / 7).floor() + 1; // 0–6 days = Week 1, etc.
 }
 
 Widget edu(BuildContext context) {
@@ -475,6 +483,10 @@ Widget babyCare(BuildContext context) {
 
 class _HomePageState extends State<HomePage> {
   final authService = AuthService();
+  final supabase = Supabase.instance.client;
+
+  int? _postpartumWeek;
+  bool _loadingProfile = true;
 
   void logout() async {
     try {
@@ -494,6 +506,84 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _loadProfileAndMaybeRedirect();
+  }
+
+  Future<void> _loadProfileAndMaybeRedirect() async {
+    try {
+      final uid = supabase.auth.currentUser?.id;
+      if (uid == null) {
+        if (mounted) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (_) => const LoginPage()),
+          );
+        }
+        return;
+      }
+
+      // Get only what we need
+      final data = await supabase
+          .from('profiles')
+          .select('baby_birthdate')
+          .eq('id', uid)
+          .single();
+
+      if (data.isEmpty || data['baby_birthdate'] == null) {
+        // No birthdate -> onboarding
+        if (mounted) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (_) => const OnboardingBirthdatePage()),
+          );
+        }
+        return;
+      }
+
+      // Supabase returns ISO 8601 strings for date/timestamptz
+      final raw = data['baby_birthdate'];
+      DateTime? birthDate;
+
+      if (raw is String) {
+        birthDate = DateTime.tryParse(raw);
+      } else if (raw is int) {
+        // if you stored milliseconds since epoch by mistake
+        birthDate = DateTime.fromMillisecondsSinceEpoch(raw);
+      } else if (raw is DateTime) {
+        birthDate = raw;
+      }
+
+      if (birthDate == null) {
+        if (mounted) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (_) => const OnboardingBirthdatePage()),
+          );
+        }
+        return;
+      }
+
+      final week = _calculatePostpartumWeek(birthDate);
+
+      if (mounted) {
+        setState(() {
+          _postpartumWeek = week;
+          _loadingProfile = false;
+        });
+      }
+    } catch (e) {
+      // Fail safe: send to onboarding if we can’t read the field
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const OnboardingBirthdatePage()),
+        );
+      }
+    }
+  }
+
   Widget build(BuildContext context) {
     //final userEmail = authService.getCurrentUserEmail();
 
@@ -532,6 +622,32 @@ class _HomePageState extends State<HomePage> {
                             color: const Color.fromARGB(255, 81, 56, 76)),
                       ),
                     ),
+                    if (!_loadingProfile && _postpartumWeek != null)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                        child: RichText(
+                          text: TextSpan(
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontFamily: "Calsans",
+                              color: Color.fromARGB(255, 81, 56, 76),
+                            ),
+                            children: [
+                              const TextSpan(
+                                text: "You're currently in ",
+                              ),
+                              TextSpan(
+                                text: "Week ${_postpartumWeek!}",
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              const TextSpan(
+                                  text: " of your postpartum recovery."),
+                            ],
+                          ),
+                        ),
+                      ),
                   ],
                 ),
                 SizedBox(

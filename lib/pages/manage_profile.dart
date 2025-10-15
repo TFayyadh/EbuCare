@@ -16,6 +16,7 @@ class _ManageProfileState extends State<ManageProfile> {
   final TextEditingController phoneNumberController = TextEditingController();
   final TextEditingController ageController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
+  final TextEditingController birthDateController = TextEditingController();
 
   void _saveEntry() async {
     final ManageProfile = {
@@ -23,6 +24,7 @@ class _ManageProfileState extends State<ManageProfile> {
       "name": nameController.text,
       'phone_number': phoneNumberController.text,
       'age': ageController.text,
+      'baby_birthdate': birthDateController.text,
       'updated_at': DateTime.now().toIso8601String(),
     };
 
@@ -67,6 +69,7 @@ class _ManageProfileState extends State<ManageProfile> {
         nameController.text = response['name'] ?? '';
         phoneNumberController.text = response['phone_number'] ?? '';
         ageController.text = response['age']?.toString() ?? '';
+        birthDateController.text = response['baby_birthdate'] ?? '';
       });
     }
   }
@@ -225,6 +228,40 @@ class _ManageProfileState extends State<ManageProfile> {
                                   controller: ageController,
                                   decoration: InputDecoration(
                                     hintText: 'Enter age',
+                                    hintStyle: TextStyle(
+                                        color:
+                                            const Color.fromARGB(255, 0, 0, 0),
+                                        fontFamily: "Raleway"),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                  style: TextStyle(
+                                      fontFamily: "Raleway",
+                                      color:
+                                          const Color.fromARGB(255, 0, 0, 0)),
+                                )),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("Baby's Birth Date:",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: "Raleway")),
+                          Container(
+                            width: 200,
+                            child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10.0),
+                                child: TextField(
+                                  controller: birthDateController,
+                                  readOnly: true,
+                                  decoration: InputDecoration(
+                                    hintText: 'Enter birth date',
                                     hintStyle: TextStyle(
                                         color:
                                             const Color.fromARGB(255, 0, 0, 0),

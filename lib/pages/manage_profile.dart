@@ -1,4 +1,5 @@
 import 'package:ebucare_app/auth/auth_service.dart';
+import 'package:ebucare_app/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -82,7 +83,12 @@ class _ManageProfileState extends State<ManageProfile> {
         backgroundColor: const Color.fromARGB(255, 207, 241, 238),
         leading: IconButton(
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const HomePage(),
+                ),
+              );
             },
             icon: Icon(Icons.arrow_back_ios_new_outlined)),
       ),

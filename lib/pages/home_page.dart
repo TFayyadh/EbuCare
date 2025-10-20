@@ -3,6 +3,7 @@ import 'package:ebucare_app/pages/baby_care_page.dart';
 import 'package:ebucare_app/pages/confinement_lady_page.dart';
 import 'package:ebucare_app/pages/edu_page.dart';
 import 'package:ebucare_app/pages/login_page.dart';
+import 'package:ebucare_app/pages/manage_profile.dart';
 import 'package:ebucare_app/pages/reminder_page.dart';
 import 'package:ebucare_app/pages/resource_articles.dart';
 import 'package:ebucare_app/pages/traditional_page.dart';
@@ -342,6 +343,68 @@ Widget confinement(BuildContext context) {
   );
 }
 
+Widget resources(BuildContext context) {
+  return Container(
+    width: 150,
+    height: 200,
+    decoration: BoxDecoration(
+      color: const Color.fromARGB(255, 227, 168, 176),
+      borderRadius: BorderRadius.circular(20),
+    ),
+    child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Resources",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontFamily: "Calsans",
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white),
+                ),
+              ],
+            ),
+            Container(
+              width: 50,
+              height: 50,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Color.fromARGB(255, 230, 186, 192)),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ConfinementLadyPage(),
+                    ),
+                  );
+                },
+                child: Icon(
+                  Icons.article_outlined,
+                  size: 30,
+                  color: Color.fromARGB(255, 255, 255, 255),
+                ),
+              ),
+            ),
+            Text(
+              "View or make \nnew bookings.",
+              style: TextStyle(
+                  fontSize: 10,
+                  fontFamily: "Raleway",
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
+            ),
+          ],
+        )),
+  );
+}
+
 Widget article(context) {
   return Container(
     child: GestureDetector(
@@ -356,7 +419,7 @@ Widget article(context) {
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: Container(
           width: 350,
-          height: 150,
+          height: 80,
           decoration: BoxDecoration(
             color: const Color.fromARGB(204, 246, 174, 74),
             borderRadius: BorderRadius.circular(10),
@@ -373,7 +436,7 @@ Widget article(context) {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(
-                            left: 8, right: 8, top: 0, bottom: 15),
+                            left: 8, right: 8, top: 0, bottom: 5),
                         child: Text(
                           "Resources",
                           style: TextStyle(
@@ -383,21 +446,6 @@ Widget article(context) {
                               color: Colors.white),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 8, right: 8, top: 0, bottom: 4),
-                        child: Text(
-                          "Traditional/Modern medical postpartum care resources.",
-                          style: TextStyle(
-                              fontFamily: "Raleway",
-                              fontSize: 15,
-                              color: Colors.white),
-                          softWrap: true,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
-                          textAlign: TextAlign.center,
-                        ),
-                      )
                     ],
                   ),
                 ),
@@ -488,9 +536,12 @@ class _HomePageState extends State<HomePage> {
   int? _postpartumWeek;
   bool _loadingProfile = true;
 
-  void logout() async {
+  int _selectedIndex = 0;
+
+  Future<void> logout() async {
     try {
       await authService.signOut();
+      if (!mounted) return;
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -498,10 +549,11 @@ class _HomePageState extends State<HomePage> {
         ),
       );
     } catch (e) {
-      print('Logout error: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Logout failed: $e')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Logout failed: $e')),
+        );
+      }
     }
   }
 
@@ -589,7 +641,6 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 207, 241, 238),
-      appBar: Header(onLogout: logout),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -671,13 +722,80 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 40),
-                  child: article(context),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 30),
+                  child: Container(
+                    height: 200,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        resources(context),
+                        resources(context),
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),
           ),
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: (index) async {
+          setState(() {
+            _selectedIndex = index;
+          });
+
+          switch (index) {
+            case 0:
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const HomePage()),
+              );
+              break;
+            case 1:
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const ManageProfile()),
+              );
+              break;
+            case 2:
+              // Confirm before logging out
+              final shouldLogout = await showDialog<bool>(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const Text('Log Out'),
+                  content: const Text('Are you sure you want to log out?'),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, false),
+                      child: const Text('Cancel'),
+                    ),
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, true),
+                      child: const Text('Log Out'),
+                    ),
+                  ],
+                ),
+              );
+
+              if (shouldLogout == true) {
+                await logout(); // your existing logout function
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginPage()),
+                );
+              }
+              break;
+          }
+        },
+        type: BottomNavigationBarType.fixed,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account'),
+          BottomNavigationBarItem(icon: Icon(Icons.logout), label: 'Logout'),
+        ],
       ),
     );
   }

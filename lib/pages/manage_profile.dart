@@ -1,10 +1,12 @@
 import 'package:ebucare_app/auth/auth_service.dart';
 import 'package:ebucare_app/pages/home_page.dart';
+import 'package:ebucare_app/pages/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ManageProfile extends StatefulWidget {
-  const ManageProfile({super.key});
+  final int initialIndex;
+  const ManageProfile({super.key, this.initialIndex = 1});
 
   @override
   State<ManageProfile> createState() => _ManageProfileState();
@@ -18,6 +20,8 @@ class _ManageProfileState extends State<ManageProfile> {
   final TextEditingController ageController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController birthDateController = TextEditingController();
+
+  late int _selectedIndex;
 
   void _saveEntry() async {
     final ManageProfile = {
@@ -52,10 +56,30 @@ class _ManageProfileState extends State<ManageProfile> {
   @override
   void initState() {
     super.initState();
+    _selectedIndex = widget.initialIndex;
     _loadProfile();
     // Set the email from Supabase user
     emailController.text =
         Supabase.instance.client.auth.currentUser?.email ?? '';
+  }
+
+  Future<void> logout() async {
+    try {
+      await authService.signOut();
+      if (!mounted) return;
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const LoginPage(),
+        ),
+      );
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Logout failed: $e')),
+        );
+      }
+    }
   }
 
   Future<void> _loadProfile() async {
@@ -310,6 +334,64 @@ class _ManageProfileState extends State<ManageProfile> {
             ),
           ),
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: (index) async {
+          setState(() {
+            _selectedIndex = index;
+          });
+
+          switch (index) {
+            case 0:
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const HomePage()),
+              );
+              break;
+            case 1:
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ManageProfile(initialIndex: index)),
+              );
+              break;
+            case 2:
+              // Confirm before logging out
+              final shouldLogout = await showDialog<bool>(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const Text('Log Out'),
+                  content: const Text('Are you sure you want to log out?'),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, false),
+                      child: const Text('Cancel'),
+                    ),
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, true),
+                      child: const Text('Log Out'),
+                    ),
+                  ],
+                ),
+              );
+
+              if (shouldLogout == true) {
+                await logout(); // your existing logout function
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginPage()),
+                );
+              }
+              break;
+          }
+        },
+        type: BottomNavigationBarType.fixed,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account'),
+          BottomNavigationBarItem(icon: Icon(Icons.logout), label: 'Logout'),
+        ],
       ),
     );
   }

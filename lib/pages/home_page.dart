@@ -757,7 +757,8 @@ class _HomePageState extends State<HomePage> {
             case 1:
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => const ManageProfile()),
+                MaterialPageRoute(
+                    builder: (context) => ManageProfile(initialIndex: index)),
               );
               break;
             case 2:

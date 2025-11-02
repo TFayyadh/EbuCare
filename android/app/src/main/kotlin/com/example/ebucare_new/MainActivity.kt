@@ -1,4 +1,4 @@
-package com.example.ebucare_app
+package com.example.ebucare_new
 
 import io.flutter.embedding.android.FlutterActivity
 

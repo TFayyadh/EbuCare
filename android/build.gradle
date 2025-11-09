@@ -9,10 +9,13 @@ rootProject.buildDir = "../build"
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
 }
-subprojects {
-    project.evaluationDependsOn(":app")
-}
+
 
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
+
+// Ensure all Android modules (including plugin subprojects like :app_links)
+// use a consistent SDK level and build tools to avoid provider resolution issues.
+// Note: Global overrides for Android plugin subprojects were removed
+// to avoid "It is too late to set compileSdk" errors with AGP 8+.

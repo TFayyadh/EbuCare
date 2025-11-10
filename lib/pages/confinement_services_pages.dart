@@ -1,0 +1,131 @@
+import 'package:ebucare_app/pages/confinement_care_page.dart';
+import 'package:ebucare_app/pages/reminder_page.dart';
+import 'package:flutter/material.dart';
+
+class ConfinementServicesPages extends StatefulWidget {
+  const ConfinementServicesPages({super.key});
+
+  @override
+  State<ConfinementServicesPages> createState() =>
+      _ConfinementServicesPagesState();
+}
+
+class _ConfinementServicesPagesState extends State<ConfinementServicesPages> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 207, 241, 238),
+      appBar: AppBar(
+        title: Text(
+          "Services",
+          style: TextStyle(
+            fontFamily: "Calsans",
+            fontSize: 24,
+          ),
+        ),
+        centerTitle: true,
+        backgroundColor: const Color.fromARGB(255, 207, 241, 238),
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.arrow_back_ios_new_outlined)),
+      ),
+      body: SafeArea(
+          child: Padding(
+        padding: EdgeInsets.all(8.0),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ConfinementCarePage(),
+                      ));
+                },
+                child: Container(
+                  height: 150,
+                  width: 300,
+                  decoration: BoxDecoration(
+                    color: const Color.fromARGB(255, 251, 182, 183),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Align(
+                    alignment: Alignment.topCenter,
+                    child: Transform.translate(
+                      offset: Offset(0, -30),
+                      child: Container(
+                        height: 40,
+                        width: 250,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(5),
+                          child: Text(
+                            "Confinement Care",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontFamily: "Calsans",
+                                color: const Color.fromARGB(255, 106, 63, 114)),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ReminderPage(),
+                      ));
+                },
+                child: Container(
+                  height: 150,
+                  width: 300,
+                  decoration: BoxDecoration(
+                    color: const Color.fromARGB(255, 251, 182, 183),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Align(
+                    alignment: Alignment.topCenter,
+                    child: Transform.translate(
+                      offset: Offset(0, -30),
+                      child: Container(
+                        height: 40,
+                        width: 250,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(5),
+                          child: Text(
+                            "Massage Therapy",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontFamily: "Calsans",
+                                color: const Color.fromARGB(255, 106, 63, 114)),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      )),
+    );
+  }
+}

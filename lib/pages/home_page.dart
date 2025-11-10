@@ -1,19 +1,29 @@
 import 'package:ebucare_app/auth/auth_service.dart';
 import 'package:ebucare_app/pages/baby_care_page.dart';
+import 'package:ebucare_app/pages/checkin_page.dart';
 import 'package:ebucare_app/pages/confinement_lady_page.dart';
 import 'package:ebucare_app/pages/edu_page.dart';
 import 'package:ebucare_app/pages/login_page.dart';
+import 'package:ebucare_app/pages/manage_profile.dart';
 import 'package:ebucare_app/pages/reminder_page.dart';
 import 'package:ebucare_app/pages/resource_articles.dart';
 import 'package:ebucare_app/pages/traditional_page.dart';
 import 'package:ebucare_app/pages/home/widgets/header.dart';
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:ebucare_app/pages/onboarding_birthdate_page.dart'; // <-- your screen
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
+}
+
+int _calculatePostpartumWeek(DateTime birthDate) {
+  final now = DateTime.now();
+  final days = now.isAfter(birthDate) ? now.difference(birthDate).inDays : 0;
+  return (days / 7).floor() + 1; // 0–6 days = Week 1, etc.
 }
 
 Widget edu(BuildContext context) {
@@ -223,17 +233,13 @@ Widget reminder(context) {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
-                  children: [
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: 8, right: 8, top: 8, bottom: 0),
-                      child: Text(
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Text(
                         "Daily Reminder",
                         style: TextStyle(
                             fontWeight: FontWeight.w100,
@@ -241,19 +247,80 @@ Widget reminder(context) {
                             fontSize: 18,
                             color: Colors.white),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: 8, right: 8, top: 0, bottom: 4),
-                      child: Text(
+                      SizedBox(height: 6),
+                      Text(
                         "Medication/Hydration/Appointments",
                         style: TextStyle(
                             fontFamily: "Raleway",
                             fontSize: 12,
                             color: Colors.white),
+                      )
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Icon(
+                    Icons.notifications,
+                    size: 40,
+                    color: Colors.white,
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+Widget checkin(context) {
+  return Container(
+    child: GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const CheckinPage(),
+            ));
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: Container(
+          width: 350,
+          height: 100,
+          decoration: BoxDecoration(
+            color: const Color.fromARGB(204, 246, 174, 74),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Text(
+                        "Daily Check-In",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w100,
+                            fontFamily: "Calsans",
+                            fontSize: 18,
+                            color: Colors.white),
                       ),
-                    )
-                  ],
+                      SizedBox(height: 6),
+                      Text(
+                        "Users daily well-being check-in.",
+                        style: TextStyle(
+                            fontFamily: "Raleway",
+                            fontSize: 12,
+                            color: Colors.white),
+                      )
+                    ],
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -334,6 +401,68 @@ Widget confinement(BuildContext context) {
   );
 }
 
+Widget resources(BuildContext context) {
+  return Container(
+    width: 150,
+    height: 200,
+    decoration: BoxDecoration(
+      color: const Color.fromARGB(255, 227, 168, 176),
+      borderRadius: BorderRadius.circular(20),
+    ),
+    child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Resources",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontFamily: "Calsans",
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white),
+                ),
+              ],
+            ),
+            Container(
+              width: 50,
+              height: 50,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Color.fromARGB(255, 230, 186, 192)),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ConfinementLadyPage(),
+                    ),
+                  );
+                },
+                child: Icon(
+                  Icons.article_outlined,
+                  size: 30,
+                  color: Color.fromARGB(255, 255, 255, 255),
+                ),
+              ),
+            ),
+            Text(
+              "View or make \nnew bookings.",
+              style: TextStyle(
+                  fontSize: 10,
+                  fontFamily: "Raleway",
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
+            ),
+          ],
+        )),
+  );
+}
+
 Widget article(context) {
   return Container(
     child: GestureDetector(
@@ -348,7 +477,7 @@ Widget article(context) {
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: Container(
           width: 350,
-          height: 150,
+          height: 80,
           decoration: BoxDecoration(
             color: const Color.fromARGB(204, 246, 174, 74),
             borderRadius: BorderRadius.circular(10),
@@ -365,7 +494,7 @@ Widget article(context) {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(
-                            left: 8, right: 8, top: 0, bottom: 15),
+                            left: 8, right: 8, top: 0, bottom: 5),
                         child: Text(
                           "Resources",
                           style: TextStyle(
@@ -375,21 +504,6 @@ Widget article(context) {
                               color: Colors.white),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 8, right: 8, top: 0, bottom: 4),
-                        child: Text(
-                          "Traditional/Modern medical postpartum care resources.",
-                          style: TextStyle(
-                              fontFamily: "Raleway",
-                              fontSize: 15,
-                              color: Colors.white),
-                          softWrap: true,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
-                          textAlign: TextAlign.center,
-                        ),
-                      )
                     ],
                   ),
                 ),
@@ -475,10 +589,17 @@ Widget babyCare(BuildContext context) {
 
 class _HomePageState extends State<HomePage> {
   final authService = AuthService();
+  final supabase = Supabase.instance.client;
 
-  void logout() async {
+  int? _postpartumWeek;
+  bool _loadingProfile = true;
+
+  int _selectedIndex = 0;
+
+  Future<void> logout() async {
     try {
       await authService.signOut();
+      if (!mounted) return;
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -486,20 +607,98 @@ class _HomePageState extends State<HomePage> {
         ),
       );
     } catch (e) {
-      print('Logout error: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Logout failed: $e')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Logout failed: $e')),
+        );
+      }
     }
   }
 
   @override
+  void initState() {
+    super.initState();
+    _loadProfileAndMaybeRedirect();
+  }
+
+  Future<void> _loadProfileAndMaybeRedirect() async {
+    try {
+      final uid = supabase.auth.currentUser?.id;
+      if (uid == null) {
+        if (mounted) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (_) => const LoginPage()),
+          );
+        }
+        return;
+      }
+
+      // Get only what we need
+      final data = await supabase
+          .from('profiles')
+          .select('baby_birthdate')
+          .eq('id', uid)
+          .single();
+
+      if (data.isEmpty || data['baby_birthdate'] == null) {
+        // No birthdate -> onboarding
+        if (mounted) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (_) => const OnboardingBirthdatePage()),
+          );
+        }
+        return;
+      }
+
+      // Supabase returns ISO 8601 strings for date/timestamptz
+      final raw = data['baby_birthdate'];
+      DateTime? birthDate;
+
+      if (raw is String) {
+        birthDate = DateTime.tryParse(raw);
+      } else if (raw is int) {
+        // if you stored milliseconds since epoch by mistake
+        birthDate = DateTime.fromMillisecondsSinceEpoch(raw);
+      } else if (raw is DateTime) {
+        birthDate = raw;
+      }
+
+      if (birthDate == null) {
+        if (mounted) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (_) => const OnboardingBirthdatePage()),
+          );
+        }
+        return;
+      }
+
+      final week = _calculatePostpartumWeek(birthDate);
+
+      if (mounted) {
+        setState(() {
+          _postpartumWeek = week;
+          _loadingProfile = false;
+        });
+      }
+    } catch (e) {
+      // Fail safe: send to onboarding if we can’t read the field
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const OnboardingBirthdatePage()),
+        );
+      }
+    }
+  }
+
   Widget build(BuildContext context) {
     //final userEmail = authService.getCurrentUserEmail();
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 207, 241, 238),
-      appBar: Header(onLogout: logout),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -532,17 +731,53 @@ class _HomePageState extends State<HomePage> {
                             color: const Color.fromARGB(255, 81, 56, 76)),
                       ),
                     ),
+                    if (!_loadingProfile && _postpartumWeek != null)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                        child: RichText(
+                          text: TextSpan(
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontFamily: "Calsans",
+                              color: Color.fromARGB(255, 81, 56, 76),
+                            ),
+                            children: [
+                              const TextSpan(
+                                text: "You're currently in ",
+                              ),
+                              TextSpan(
+                                text: "Week ${_postpartumWeek!}",
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              const TextSpan(
+                                  text: " of your postpartum recovery."),
+                            ],
+                          ),
+                        ),
+                      ),
                   ],
                 ),
                 SizedBox(
-                  height: 20.0,
+                  height: 10.0,
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 30.0),
-                  child: reminder(context),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  child: Container(
+                      child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      checkin(context),
+                      SizedBox(height: 20),
+                      reminder(context),
+                    ],
+                  )),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
                   child: Container(
                     height: 200,
                     child: Row(
@@ -555,13 +790,81 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 40),
-                  child: article(context),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 30),
+                  child: Container(
+                    height: 200,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        resources(context),
+                        resources(context),
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),
           ),
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: (index) async {
+          setState(() {
+            _selectedIndex = index;
+          });
+
+          switch (index) {
+            case 0:
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const HomePage()),
+              );
+              break;
+            case 1:
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ManageProfile(initialIndex: index)),
+              );
+              break;
+            case 2:
+              // Confirm before logging out
+              final shouldLogout = await showDialog<bool>(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const Text('Log Out'),
+                  content: const Text('Are you sure you want to log out?'),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, false),
+                      child: const Text('Cancel'),
+                    ),
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, true),
+                      child: const Text('Log Out'),
+                    ),
+                  ],
+                ),
+              );
+
+              if (shouldLogout == true) {
+                await logout(); // your existing logout function
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginPage()),
+                );
+              }
+              break;
+          }
+        },
+        type: BottomNavigationBarType.fixed,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account'),
+          BottomNavigationBarItem(icon: Icon(Icons.logout), label: 'Logout'),
+        ],
       ),
     );
   }

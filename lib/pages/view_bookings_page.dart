@@ -89,57 +89,115 @@ class _ViewBookingsPageState extends State<ViewBookingsPage> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        resource["name"],
-                                        style: TextStyle(
-                                          fontFamily: "Calsans",
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            'Booking Id: ',
+                                            style: TextStyle(
+                                                fontFamily: "Calsans",
+                                                fontWeight: FontWeight.normal,
+                                                fontSize: 16),
+                                          ),
+                                          Text(
+                                            resource['id'].toString(),
+                                            style: TextStyle(
+                                                fontFamily: "Calsans",
+                                                fontWeight: FontWeight.normal,
+                                                color: Colors.black87,
+                                                fontSize: 16),
+                                          ),
+                                        ],
                                       ),
                                       SizedBox(height: 5),
-                                      Text(
-                                        resource['start_date'] ?? "",
-                                        style: TextStyle(
-                                            fontFamily: "Raleway",
-                                            fontWeight: FontWeight.normal,
-                                            fontSize: 14),
-                                        maxLines: 4,
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            'Status: ',
+                                            style: TextStyle(
+                                                fontFamily: "Calsans",
+                                                fontWeight: FontWeight.normal,
+                                                fontSize: 16),
+                                          ),
+                                          Text(
+                                            resource['status'],
+                                            style: TextStyle(
+                                                fontFamily: "Calsans",
+                                                fontWeight: FontWeight.normal,
+                                                color: Colors.redAccent,
+                                                fontSize: 16),
+                                            maxLines: 4,
+                                          ),
+                                        ],
                                       ),
                                       SizedBox(height: 5),
-                                      Text(
-                                        resource['end_date'] ?? "",
-                                        style: TextStyle(
-                                            fontFamily: "Raleway",
-                                            fontWeight: FontWeight.normal,
-                                            fontSize: 14),
-                                        maxLines: 4,
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            'Package: ',
+                                            style: TextStyle(
+                                                fontFamily: "Calsans",
+                                                fontWeight: FontWeight.normal,
+                                                fontSize: 16),
+                                          ),
+                                          Text(
+                                            resource["package_type"],
+                                            style: TextStyle(
+                                                fontFamily: "Calsans",
+                                                fontWeight: FontWeight.normal,
+                                                color: Colors.black87,
+                                                fontSize: 16),
+                                          ),
+                                        ],
                                       ),
                                       SizedBox(height: 5),
-                                      Text(
-                                        resource['package_type'] ?? "",
-                                        style: TextStyle(
-                                            fontFamily: "Raleway",
-                                            fontWeight: FontWeight.normal,
-                                            fontSize: 14),
-                                        maxLines: 4,
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            'Booked On: ',
+                                            style: TextStyle(
+                                                fontFamily: "Calsans",
+                                                fontWeight: FontWeight.normal,
+                                                fontSize: 16),
+                                          ),
+                                          Text(
+                                            "${resource['start_date']} - ${resource['end_date']}",
+                                            style: TextStyle(
+                                                fontFamily: "Calsans",
+                                                fontWeight: FontWeight.normal,
+                                                color: Colors.black87,
+                                                fontSize: 16),
+                                            maxLines: 4,
+                                          ),
+                                        ],
                                       ),
                                       SizedBox(height: 5),
-                                      Text(
-                                        resource['address'] ?? "",
-                                        style: TextStyle(
-                                            fontFamily: "Raleway",
-                                            fontWeight: FontWeight.normal,
-                                            fontSize: 14),
-                                        maxLines: 4,
-                                      ),
-                                      SizedBox(height: 5),
-                                      Text(
-                                        resource['notes'] ?? "",
-                                        style: TextStyle(
-                                            fontFamily: "Raleway",
-                                            fontWeight: FontWeight.normal,
-                                            fontSize: 14),
-                                        maxLines: 4,
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text("Contact No:",
+                                              style: TextStyle(
+                                                  fontFamily: "Calsans",
+                                                  fontWeight: FontWeight.normal,
+                                                  fontSize: 16)),
+                                          Text(
+                                            resource['phone'],
+                                            style: TextStyle(
+                                                fontFamily: "Calsans",
+                                                fontWeight: FontWeight.normal,
+                                                color: Colors.black87,
+                                                fontSize: 16),
+                                            maxLines: 4,
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),

@@ -1,4 +1,15 @@
-allprojects {
+buildscript {
+        repositories {
+            google()
+            mavenCentral()
+        }
+        dependencies {
+            classpath 'com.android.tools.build:gradle:8.6.1' // Replace with your Android Gradle plugin version
+            classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:2.1.10" // Replace with your Kotlin version
+        }
+    }
+    
+    allprojects {
     repositories {
         google()
         mavenCentral()

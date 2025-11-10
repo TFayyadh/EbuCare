@@ -31,12 +31,14 @@ dependencies:
   flutter:
     sdk: flutter
   date_picker_timeline: ^1.2.3
+  shared_preferences: ^2.3.2
+  intl: ^0.19.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   supabase_flutter: ^2.9.0
-  flutter_local_notifications: ^19.4.1
+  flutter_local_notifications: 19.5.0
   timezone: ^0.10.1
   flutter_timezone: ^4.1.1
 
@@ -50,6 +52,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -78,22 +81,14 @@ flutter:
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/to/asset-from-package
 
-  # To add custom fonts to your application, add a fonts section here,
-  # in this "flutter" section. Each entry in this list should have a
-  # "family" key with the font family name, and a "fonts" key with a
-  # list giving the asset and other descriptors for the font. For
-  # example:
-  fonts:
-    - family: Calsans
-      fonts:
-        - asset: fonts/CalSans-Regular.ttf
-    #       - asset: fonts/Schyler-Italic.ttf
-    #         style: italic
-    - family: Raleway
-      fonts:
-        - asset: fonts/Raleway-Bold.ttf
-        - asset: fonts/Raleway-Regular.ttf
-  #         weight: 700
-  #
-  # For details regarding fonts from package dependencies,
-  # see https://flutter.dev/to/font-from-package
+  # Custom fonts are disabled because the specified files are not present.
+  # To re-enable, add your .ttf files under a `fonts/` folder and list them here.
+  # Example:
+  # fonts:
+  #   - family: Calsans
+  #     fonts:
+  #       - asset: fonts/CalSans-Regular.ttf
+  #   - family: Raleway
+  #     fonts:
+  #       - asset: fonts/Raleway-Bold.ttf
+  #       - asset: fonts/Raleway-Regular.ttf

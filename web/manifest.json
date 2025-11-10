@@ -1,6 +1,6 @@
 {
-    "name": "ebucare_app",
-    "short_name": "ebucare_app",
+    "name": "ebucare_new",
+    "short_name": "ebucare_new",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

@@ -1,4 +1,15 @@
-allprojects {
+buildscript {
+        repositories {
+            google()
+            mavenCentral()
+        }
+        dependencies {
+            classpath 'com.android.tools.build:gradle:8.6.1' // Replace with your Android Gradle plugin version
+            classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:2.1.10" // Replace with your Kotlin version
+        }
+    }
+    
+    allprojects {
     repositories {
         google()
         mavenCentral()
@@ -13,6 +24,42 @@ subprojects {
     project.evaluationDependsOn(":app")
 }
 
+// Keep the root build simple; each module defines its own SDK settings.
+
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
+}
+
+// Ensure all Android subprojects use the same SDK levels as in gradle.properties
+subprojects { subproject ->
+    // Helper to read numeric Gradle properties with a default
+    def intProp = { String name, int defVal ->
+        def v = rootProject.hasProperty(name) ? rootProject.property(name) : null
+        return v != null ? v.toString().toInteger() : defVal
+    }
+
+    subproject.plugins.withId('com.android.application') {
+        subproject.android {
+            def cSdk = intProp('flutter.compileSdkVersion', 34)
+            def mSdk = intProp('flutter.minSdkVersion', 21)
+            def tSdk = intProp('flutter.targetSdkVersion', cSdk)
+            compileSdk = cSdk
+            defaultConfig {
+                minSdk = mSdk
+                targetSdk = tSdk
+            }
+        }
+    }
+    subproject.plugins.withId('com.android.library') {
+        subproject.android {
+            def cSdk = intProp('flutter.compileSdkVersion', 34)
+            def mSdk = intProp('flutter.minSdkVersion', 21)
+            def tSdk = intProp('flutter.targetSdkVersion', cSdk)
+            compileSdk = cSdk
+            defaultConfig {
+                minSdk = mSdk
+                targetSdk = tSdk
+            }
+        }
+    }
 }

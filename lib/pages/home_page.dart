@@ -1,5 +1,6 @@
 import 'package:ebucare_app/auth/auth_service.dart';
 import 'package:ebucare_app/pages/baby_care_page.dart';
+import 'package:ebucare_app/pages/checkin_page.dart';
 import 'package:ebucare_app/pages/confinement_lady_page.dart';
 import 'package:ebucare_app/pages/edu_page.dart';
 import 'package:ebucare_app/pages/login_page.dart';
@@ -232,17 +233,13 @@ Widget reminder(context) {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
-                  children: [
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: 8, right: 8, top: 8, bottom: 0),
-                      child: Text(
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Text(
                         "Daily Reminder",
                         style: TextStyle(
                             fontWeight: FontWeight.w100,
@@ -250,19 +247,80 @@ Widget reminder(context) {
                             fontSize: 18,
                             color: Colors.white),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: 8, right: 8, top: 0, bottom: 4),
-                      child: Text(
+                      SizedBox(height: 6),
+                      Text(
                         "Medication/Hydration/Appointments",
                         style: TextStyle(
                             fontFamily: "Raleway",
                             fontSize: 12,
                             color: Colors.white),
+                      )
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Icon(
+                    Icons.notifications,
+                    size: 40,
+                    color: Colors.white,
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+Widget checkin(context) {
+  return Container(
+    child: GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const CheckinPage(),
+            ));
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: Container(
+          width: 350,
+          height: 100,
+          decoration: BoxDecoration(
+            color: const Color.fromARGB(204, 246, 174, 74),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Text(
+                        "Daily Check-In",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w100,
+                            fontFamily: "Calsans",
+                            fontSize: 18,
+                            color: Colors.white),
                       ),
-                    )
-                  ],
+                      SizedBox(height: 6),
+                      Text(
+                        "Users daily well-being check-in.",
+                        style: TextStyle(
+                            fontFamily: "Raleway",
+                            fontSize: 12,
+                            color: Colors.white),
+                      )
+                    ],
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -702,15 +760,24 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
                 SizedBox(
-                  height: 20.0,
+                  height: 10.0,
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 30.0),
-                  child: reminder(context),
-                  
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  child: Container(
+                      child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      checkin(context),
+                      SizedBox(height: 20),
+                      reminder(context),
+                    ],
+                  )),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
                   child: Container(
                     height: 200,
                     child: Row(

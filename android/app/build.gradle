@@ -2,14 +2,19 @@ plugins {
     // Apply Android and Kotlin plugins to the app module
     id "com.android.application"
     id "org.jetbrains.kotlin.android"
+
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin plugins.
+
     id "dev.flutter.flutter-gradle-plugin"
 }
 
 android {
+
     namespace = "com.example.ebucare_new"
     compileSdk = 35
     ndkVersion "26.1.10909125"
+
+
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -17,6 +22,7 @@ android {
     }
 
     kotlinOptions {
+
         jvmTarget = "17"
     }
 
@@ -31,10 +37,9 @@ android {
         versionName = "1.0.0"
     }
 
+
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.debug
             // Disable resource shrinking unless code shrinking is enabled
             // to avoid AGP error requiring minifyEnabled when shrinking resources.

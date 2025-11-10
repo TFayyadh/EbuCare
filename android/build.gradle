@@ -24,42 +24,6 @@ subprojects {
     project.evaluationDependsOn(":app")
 }
 
-// Keep the root build simple; each module defines its own SDK settings.
-
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
-}
-
-// Ensure all Android subprojects use the same SDK levels as in gradle.properties
-subprojects { subproject ->
-    // Helper to read numeric Gradle properties with a default
-    def intProp = { String name, int defVal ->
-        def v = rootProject.hasProperty(name) ? rootProject.property(name) : null
-        return v != null ? v.toString().toInteger() : defVal
-    }
-
-    subproject.plugins.withId('com.android.application') {
-        subproject.android {
-            def cSdk = intProp('flutter.compileSdkVersion', 34)
-            def mSdk = intProp('flutter.minSdkVersion', 21)
-            def tSdk = intProp('flutter.targetSdkVersion', cSdk)
-            compileSdk = cSdk
-            defaultConfig {
-                minSdk = mSdk
-                targetSdk = tSdk
-            }
-        }
-    }
-    subproject.plugins.withId('com.android.library') {
-        subproject.android {
-            def cSdk = intProp('flutter.compileSdkVersion', 34)
-            def mSdk = intProp('flutter.minSdkVersion', 21)
-            def tSdk = intProp('flutter.targetSdkVersion', cSdk)
-            compileSdk = cSdk
-            defaultConfig {
-                minSdk = mSdk
-                targetSdk = tSdk
-            }
-        }
-    }
 }

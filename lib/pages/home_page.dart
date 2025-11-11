@@ -1,6 +1,6 @@
 import 'package:ebucare_app/auth/auth_service.dart';
 import 'package:ebucare_app/pages/baby_care_page.dart';
-import 'package:ebucare_app/pages/checkin_page.dart';
+import 'package:ebucare_app/pages/checkin_physical_page.dart';
 import 'package:ebucare_app/pages/confinement_lady_page.dart';
 import 'package:ebucare_app/pages/edu_page.dart';
 import 'package:ebucare_app/pages/login_page.dart';
@@ -282,7 +282,7 @@ Widget checkin(context) {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const CheckinPage(),
+              builder: (context) => const CheckinPhysicalPage(),
             ));
       },
       child: Padding(
@@ -439,7 +439,7 @@ Widget resources(BuildContext context) {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ConfinementLadyPage(),
+                      builder: (context) => ResourceArticles(),
                     ),
                   );
                 },
@@ -451,7 +451,7 @@ Widget resources(BuildContext context) {
               ),
             ),
             Text(
-              "View or make \nnew bookings.",
+              "Explore resources here.",
               style: TextStyle(
                   fontSize: 10,
                   fontFamily: "Raleway",

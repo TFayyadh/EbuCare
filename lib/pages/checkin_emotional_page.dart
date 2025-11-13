@@ -170,44 +170,30 @@ class _CheckinEmotionalPageState extends State<CheckinEmotionalPage> {
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
               child: SizedBox(
                 width: double.infinity,
-                height: 52,
+                height: 50,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     elevation: 0,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(28),
+                      borderRadius: BorderRadius.circular(20),
                     ),
                     padding: EdgeInsets.zero,
-                    backgroundColor: Colors.transparent,
+                    backgroundColor: Color.fromARGB(255, 255, 126, 207),
                   ),
                   onPressed: _finish,
-                  child: Ink(
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [
-                          Color(0xFFFF7ECF),
-                          Color(0xFFF76BB6),
-                          Color(0xFFEE62AE),
-                        ],
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Text(
+                        'Continue',
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white),
                       ),
-                      borderRadius: BorderRadius.all(Radius.circular(28)),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Text(
-                          'Continue',
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.white),
-                        ),
-                        SizedBox(width: 10),
-                        Icon(Icons.arrow_forward_rounded, color: Colors.white),
-                      ],
-                    ),
+                      SizedBox(width: 10),
+                      Icon(Icons.arrow_forward_rounded, color: Colors.white),
+                    ],
                   ),
                 ),
               ),

@@ -4,8 +4,8 @@ buildscript {
             mavenCentral()
         }
         dependencies {
-            classpath 'com.android.tools.build:gradle:8.6.1' // Replace with your Android Gradle plugin version
-            classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:2.1.10" // Replace with your Kotlin version
+            classpath 'com.android.tools.build:gradle:8.7.2' // Aligned with settings.gradle and Gradle 8.13
+            classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.24" // Aligned with settings.gradle
         }
     }
     
@@ -22,6 +22,16 @@ subprojects {
 }
 subprojects {
     project.evaluationDependsOn(":app")
+}
+
+// Ensure Android modules compile against the same SDK without using afterEvaluate
+subprojects { subproject ->
+    subproject.plugins.withId("com.android.library") {
+        def androidExt = subproject.extensions.findByName("android")
+        if (androidExt != null && androidExt.hasProperty("compileSdk")) {
+            androidExt.compileSdk = 36
+        }
+    }
 }
 
 tasks.register("clean", Delete) {

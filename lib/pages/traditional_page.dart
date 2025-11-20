@@ -1,6 +1,7 @@
 import 'package:ebucare_app/pages/resource_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 class TraditionalPage extends StatefulWidget {
   const TraditionalPage({super.key});
@@ -12,7 +13,7 @@ class TraditionalPage extends StatefulWidget {
 class _TraditionalPageState extends State<TraditionalPage> {
   Future<List<dynamic>> fetchResources() async {
     final data = await Supabase.instance.client
-        .from('resources') // e.g., 'resources'
+        .from('resources')
         .select()
         .eq('resource_type', 'Traditional');
 
@@ -38,178 +39,179 @@ class _TraditionalPageState extends State<TraditionalPage> {
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 207, 241, 238),
         leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Icon(Icons.arrow_back_ios_new_outlined)),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(Icons.arrow_back_ios_new_outlined),
+        ),
+        title: const Text(
+          "Traditional Tips",
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            fontFamily: "Calsans",
+            color: Color.fromARGB(255, 106, 63, 114),
+          ),
+        ),
+        centerTitle: true,
+        elevation: 0,
       ),
-      body: Container(
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                child: Text(
-                  "Traditional Tips",
-                  style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: "Calsans",
-                      color: const Color.fromARGB(255, 106, 63, 114)),
+      body: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
                 ),
-              ),
-              Expanded(
-                child: Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5.0),
-                    child: FutureBuilder<List<dynamic>>(
-                      future: fetchResources(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const Center(
-                              child: CircularProgressIndicator());
-                        }
-                        if (snapshot.hasError) {
-                          return Center(
-                              child: Text("Error: ${snapshot.error}"));
-                        }
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 5.0),
+                  child: FutureBuilder<List<dynamic>>(
+                    future: fetchResources(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                      if (snapshot.hasError) {
+                        return Center(child: Text("Error: ${snapshot.error}"));
+                      }
 
-                        final resources = snapshot.data!;
+                      final resources = snapshot.data!;
 
-                        return FutureBuilder<Set<String>>(
-                          future: fetchUserFavourites(userId),
-                          builder: (context, favSnapshot) {
-                            if (favSnapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return const Center(
-                                  child: CircularProgressIndicator());
-                            }
-                            if (favSnapshot.hasError) {
-                              return Center(
-                                  child: Text("Error: ${favSnapshot.error}"));
-                            }
-                            final favourites = favSnapshot.data ?? {};
+                      return FutureBuilder<Set<String>>(
+                        future: fetchUserFavourites(userId),
+                        builder: (context, favSnapshot) {
+                          if (favSnapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          }
+                          if (favSnapshot.hasError) {
+                            return Center(
+                                child: Text("Error: ${favSnapshot.error}"));
+                          }
+                          final favourites = favSnapshot.data ?? {};
 
-                            resources.sort((a, b) {
-                              final aFav =
-                                  favourites.contains(a['id'].toString())
-                                      ? 1
-                                      : 0;
-                              final bFav =
-                                  favourites.contains(b['id'].toString())
-                                      ? 1
-                                      : 0;
-                              return bFav.compareTo(
-                                  aFav); // Descending: favourites first
-                            });
+                          resources.sort((a, b) {
+                            final aFav =
+                                favourites.contains(a['id'].toString()) ? 1 : 0;
+                            final bFav =
+                                favourites.contains(b['id'].toString()) ? 1 : 0;
+                            return bFav.compareTo(
+                                aFav); // Descending: favourites first
+                          });
 
-                            return RefreshIndicator(
-                              onRefresh: () async {
-                                setState(() {});
-                              },
-                              child: ListView.builder(
-                                itemCount: resources.length,
-                                itemBuilder: (context, index) {
-                                  final resource = resources[index];
+                          return RefreshIndicator(
+                            onRefresh: () async {
+                              setState(() {});
+                            },
+                            child: ListView.builder(
+                              itemCount: resources.length,
+                              itemBuilder: (context, index) {
+                                final resource = resources[index];
 
-                                  final String articleId =
-                                      resource['id'].toString();
-                                  final bool isFavourited =
-                                      favourites.contains(articleId);
+                                final String articleId =
+                                    resource['id'].toString();
+                                final bool isFavourited =
+                                    favourites.contains(articleId);
 
-                                  return GestureDetector(
-                                    onTap: () => Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            ResourceDetailPage(
-                                                resource: resource),
+                                return GestureDetector(
+                                  onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ResourceDetailPage(
+                                        resource:
+                                            resource as Map<String, dynamic>,
                                       ),
                                     ),
-                                    child: Card(
-                                      margin: EdgeInsets.symmetric(
-                                          vertical: 5, horizontal: 0),
-                                      child: ListTile(
-                                        trailing: IconButton(
-                                          icon: Icon(
-                                            isFavourited
-                                                ? Icons.favorite
-                                                : Icons
-                                                    .favorite_border_outlined,
-                                            color: Color.fromARGB(
-                                                255, 173, 131, 152),
-                                          ),
-                                          onPressed: () async {
-                                            if (isFavourited) {
-                                              // Remove from favourites
-                                              await Supabase.instance.client
-                                                  .from('favourites')
-                                                  .delete()
-                                                  .eq('user_id', userId)
-                                                  .eq('article_id', articleId);
-                                            } else {
-                                              // Add to favourites
-                                              await Supabase.instance.client
-                                                  .from('favourites')
-                                                  .insert({
-                                                'user_id': userId,
-                                                'article_id': articleId,
-                                              });
-                                            }
-                                            setState(() {});
-                                          },
+                                  ),
+                                  child: Card(
+                                    margin: const EdgeInsets.symmetric(
+                                        vertical: 5, horizontal: 0),
+                                    child: ListTile(
+                                      trailing: IconButton(
+                                        icon: Icon(
+                                          isFavourited
+                                              ? Icons.favorite
+                                              : Icons.favorite_border_outlined,
+                                          color: const Color.fromARGB(
+                                              255, 173, 131, 152),
                                         ),
-                                        title: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                  resource["title"],
-                                                  style: TextStyle(
+                                        onPressed: () async {
+                                          if (isFavourited) {
+                                            // Remove from favourites
+                                            await Supabase.instance.client
+                                                .from('favourites')
+                                                .delete()
+                                                .eq('user_id', userId)
+                                                .eq('article_id', articleId);
+                                          } else {
+                                            // Add to favourites
+                                            await Supabase.instance.client
+                                                .from('favourites')
+                                                .insert({
+                                              'user_id': userId,
+                                              'article_id': articleId,
+                                            });
+                                          }
+                                          setState(() {});
+                                        },
+                                      ),
+                                      title: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Expanded(
+                                                child: Text(
+                                                  resource["title"] ?? "",
+                                                  style: const TextStyle(
                                                     fontFamily: "Calsans",
                                                     fontWeight: FontWeight.bold,
                                                   ),
                                                 ),
-                                              ],
-                                            ),
-                                            SizedBox(height: 5),
-                                            Text(
-                                              resource['description'] ?? "",
-                                              style: TextStyle(
-                                                  fontFamily: "Raleway",
-                                                  fontWeight: FontWeight.normal,
-                                                  fontSize: 14),
-                                              maxLines: 4,
-                                            ),
-                                          ],
-                                        ),
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(height: 5),
+                                          // HTML preview for description
+                                          Html(
+                                            data: resource['description'] ?? "",
+                                            style: {
+                                              "body": Style(
+                                                margin: Margins.zero,
+                                                padding: HtmlPaddings.zero,
+                                                maxLines: 3,
+                                                fontSize: FontSize(14),
+                                                fontFamily: "Raleway",
+                                              ),
+                                              "p": Style(
+                                                margin: Margins.only(bottom: 4),
+                                              ),
+                                            },
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                  );
-                                },
-                              ),
-                            );
-                          },
-                        );
-                      },
-                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          );
+                        },
+                      );
+                    },
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

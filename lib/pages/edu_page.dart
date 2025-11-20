@@ -1,6 +1,7 @@
 import 'package:ebucare_app/pages/resource_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 class EduPage extends StatefulWidget {
   const EduPage({super.key});
@@ -38,27 +39,28 @@ class _EduPageState extends State<EduPage> {
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 207, 241, 238),
         leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Icon(Icons.arrow_back_ios_new_outlined)),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(Icons.arrow_back_ios_new_outlined),
+        ),
+        title: const Text(
+          "Educational Resources",
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            fontFamily: "Calsans",
+            color: Color.fromARGB(255, 106, 63, 114),
+          ),
+        ),
+        centerTitle: true,
+        elevation: 0,
       ),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 5.0),
-              child: Text(
-                "Educational Resources",
-                style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: "Calsans",
-                    color: const Color.fromARGB(255, 106, 63, 114)),
-              ),
-            ),
             Expanded(
               child: Container(
                 width: double.infinity,
@@ -121,12 +123,13 @@ class _EduPageState extends State<EduPage> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => ResourceDetailPage(
-                                        resource: resource,
+                                        resource:
+                                            resource as Map<String, dynamic>,
                                       ),
                                     ),
                                   ),
                                   child: Card(
-                                    margin: EdgeInsets.symmetric(
+                                    margin: const EdgeInsets.symmetric(
                                         vertical: 5, horizontal: 0),
                                     child: ListTile(
                                       trailing: IconButton(
@@ -134,7 +137,7 @@ class _EduPageState extends State<EduPage> {
                                           isFavourited
                                               ? Icons.favorite
                                               : Icons.favorite_border_outlined,
-                                          color: Color.fromARGB(
+                                          color: const Color.fromARGB(
                                               255, 173, 131, 152),
                                         ),
                                         onPressed: () async {
@@ -167,8 +170,8 @@ class _EduPageState extends State<EduPage> {
                                             children: [
                                               Expanded(
                                                 child: Text(
-                                                  resource["title"],
-                                                  style: TextStyle(
+                                                  resource["title"] ?? "",
+                                                  style: const TextStyle(
                                                     fontFamily: "Calsans",
                                                     fontWeight: FontWeight.bold,
                                                   ),
@@ -176,14 +179,22 @@ class _EduPageState extends State<EduPage> {
                                               ),
                                             ],
                                           ),
-                                          SizedBox(height: 5),
-                                          Text(
-                                            resource['description'] ?? "",
-                                            style: TextStyle(
+                                          const SizedBox(height: 5),
+                                          // Guna HTML untuk description preview
+                                          Html(
+                                            data: resource['description'] ?? "",
+                                            style: {
+                                              "body": Style(
+                                                margin: Margins.zero,
+                                                padding: HtmlPaddings.zero,
+                                                fontSize: FontSize(14),
+                                                maxLines: 3,
                                                 fontFamily: "Raleway",
-                                                fontWeight: FontWeight.normal,
-                                                fontSize: 14),
-                                            maxLines: 4,
+                                              ),
+                                              "p": Style(
+                                                margin: Margins.only(bottom: 4),
+                                              ),
+                                            },
                                           ),
                                         ],
                                       ),

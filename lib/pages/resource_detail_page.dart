@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 class ResourceDetailPage extends StatelessWidget {
-  final Map resource;
+  final Map<String, dynamic> resource;
 
   const ResourceDetailPage({super.key, required this.resource});
 
@@ -18,51 +19,68 @@ class ResourceDetailPage extends StatelessWidget {
         ? imagePath
         : (imagePath.isNotEmpty ? getPublicImageUrl(imagePath) : null);
 
+    final String title = resource["title"] ?? "Detail";
+    // description column stores your HTML from the admin
+    final String htmlDescription = resource['description'] ?? "No description";
+
     return Scaffold(
-      appBar: AppBar(),
+      backgroundColor: const Color.fromARGB(255, 207, 241, 238),
+      appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 207, 241, 238),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new_outlined),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: Text(
+          title,
+          style: const TextStyle(
+            fontFamily: "Calsans",
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+          ),
+        ),
+        centerTitle: true,
+      ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(12.0),
           child: Column(
             children: [
-              Text(resource["title"] ?? "Detail",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 26,
-                      fontFamily: "Calsans",
-                      fontWeight: FontWeight.bold)),
-              SizedBox(
-                height: 16,
-              ),
+              // Purple card with HTML content
               Container(
+                width: double.infinity,
                 padding: const EdgeInsets.all(20.0),
                 decoration: BoxDecoration(
                   color: const Color.fromARGB(255, 134, 61, 95),
                   borderRadius: BorderRadius.circular(16.0),
                 ),
-                child: Text(
-                  resource['description'] ?? "No description",
-                  textAlign: TextAlign.justify,
-                  style: TextStyle(
+                child: Html(
+                  data: htmlDescription,
+                  style: {
+                    "body": Style(
                       color: Colors.white,
-                      fontSize: 16,
-                      fontFamily: "Calsans",
-                      fontWeight: FontWeight.normal),
+                      fontSize: FontSize(14),
+                      fontFamily: "Raleway",
+                    ),
+                    "p": Style(
+                      margin: Margins.only(bottom: 8),
+                    ),
+                  },
                 ),
               ),
-              SizedBox(
-                height: 16,
-              ),
+              const SizedBox(height: 16),
               if (imageUrl != null)
                 Padding(
                   padding: const EdgeInsets.only(top: 16.0),
-                  child: Image.network(
-                    imageUrl,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) =>
-                        Text('Image not found'),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: Image.network(
+                      imageUrl,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) =>
+                          const Text('Image not found'),
+                    ),
                   ),
                 ),
             ],

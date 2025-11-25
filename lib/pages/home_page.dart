@@ -5,6 +5,7 @@ import 'package:ebucare_app/pages/confinement_lady_page.dart';
 import 'package:ebucare_app/pages/edu_page.dart';
 import 'package:ebucare_app/pages/login_page.dart';
 import 'package:ebucare_app/pages/manage_profile.dart';
+import 'package:ebucare_app/pages/meditations_page.dart';
 import 'package:ebucare_app/pages/reminder_page.dart';
 import 'package:ebucare_app/pages/resource_articles.dart';
 import 'package:ebucare_app/pages/traditional_page.dart';
@@ -524,6 +525,68 @@ Widget article(context) {
   );
 }
 
+Widget meditation(BuildContext context) {
+  return Container(
+    width: 150,
+    height: 200,
+    decoration: BoxDecoration(
+      color: const Color.fromARGB(255, 227, 168, 176),
+      borderRadius: BorderRadius.circular(20),
+    ),
+    child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Meditation",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontFamily: "Calsans",
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white),
+                ),
+              ],
+            ),
+            Container(
+              width: 50,
+              height: 50,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Color.fromARGB(255, 230, 186, 192)),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MeditationPage(),
+                    ),
+                  );
+                },
+                child: Icon(
+                  Icons.my_library_music_outlined,
+                  size: 30,
+                  color: Color.fromARGB(255, 255, 255, 255),
+                ),
+              ),
+            ),
+            Text(
+              "Let the calmness in here.",
+              style: TextStyle(
+                  fontSize: 10,
+                  fontFamily: "Raleway",
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
+            ),
+          ],
+        )),
+  );
+}
+
 Widget babyCare(BuildContext context) {
   return Container(
     width: 150,
@@ -798,7 +861,7 @@ class _HomePageState extends State<HomePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         resources(context),
-                        resources(context),
+                        meditation(context),
                       ],
                     ),
                   ),

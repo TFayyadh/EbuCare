@@ -32,14 +32,17 @@ class _MeditationPlayerPageState extends State<MeditationPlayerPage> {
     _audioPlayer = AudioPlayer();
 
     _audioPlayer.onDurationChanged.listen((d) {
+      if (!mounted) return;
       setState(() => _duration = d);
     });
 
     _audioPlayer.onPositionChanged.listen((p) {
+      if (!mounted) return;
       setState(() => _position = p);
     });
 
     _audioPlayer.onPlayerComplete.listen((event) {
+      if (!mounted) return;
       setState(() {
         _isPlaying = false;
         _position = Duration.zero;
@@ -49,7 +52,8 @@ class _MeditationPlayerPageState extends State<MeditationPlayerPage> {
 
   @override
   void dispose() {
-    _audioPlayer.dispose();
+    _audioPlayer.stop(); // ⬅ stop audio immediately
+    _audioPlayer.dispose(); // ⬅ release resources
     super.dispose();
   }
 
@@ -122,7 +126,7 @@ class _MeditationPlayerPageState extends State<MeditationPlayerPage> {
             SizedBox(
               height: 180,
               child: Image.asset(
-                'assets/images/meditation_illustration.png',
+                'assets/images/logo1transparent.png',
                 fit: BoxFit.contain,
               ),
             ),

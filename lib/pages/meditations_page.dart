@@ -90,7 +90,7 @@ class _MeditationPageState extends State<MeditationPage> {
                         height: 100,
                         width: 100,
                         child: Image.asset(
-                          'assets/images/meditation_illustration.png',
+                          'assets/images/logo1transparent.png',
                           fit: BoxFit.contain,
                         ),
                       ),
@@ -114,6 +114,8 @@ class _MeditationPageState extends State<MeditationPage> {
                     }
 
                     final meditations = snapshot.data ?? [];
+
+                    print('Meditations from Supabase: $meditations');
 
                     if (meditations.isEmpty) {
                       return const Center(

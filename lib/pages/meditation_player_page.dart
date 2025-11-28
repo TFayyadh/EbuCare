@@ -126,7 +126,7 @@ class _MeditationPlayerPageState extends State<MeditationPlayerPage> {
             SizedBox(
               height: 180,
               child: Image.asset(
-                'assets/images/logo1transparent.png',
+                'assets/images/meditate.png',
                 fit: BoxFit.contain,
               ),
             ),

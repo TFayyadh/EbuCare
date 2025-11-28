@@ -76,6 +76,13 @@ flutter:
     - assets/images/portrait-adorable-little-baby.jpg
     - assets/images/baby_blue.png
     - assets/images/baby_milks.jpg
+    - assets/images/meditate.jpg
+    - assets/images/meditate.png
+    - assets/images/nanny.png
+    - assets/images/noti.png
+    - assets/images/spa.png
+    - assets/images/check.jpg
+    
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

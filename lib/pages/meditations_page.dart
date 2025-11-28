@@ -90,7 +90,7 @@ class _MeditationPageState extends State<MeditationPage> {
                         height: 100,
                         width: 100,
                         child: Image.asset(
-                          'assets/images/logo1transparent.png',
+                          'assets/images/meditate.png',
                           fit: BoxFit.contain,
                         ),
                       ),

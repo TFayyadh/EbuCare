@@ -16,32 +16,37 @@ class _ConfinementDetails7DaysPageState
 
   DateTime? selectedDate;
 
-  // NEW: State for nannies
+  // Nannies state
   List<Map<String, dynamic>> _nannies = [];
+  List<Map<String, dynamic>> _availableNannies = [];
   String? _selectedNannyId;
   bool _isLoadingNannies = true;
+  bool _checkingAvailability = false;
   String? _nannyError;
-
-  List<DateTime> getSevenDays(DateTime start) {
-    return List.generate(7, (i) => start.add(Duration(days: i)));
-  }
 
   @override
   void initState() {
     super.initState();
-    _loadNannies(); // NEW
+    _loadNannies();
   }
 
-  // NEW: Fetch nannies from Supabase
+  // Helper: format date as yyyy-MM-dd
+  String _formatDate(DateTime d) {
+    final y = d.year.toString().padLeft(4, '0');
+    final m = d.month.toString().padLeft(2, '0');
+    final day = d.day.toString().padLeft(2, '0');
+    return '$y-$m-$day';
+  }
+
+  // Fetch all nannies from Supabase
   Future<void> _loadNannies() async {
     try {
-      final data = await Supabase.instance.client
-          .from('nanny') // your table name
-          .select()
-          .order('name'); // assuming you have a 'name' column
+      final data =
+          await Supabase.instance.client.from('nanny').select().order('name');
 
       setState(() {
         _nannies = List<Map<String, dynamic>>.from(data);
+        _availableNannies = _nannies;
         _isLoadingNannies = false;
       });
     } catch (e) {
@@ -52,9 +57,50 @@ class _ConfinementDetails7DaysPageState
     }
   }
 
+  // Filter nannies using overlap logic:
+  // existing_start <= new_end AND existing_end >= new_start
+  Future<void> _filterNanniesForDate(DateTime startDate) async {
+    if (_nannies.isEmpty) return;
+
+    setState(() {
+      _checkingAvailability = true;
+      _nannyError = null;
+      _selectedNannyId = null;
+    });
+
+    final startStr = _formatDate(startDate);
+    final endStr = _formatDate(startDate.add(const Duration(days: 6)));
+
+    try {
+      final conflictData = await Supabase.instance.client
+          .from('confinement_bookings')
+          .select('nanny_id, start_date, end_date')
+          .lte('start_date', endStr) // start_date <= new_end
+          .gte('end_date', startStr); // end_date >= new_start
+
+      final List<dynamic> conflictList = conflictData;
+      final Set<String> busyNannyIds =
+          conflictList.map((b) => b['nanny_id'].toString()).toSet();
+
+      final filtered = _nannies
+          .where((n) => !busyNannyIds.contains(n['id'].toString()))
+          .toList();
+
+      setState(() {
+        _availableNannies = filtered;
+        _checkingAvailability = false;
+      });
+    } catch (e) {
+      setState(() {
+        _nannyError = 'Failed to check nanny availability';
+        _checkingAvailability = false;
+      });
+    }
+  }
+
   Map<String, dynamic>? _getSelectedNanny() {
     if (_selectedNannyId == null) return null;
-    return _nannies.firstWhere(
+    return _availableNannies.firstWhere(
       (n) => n['id'].toString() == _selectedNannyId,
       orElse: () => {},
     );
@@ -88,7 +134,7 @@ class _ConfinementDetails7DaysPageState
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              // Package info card (unchanged)
+              // Package info card
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
@@ -162,22 +208,24 @@ class _ConfinementDetails7DaysPageState
                     ),
                     const SizedBox(height: 10),
 
-                    // Date row (unchanged)
+                    // Date row
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         IconButton(
                           onPressed: () async {
+                            DateTime now = DateTime.now();
                             DateTime? pickedDate = await showDatePicker(
                               context: context,
-                              initialDate: selectedDate ?? DateTime.now(),
-                              firstDate: DateTime.now(),
-                              lastDate: DateTime(DateTime.now().year + 2),
+                              initialDate: selectedDate ?? now,
+                              firstDate: now,
+                              lastDate: DateTime(now.year + 2),
                             );
                             if (pickedDate != null) {
                               setState(() {
                                 selectedDate = pickedDate;
                               });
+                              await _filterNanniesForDate(pickedDate);
                             }
                           },
                           icon: const Icon(Icons.date_range_outlined),
@@ -205,7 +253,7 @@ class _ConfinementDetails7DaysPageState
                     ),
                     const SizedBox(height: 10),
 
-                    // Address row (unchanged)
+                    // Address row
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -233,7 +281,7 @@ class _ConfinementDetails7DaysPageState
                     ),
                     const SizedBox(height: 10),
 
-                    // Phone row (unchanged)
+                    // Phone row
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -262,9 +310,9 @@ class _ConfinementDetails7DaysPageState
                     ),
                     const SizedBox(height: 16),
 
-                    // NEW: Nanny selection
-                    Center(
-                      child: const Text(
+                    // Nanny selection
+                    const Center(
+                      child: Text(
                         "Choose Nanny / Confinement Lady",
                         style: TextStyle(
                           fontFamily: "Calsans",
@@ -274,12 +322,31 @@ class _ConfinementDetails7DaysPageState
                       ),
                     ),
                     const SizedBox(height: 8),
-                    if (_isLoadingNannies)
+
+                    if (_isLoadingNannies || _checkingAvailability)
                       const Center(child: CircularProgressIndicator())
                     else if (_nannyError != null)
                       Text(
                         _nannyError!,
                         style: const TextStyle(color: Colors.red),
+                      )
+                    else if (selectedDate == null)
+                      const Text(
+                        "Please select your start date first to see available nannies.",
+                        style: TextStyle(
+                          fontFamily: "Calsans",
+                          fontSize: 14,
+                          color: Colors.black54,
+                        ),
+                      )
+                    else if (_availableNannies.isEmpty)
+                      const Text(
+                        "No nanny is available for the selected dates. Please choose another date.",
+                        style: TextStyle(
+                          fontFamily: "Calsans",
+                          fontSize: 14,
+                          color: Colors.redAccent,
+                        ),
                       )
                     else
                       DropdownButtonFormField<String>(
@@ -298,12 +365,50 @@ class _ConfinementDetails7DaysPageState
                             vertical: 8,
                           ),
                         ),
-                        items: _nannies.map((nanny) {
+                        items: _availableNannies.map((nanny) {
+                          final id = nanny['id'].toString();
+                          final name = nanny['name']?.toString() ?? 'No name';
+
                           return DropdownMenuItem<String>(
-                            value: nanny['id'].toString(),
-                            child: Text(
-                              nanny['name']?.toString() ?? 'No name',
-                              style: const TextStyle(fontFamily: "Calsans"),
+                            value: id,
+                            child: Row(
+                              mainAxisSize:
+                                  MainAxisSize.min, // 👈 shrink-wrap row
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Text(
+                                      name,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                        fontFamily: "Calsans",
+                                      ),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    IconButton(
+                                      icon: const Icon(
+                                        Icons.info_outline,
+                                        size: 20,
+                                      ),
+                                      padding: EdgeInsets
+                                          .zero, // optional: make it tighter
+                                      constraints:
+                                          const BoxConstraints(), // optional
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (_) =>
+                                                NannyProfilePage(nanny: nanny),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
                           );
                         }).toList(),
@@ -322,7 +427,14 @@ class _ConfinementDetails7DaysPageState
               // SUBMIT BUTTON
               ElevatedButton(
                 onPressed: () async {
-                  // Validation
+                  if (selectedDate == null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                          content: Text("Please select your booking date")),
+                    );
+                    return;
+                  }
+
                   if (_selectedNannyId == null) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
@@ -332,13 +444,12 @@ class _ConfinementDetails7DaysPageState
                     return;
                   }
 
-                  if (selectedDate == null ||
-                      addressController.text.isEmpty ||
+                  if (addressController.text.isEmpty ||
                       phoneController.text.isEmpty) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text("Please fill all fields")),
                     );
-                    return; // IMPORTANT: stop here if invalid
+                    return;
                   }
 
                   final user = Supabase.instance.client.auth.currentUser;
@@ -349,24 +460,42 @@ class _ConfinementDetails7DaysPageState
                     return;
                   }
 
+                  // EXTRA SAFETY: re-check overlap for this nanny
+                  final startStr = _formatDate(selectedDate!);
+                  final endStr =
+                      _formatDate(selectedDate!.add(const Duration(days: 6)));
+
+                  final conflicts = await Supabase.instance.client
+                      .from('confinement_bookings')
+                      .select('id')
+                      .eq('nanny_id', _selectedNannyId.toString())
+                      .lte('start_date', endStr)
+                      .gte('end_date', startStr);
+
+                  if ((conflicts as List).isNotEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          "Sorry, this nanny has just been booked for these dates. Please pick another nanny or change dates.",
+                        ),
+                      ),
+                    );
+                    await _filterNanniesForDate(selectedDate!);
+                    return;
+                  }
+
                   final selectedNanny = _getSelectedNanny();
 
                   final bookingData = {
                     'user_id': user.id,
                     'package_type': '7 Days Care Package',
-                    'start_date':
-                        selectedDate!.toIso8601String().split('T').first,
-                    'end_date': selectedDate!
-                        .add(const Duration(days: 6))
-                        .toIso8601String()
-                        .split('T')
-                        .first,
+                    'start_date': startStr,
+                    'end_date': endStr,
                     'address': addressController.text,
                     'phone': phoneController.text,
                     'status': 'Pending',
+                    'price': 1500,
                     'created_at': DateTime.now().toIso8601String(),
-
-                    // NEW: nanny info
                     'nanny_id': _selectedNannyId,
                     if (selectedNanny != null)
                       'nanny_name': selectedNanny['name'],
@@ -410,6 +539,50 @@ class _ConfinementDetails7DaysPageState
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class NannyProfilePage extends StatelessWidget {
+  final Map<String, dynamic> nanny;
+
+  const NannyProfilePage({super.key, required this.nanny});
+
+  @override
+  Widget build(BuildContext context) {
+    final name = nanny['name']?.toString() ?? 'No name';
+    final id = nanny['id']?.toString() ?? '-';
+
+    return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 207, 241, 238),
+      appBar: AppBar(
+        title: Text(
+          "Nanny Profile:",
+          style: const TextStyle(fontFamily: "Calsans"),
+        ),
+        backgroundColor: const Color.fromARGB(255, 251, 182, 183),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("Name: $name",
+                style:
+                    const TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+            const SizedBox(height: 16),
+            const Text(
+              "Nanny details will be shown here.\n"
+              "- Experience\n"
+              "- Services\n"
+              "- Language\n"
+              "- Rating\n"
+              "- etc.",
+              style: TextStyle(fontSize: 14),
+            ),
+          ],
         ),
       ),
     );

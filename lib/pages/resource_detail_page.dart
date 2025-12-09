@@ -46,6 +46,22 @@ class ResourceDetailPage extends StatelessWidget {
           padding: const EdgeInsets.all(12.0),
           child: Column(
             children: [
+              if (imageUrl != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 16.0),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: Image.network(
+                      imageUrl,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) =>
+                          const Text('Image not found'),
+                    ),
+                  ),
+                ),
+              const SizedBox(height: 16),
+
               // Purple card with HTML content
               Container(
                 width: double.infinity,
@@ -68,21 +84,6 @@ class ResourceDetailPage extends StatelessWidget {
                   },
                 ),
               ),
-              const SizedBox(height: 16),
-              if (imageUrl != null)
-                Padding(
-                  padding: const EdgeInsets.only(top: 16.0),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(16),
-                    child: Image.network(
-                      imageUrl,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) =>
-                          const Text('Image not found'),
-                    ),
-                  ),
-                ),
             ],
           ),
         ),

@@ -401,7 +401,8 @@ class _ConfinementDetails7DaysPageState
                                           context,
                                           MaterialPageRoute(
                                             builder: (_) =>
-                                                NannyProfilePage(nanny: nanny),
+                                                NannyLadyProfilePage(
+                                                    nanny: nanny),
                                           ),
                                         );
                                       },
@@ -545,46 +546,118 @@ class _ConfinementDetails7DaysPageState
   }
 }
 
-class NannyProfilePage extends StatelessWidget {
+class NannyLadyProfilePage extends StatelessWidget {
   final Map<String, dynamic> nanny;
 
-  const NannyProfilePage({super.key, required this.nanny});
+  const NannyLadyProfilePage({super.key, required this.nanny});
 
   @override
   Widget build(BuildContext context) {
-    final name = nanny['name']?.toString() ?? 'No name';
-    final id = nanny['id']?.toString() ?? '-';
+    final name = nanny['name']?.toString() ?? 'Unknown';
+    final role = nanny['role']?.toString() ?? 'Not provided';
+    final qualification = nanny['qualification']?.toString() ?? 'Not provided';
+    final experience = nanny['experience']?.toString() ?? '0';
+    final phone = nanny['phone']?.toString() ?? '-';
+    final avatarUrl = nanny['avatar_url']?.toString();
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 207, 241, 238),
       appBar: AppBar(
-        title: Text(
-          "Nanny Profile:",
-          style: const TextStyle(fontFamily: "Calsans"),
+        title: const Text(
+          "Nanny Profile",
+          style: TextStyle(fontFamily: "Calsans"),
         ),
         backgroundColor: const Color.fromARGB(255, 251, 182, 183),
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text("Name: $name",
-                style:
-                    const TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
-            const SizedBox(height: 16),
-            const Text(
-              "Nanny details will be shown here.\n"
-              "- Experience\n"
-              "- Services\n"
-              "- Language\n"
-              "- Rating\n"
-              "- etc.",
-              style: TextStyle(fontSize: 14),
+            // ⭐ Avatar
+            CircleAvatar(
+              radius: 60,
+              backgroundColor: Colors.white,
+              backgroundImage: avatarUrl != null && avatarUrl.isNotEmpty
+                  ? NetworkImage(avatarUrl)
+                  : const AssetImage("assets/default_avatar.png")
+                      as ImageProvider,
+            ),
+
+            const SizedBox(height: 20),
+
+            // ⭐ Name
+            Text(
+              name,
+              style: const TextStyle(
+                fontFamily: "Calsans",
+                fontSize: 26,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+
+            const SizedBox(height: 6),
+
+            // ⭐ Role
+            Text(
+              role,
+              style: const TextStyle(
+                fontFamily: "Calsans",
+                fontSize: 18,
+                color: Colors.black54,
+              ),
+            ),
+
+            const SizedBox(height: 20),
+
+            // ⭐ Info Card
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _infoRow("Qualification", qualification),
+                  const SizedBox(height: 12),
+                  _infoRow("Experience", "$experience years"),
+                  const SizedBox(height: 12),
+                  _infoRow("Phone", phone),
+                ],
+              ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  // Reusable row widget
+  Widget _infoRow(String label, String value) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "$label: ",
+          style: const TextStyle(
+            fontFamily: "Calsans",
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Expanded(
+          child: Text(
+            value,
+            style: const TextStyle(
+              fontFamily: "Calsans",
+              fontSize: 16,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

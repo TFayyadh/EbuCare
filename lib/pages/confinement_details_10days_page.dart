@@ -57,7 +57,7 @@ class _ConfinementDetails10DaysPageState
     }
   }
 
-  // UPDATED: Filter nannies using proper overlap logic:
+  // Filter nannies using overlap logic:
   // existing_start <= new_end AND existing_end >= new_start
   Future<void> _filterNanniesForDate(DateTime startDate) async {
     if (_nannies.isEmpty) return;
@@ -366,11 +366,50 @@ class _ConfinementDetails10DaysPageState
                           ),
                         ),
                         items: _availableNannies.map((nanny) {
+                          final id = nanny['id'].toString();
+                          final name = nanny['name']?.toString() ?? 'No name';
+
                           return DropdownMenuItem<String>(
-                            value: nanny['id'].toString(),
-                            child: Text(
-                              nanny['name']?.toString() ?? 'No name',
-                              style: const TextStyle(fontFamily: "Calsans"),
+                            value: id,
+                            child: Row(
+                              mainAxisSize:
+                                  MainAxisSize.min, // 👈 shrink-wrap row
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Text(
+                                      name,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                        fontFamily: "Calsans",
+                                      ),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    IconButton(
+                                      icon: const Icon(
+                                        Icons.info_outline,
+                                        size: 20,
+                                      ),
+                                      padding: EdgeInsets
+                                          .zero, // optional: make it tighter
+                                      constraints:
+                                          const BoxConstraints(), // optional
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (_) =>
+                                                NannyLadyProfilePage(
+                                                    nanny: nanny),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
                           );
                         }).toList(),
@@ -442,7 +481,6 @@ class _ConfinementDetails10DaysPageState
                         ),
                       ),
                     );
-                    // refresh available list again
                     await _filterNanniesForDate(selectedDate!);
                     return;
                   }
@@ -457,7 +495,7 @@ class _ConfinementDetails10DaysPageState
                     'address': addressController.text,
                     'phone': phoneController.text,
                     'status': 'Pending',
-                    'price': 2250,
+                    'price': 1500,
                     'created_at': DateTime.now().toIso8601String(),
                     'nanny_id': _selectedNannyId,
                     if (selectedNanny != null)
@@ -504,6 +542,122 @@ class _ConfinementDetails10DaysPageState
           ),
         ),
       ),
+    );
+  }
+}
+
+class NannyLadyProfilePage extends StatelessWidget {
+  final Map<String, dynamic> nanny;
+
+  const NannyLadyProfilePage({super.key, required this.nanny});
+
+  @override
+  Widget build(BuildContext context) {
+    final name = nanny['name']?.toString() ?? 'Unknown';
+    final role = nanny['role']?.toString() ?? 'Not provided';
+    final qualification = nanny['qualification']?.toString() ?? 'Not provided';
+    final experience = nanny['experience']?.toString() ?? '0';
+    final phone = nanny['phone']?.toString() ?? '-';
+    final avatarUrl = nanny['avatar_url']?.toString();
+
+    return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 207, 241, 238),
+      appBar: AppBar(
+        title: const Text(
+          "Nanny Profile",
+          style: TextStyle(fontFamily: "Calsans"),
+        ),
+        backgroundColor: const Color.fromARGB(255, 251, 182, 183),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            // ⭐ Avatar
+            CircleAvatar(
+              radius: 60,
+              backgroundColor: Colors.white,
+              backgroundImage: avatarUrl != null && avatarUrl.isNotEmpty
+                  ? NetworkImage(avatarUrl)
+                  : const AssetImage("assets/default_avatar.png")
+                      as ImageProvider,
+            ),
+
+            const SizedBox(height: 20),
+
+            // ⭐ Name
+            Text(
+              name,
+              style: const TextStyle(
+                fontFamily: "Calsans",
+                fontSize: 26,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+
+            const SizedBox(height: 6),
+
+            // ⭐ Role
+            Text(
+              role,
+              style: const TextStyle(
+                fontFamily: "Calsans",
+                fontSize: 18,
+                color: Colors.black54,
+              ),
+            ),
+
+            const SizedBox(height: 20),
+
+            // ⭐ Info Card
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _infoRow("Qualification", qualification),
+                  const SizedBox(height: 12),
+                  _infoRow("Experience", "$experience years"),
+                  const SizedBox(height: 12),
+                  _infoRow("Phone", phone),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // Reusable row widget
+  Widget _infoRow(String label, String value) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "$label: ",
+          style: const TextStyle(
+            fontFamily: "Calsans",
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Expanded(
+          child: Text(
+            value,
+            style: const TextStyle(
+              fontFamily: "Calsans",
+              fontSize: 16,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

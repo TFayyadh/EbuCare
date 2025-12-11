@@ -1,4 +1,5 @@
 import 'package:ebucare_app/pages/confinement_care_page.dart';
+import 'package:ebucare_app/pages/massage_therapy_page.dart';
 import 'package:ebucare_app/pages/reminder_page.dart';
 import 'package:flutter/material.dart';
 
@@ -85,7 +86,7 @@ class _ConfinementServicesPagesState extends State<ConfinementServicesPages> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ReminderPage(),
+                        builder: (context) => MassageTherapyPage(),
                       ));
                 },
                 child: Container(

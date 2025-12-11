@@ -44,6 +44,10 @@ dependencies:
   timezone: ^0.10.1
   flutter_timezone: ^4.1.1
 
+dependency_overrides:
+  app_links:
+    path: plugins/app_links_fixed
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

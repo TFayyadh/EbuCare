@@ -1,3 +1,4 @@
+import 'package:ebucare_app/pages/payment_page.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -13,7 +14,6 @@ class _BreastMassagePageState extends State<BreastMassagePage> {
   final TextEditingController phoneController = TextEditingController();
 
   DateTime? selectedDate;
-  TimeOfDay? _selectedStartTime; // 👈 NEW
 
   // Nannies state
   List<Map<String, dynamic>> _nannies = [];
@@ -37,19 +37,6 @@ class _BreastMassagePageState extends State<BreastMassagePage> {
     return '$y-$m-$day';
   }
 
-  // Helper: format time HH:mm
-  String _formatTimeOfDay(TimeOfDay t) {
-    final h = t.hour.toString().padLeft(2, '0');
-    final m = t.minute.toString().padLeft(2, '0');
-    return '$h:$m';
-  }
-
-  String _formatTimeFromDateTime(DateTime dt) {
-    final h = dt.hour.toString().padLeft(2, '0');
-    final m = dt.minute.toString().padLeft(2, '0');
-    return '$h:$m';
-  }
-
   // Fetch all nannies from Supabase
   Future<void> _loadNannies() async {
     try {
@@ -69,7 +56,8 @@ class _BreastMassagePageState extends State<BreastMassagePage> {
     }
   }
 
-  // Filter nannies by chosen DATE (still day-based)
+  // Filter nannies using overlap logic:
+  // existing_start <= new_end AND existing_end >= new_start
   Future<void> _filterNanniesForDate(DateTime startDate) async {
     if (_nannies.isEmpty) return;
 
@@ -79,17 +67,15 @@ class _BreastMassagePageState extends State<BreastMassagePage> {
       _selectedNannyId = null;
     });
 
-    // For relaxation massage we only care about a single day,
-    // so start == end on that date.
     final startStr = _formatDate(startDate);
-    final endStr = startStr;
+    final endStr = _formatDate(startDate.add(const Duration(days: 6)));
 
     try {
       final conflictData = await Supabase.instance.client
           .from('confinement_bookings')
           .select('nanny_id, start_date, end_date')
-          .lte('start_date', endStr)
-          .gte('end_date', startStr);
+          .lte('start_date', endStr) // start_date <= new_end
+          .gte('end_date', startStr); // end_date >= new_start
 
       final List<dynamic> conflictList = conflictData;
       final Set<String> busyNannyIds =
@@ -121,24 +107,6 @@ class _BreastMassagePageState extends State<BreastMassagePage> {
 
   @override
   Widget build(BuildContext context) {
-    // Compute start & end DateTime when both date + time chosen
-    DateTime? startDateTime;
-    DateTime? endDateTime;
-
-    if (selectedDate != null && _selectedStartTime != null) {
-      startDateTime = DateTime(
-        selectedDate!.year,
-        selectedDate!.month,
-        selectedDate!.day,
-        _selectedStartTime!.hour,
-        _selectedStartTime!.minute,
-      );
-      endDateTime = startDateTime.add(const Duration(
-        hours: 1,
-        minutes: 30,
-      ));
-    }
-
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 207, 241, 238),
       appBar: AppBar(
@@ -241,11 +209,12 @@ class _BreastMassagePageState extends State<BreastMassagePage> {
 
                     // Date row
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         IconButton(
                           onPressed: () async {
-                            final now = DateTime.now();
-                            final pickedDate = await showDatePicker(
+                            DateTime now = DateTime.now();
+                            DateTime? pickedDate = await showDatePicker(
                               context: context,
                               initialDate: selectedDate ?? now,
                               firstDate: now,
@@ -260,73 +229,27 @@ class _BreastMassagePageState extends State<BreastMassagePage> {
                           },
                           icon: const Icon(Icons.date_range_outlined),
                         ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: Text(
-                            selectedDate == null
-                                ? "Select date"
-                                : "${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}",
+                        if (selectedDate != null)
+                          Text(
+                            "${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year} - "
+                            "${selectedDate!.add(const Duration(days: 6)).day}/${selectedDate!.add(const Duration(days: 6)).month}/${selectedDate!.add(const Duration(days: 6)).year}",
                             style: const TextStyle(
                               fontFamily: "Calsans",
                               fontSize: 16,
                               color: Colors.black54,
                             ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-
-                    // Time row (start time)
-                    Row(
-                      children: [
-                        IconButton(
-                          onPressed: () async {
-                            final pickedTime = await showTimePicker(
-                              context: context,
-                              initialTime: _selectedStartTime ??
-                                  const TimeOfDay(hour: 9, minute: 0),
-                            );
-                            if (pickedTime != null) {
-                              setState(() {
-                                _selectedStartTime = pickedTime;
-                              });
-                            }
-                          },
-                          icon: const Icon(Icons.access_time),
-                        ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: Text(
-                            _selectedStartTime == null
-                                ? "Select start time"
-                                : "Start: ${_formatTimeOfDay(_selectedStartTime!)}",
-                            style: const TextStyle(
+                          )
+                        else
+                          const Text(
+                            "Date",
+                            style: TextStyle(
                               fontFamily: "Calsans",
                               fontSize: 16,
                               color: Colors.black54,
                             ),
                           ),
-                        ),
                       ],
                     ),
-
-                    // Auto-calculated end time
-                    if (endDateTime != null) ...[
-                      const SizedBox(height: 4),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 52.0),
-                        child: Text(
-                          "End: ${_formatTimeFromDateTime(endDateTime)} (1 hour 30 minutes)",
-                          style: const TextStyle(
-                            fontFamily: "Calsans",
-                            fontSize: 14,
-                            color: Colors.black87,
-                          ),
-                        ),
-                      ),
-                    ],
-
                     const SizedBox(height: 10),
 
                     // Address row
@@ -408,7 +331,7 @@ class _BreastMassagePageState extends State<BreastMassagePage> {
                       )
                     else if (selectedDate == null)
                       const Text(
-                        "Please select your date first to see available nannies.",
+                        "Please select your start date first to see available nannies.",
                         style: TextStyle(
                           fontFamily: "Calsans",
                           fontSize: 14,
@@ -417,7 +340,7 @@ class _BreastMassagePageState extends State<BreastMassagePage> {
                       )
                     else if (_availableNannies.isEmpty)
                       const Text(
-                        "No nanny is available for the selected date. Please choose another date.",
+                        "No nanny is available for the selected dates. Please choose another date.",
                         style: TextStyle(
                           fontFamily: "Calsans",
                           fontSize: 14,
@@ -448,32 +371,42 @@ class _BreastMassagePageState extends State<BreastMassagePage> {
                           return DropdownMenuItem<String>(
                             value: id,
                             child: Row(
-                              mainAxisSize: MainAxisSize.min,
+                              mainAxisSize:
+                                  MainAxisSize.min, // 👈 shrink-wrap row
                               children: [
-                                Text(
-                                  name,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    fontFamily: "Calsans",
-                                  ),
-                                ),
-                                const SizedBox(width: 8),
-                                IconButton(
-                                  icon: const Icon(
-                                    Icons.info_outline,
-                                    size: 20,
-                                  ),
-                                  padding: EdgeInsets.zero,
-                                  constraints: const BoxConstraints(),
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (_) =>
-                                            NannyLadyProfilePage(nanny: nanny),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Text(
+                                      name,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                        fontFamily: "Calsans",
                                       ),
-                                    );
-                                  },
+                                    ),
+                                    const SizedBox(width: 8),
+                                    IconButton(
+                                      icon: const Icon(
+                                        Icons.info_outline,
+                                        size: 20,
+                                      ),
+                                      padding: EdgeInsets
+                                          .zero, // optional: make it tighter
+                                      constraints:
+                                          const BoxConstraints(), // optional
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (_) =>
+                                                NannyLadyProfilePage(
+                                                    nanny: nanny),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
@@ -494,11 +427,10 @@ class _BreastMassagePageState extends State<BreastMassagePage> {
               // SUBMIT BUTTON
               ElevatedButton(
                 onPressed: () async {
-                  if (selectedDate == null || _selectedStartTime == null) {
+                  if (selectedDate == null) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
-                          content:
-                              Text("Please select both date and start time")),
+                          content: Text("Please select your booking date")),
                     );
                     return;
                   }
@@ -506,9 +438,8 @@ class _BreastMassagePageState extends State<BreastMassagePage> {
                   if (_selectedNannyId == null) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
-                        content:
-                            Text("Please select a nanny / confinement lady"),
-                      ),
+                          content:
+                              Text("Please select a nanny / confinement lady")),
                     );
                     return;
                   }
@@ -529,8 +460,10 @@ class _BreastMassagePageState extends State<BreastMassagePage> {
                     return;
                   }
 
+                  // EXTRA SAFETY: re-check overlap for this nanny
                   final startStr = _formatDate(selectedDate!);
-                  final endStr = startStr; // same day for this package
+                  final endStr =
+                      _formatDate(selectedDate!.add(const Duration(days: 6)));
 
                   final conflicts = await Supabase.instance.client
                       .from('confinement_bookings')
@@ -543,7 +476,7 @@ class _BreastMassagePageState extends State<BreastMassagePage> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text(
-                          "Sorry, this nanny has just been booked for this date. Please pick another nanny or change date.",
+                          "Sorry, this nanny has just been booked for these dates. Please pick another nanny or change dates.",
                         ),
                       ),
                     );
@@ -553,7 +486,6 @@ class _BreastMassagePageState extends State<BreastMassagePage> {
 
                   final selectedNanny = _getSelectedNanny();
 
-                  // NOTE: still saving only date; you can later add time columns.
                   final bookingData = {
                     'user_id': user.id,
                     'package_type': 'Breast Massage',
@@ -562,21 +494,24 @@ class _BreastMassagePageState extends State<BreastMassagePage> {
                     'address': addressController.text,
                     'phone': phoneController.text,
                     'status': 'Pending',
-                    'price': 169, // example price
+                    'price': 169,
                     'created_at': DateTime.now().toIso8601String(),
                     'nanny_id': _selectedNannyId,
                     if (selectedNanny != null)
                       'nanny_name': selectedNanny['name'],
-                    'start_time': _formatTimeOfDay(_selectedStartTime!),
-                    'end_time': endDateTime != null
-                        ? _formatTimeFromDateTime(endDateTime)
-                        : null,
                   };
 
                   try {
-                    await Supabase.instance.client
+                    final insertRes = await Supabase.instance.client
                         .from('confinement_bookings')
-                        .insert(bookingData);
+                        .insert({
+                          ...bookingData,
+                          'payment_status': 'Unpaid',
+                        })
+                        .select()
+                        .single();
+
+                    final bookingId = insertRes['id'].toString();
 
                     if (!mounted) return;
 
@@ -584,7 +519,25 @@ class _BreastMassagePageState extends State<BreastMassagePage> {
                       const SnackBar(
                           content: Text("Booking submitted successfully")),
                     );
-                    Navigator.pop(context);
+
+                    final paid = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => PaymentPage(
+                          amountMYR: 169,
+                          description: "Breast Massage",
+                          bookingId: bookingId,
+                        ),
+                      ),
+                    );
+
+                    if (paid == true) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            content: Text("Booking confirmed & paid")),
+                      );
+                      Navigator.pop(context);
+                    }
                   } catch (e) {
                     if (!mounted) return;
                     ScaffoldMessenger.of(context).showSnackBar(

@@ -1,7 +1,9 @@
 import 'package:ebucare_app/auth/auth_gate.dart';
 import 'package:ebucare_app/service/noti_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:flutter/foundation.dart';
 
 void main() async {
   await Supabase.initialize(
@@ -14,6 +16,12 @@ void main() async {
 
   final notiService = NotiService();
   await notiService.initNotification();
+
+  if (!kIsWeb) {
+    Stripe.publishableKey =
+        "pk_test_51SdT7SKp4XOhFa4a8kJ03oOsKegaxIApUD4OfV3GsP1XrxiCOAr5GJtxQBX7IPaBxm8st9A2HOrIJYSWkcW6ARlt007XgbzHaU";
+    await Stripe.instance.applySettings();
+  }
 
   runApp(const MyApp());
 }

@@ -1,10 +1,15 @@
-plugins {
-    id "com.android.application" version "8.4.2" apply false
-    id "org.jetbrains.kotlin.android" version "2.0.21" apply false
-    id "dev.flutter.flutter-gradle-plugin"
-}
-
-allprojects {
+buildscript {
+        repositories {
+            google()
+            mavenCentral()
+        }
+        dependencies {
+            classpath 'com.android.tools.build:gradle:8.7.2' // Aligned with settings.gradle and Gradle 8.13
+            classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.24" // Aligned with settings.gradle
+        }
+    }
+    
+    allprojects {
     repositories {
         google()
         mavenCentral()
@@ -19,6 +24,16 @@ subprojects {
     project.evaluationDependsOn(":app")
 }
 
+// Ensure Android modules compile against the same SDK without using afterEvaluate
+subprojects { subproject ->
+    subproject.plugins.withId("com.android.library") {
+        def androidExt = subproject.extensions.findByName("android")
+        if (androidExt != null && androidExt.hasProperty("compileSdk")) {
+            androidExt.compileSdk = 36
+        }
+    }
+}
+
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
-}   
+}

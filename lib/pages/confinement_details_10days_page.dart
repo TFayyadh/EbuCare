@@ -1,3 +1,4 @@
+import 'package:ebucare_app/pages/payment_page.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -495,7 +496,7 @@ class _ConfinementDetails10DaysPageState
                     'address': addressController.text,
                     'phone': phoneController.text,
                     'status': 'Pending',
-                    'price': 1500,
+                    'price': 2250,
                     'created_at': DateTime.now().toIso8601String(),
                     'nanny_id': _selectedNannyId,
                     if (selectedNanny != null)
@@ -503,9 +504,16 @@ class _ConfinementDetails10DaysPageState
                   };
 
                   try {
-                    await Supabase.instance.client
+                    final insertRes = await Supabase.instance.client
                         .from('confinement_bookings')
-                        .insert(bookingData);
+                        .insert({
+                          ...bookingData,
+                          'payment_status': 'Unpaid',
+                        })
+                        .select()
+                        .single();
+
+                    final bookingId = insertRes['id'].toString();
 
                     if (!mounted) return;
 
@@ -513,7 +521,25 @@ class _ConfinementDetails10DaysPageState
                       const SnackBar(
                           content: Text("Booking submitted successfully")),
                     );
-                    Navigator.pop(context);
+
+                    final paid = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => PaymentPage(
+                          amountMYR: 2250,
+                          description: "Confinement Care 10 Days Package",
+                          bookingId: bookingId,
+                        ),
+                      ),
+                    );
+
+                    if (paid == true) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            content: Text("Booking confirmed & paid")),
+                      );
+                      Navigator.pop(context);
+                    }
                   } catch (e) {
                     if (!mounted) return;
                     ScaffoldMessenger.of(context).showSnackBar(

@@ -1,3 +1,4 @@
+import 'package:ebucare_app/pages/payment_page.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -503,9 +504,16 @@ class _ConfinementDetails7DaysPageState
                   };
 
                   try {
-                    await Supabase.instance.client
+                    final insertRes = await Supabase.instance.client
                         .from('confinement_bookings')
-                        .insert(bookingData);
+                        .insert({
+                          ...bookingData,
+                          'payment_status': 'Unpaid',
+                        })
+                        .select()
+                        .single();
+
+                    final bookingId = insertRes['id'].toString();
 
                     if (!mounted) return;
 
@@ -513,7 +521,25 @@ class _ConfinementDetails7DaysPageState
                       const SnackBar(
                           content: Text("Booking submitted successfully")),
                     );
-                    Navigator.pop(context);
+
+                    final paid = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => PaymentPage(
+                          amountMYR: 1500,
+                          description: "Confinement Care 7 Days Package",
+                          bookingId: bookingId,
+                        ),
+                      ),
+                    );
+
+                    if (paid == true) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            content: Text("Booking confirmed & paid")),
+                      );
+                      Navigator.pop(context);
+                    }
                   } catch (e) {
                     if (!mounted) return;
                     ScaffoldMessenger.of(context).showSnackBar(

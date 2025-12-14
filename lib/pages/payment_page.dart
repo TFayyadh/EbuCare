@@ -1,20 +1,27 @@
 import 'dart:convert';
 
+import 'package:ebucare_app/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+// ✅ CHANGE this import path to match your project
+
 class PaymentPage extends StatefulWidget {
-  final int amountMYR; // e.g. 159 or 1500
-  final String description; // e.g. "Relaxation Massage (1h 30m)"
-  final String bookingId; // inserted booking row id (uuid string)
+  final int amountMYR;
+  final String description;
+  final String bookingId;
+
+  // ✅ invoice email
+  final String userEmail;
 
   const PaymentPage({
     super.key,
     required this.amountMYR,
     required this.description,
     required this.bookingId,
+    required this.userEmail,
   });
 
   @override
@@ -24,10 +31,34 @@ class PaymentPage extends StatefulWidget {
 class _PaymentPageState extends State<PaymentPage> {
   bool _loading = false;
 
+  // ✅ Send invoice email (best-effort)
+  Future<void> _sendInvoiceEmail({
+    required String bookingId,
+    required int amountMYR,
+    required String description,
+    required String toEmail,
+    String? paymentIntentId,
+  }) async {
+    final res = await Supabase.instance.client.functions.invoke(
+      'send-invoice-email',
+      body: {
+        "to": toEmail,
+        "booking_id": bookingId,
+        "description": description,
+        "amount_myr": amountMYR,
+        "payment_intent_id": paymentIntentId,
+      },
+    );
+
+    if (res.status != 200) {
+      throw Exception("Invoice email failed: ${res.data}");
+    }
+  }
+
   Future<void> _payNow() async {
     if (_loading) return;
 
-    // ✅ IMPORTANT: flutter_stripe PaymentSheet is NOT supported on Web.
+    // PaymentSheet not supported on web
     if (kIsWeb) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Payment only available on mobile app")),
@@ -38,10 +69,28 @@ class _PaymentPageState extends State<PaymentPage> {
     setState(() => _loading = true);
 
     try {
-      // Stripe expects smallest currency unit (MYR -> sen)
+      // ✅ Block payment if cancelled
+      final booking = await Supabase.instance.client
+          .from('confinement_bookings')
+          .select('status, payment_status')
+          .eq('id', widget.bookingId)
+          .single();
+
+      final st = (booking['status'] ?? '').toString().toLowerCase();
+      final ps = (booking['payment_status'] ?? '').toString().toLowerCase();
+
+      if (st == 'cancelled' || ps == 'cancelled') {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Payment disabled: booking cancelled.")),
+        );
+        return;
+      }
+
+      // Stripe expects smallest unit (MYR -> sen)
       final amountInSen = widget.amountMYR * 100;
 
-      // ✅ Call Supabase Edge Function (must return client_secret)
+      // ✅ Call Supabase Edge Function (returns client_secret)
       final res = await Supabase.instance.client.functions.invoke(
         'create-payment-intent',
         body: {
@@ -52,10 +101,6 @@ class _PaymentPageState extends State<PaymentPage> {
         },
       );
 
-      debugPrint("Function status: ${res.status}");
-      debugPrint("Function raw data: ${res.data}");
-
-      // ✅ Edge Function response may be Map or String JSON
       Map<String, dynamic>? json;
       final data = res.data;
 
@@ -89,18 +134,33 @@ class _PaymentPageState extends State<PaymentPage> {
       // ✅ Show PaymentSheet
       await Stripe.instance.presentPaymentSheet();
 
-      // ✅ Extract intent id safely (if server didn’t provide)
+      // ✅ Extract intent id
       final intentId = paymentIntentId ??
           (clientSecret.contains('_secret_')
               ? clientSecret.split('_secret_').first
               : null);
 
-      // ✅ Payment success → update booking row
+      // ✅ Update booking row as paid
       await Supabase.instance.client.from('confinement_bookings').update({
         'payment_status': 'Paid',
         'status': 'Confirmed',
         if (intentId != null) 'payment_intent_id': intentId,
       }).eq('id', widget.bookingId);
+
+      // ✅ Send invoice email (DON’T fail payment if email fails)
+      if (widget.userEmail.isNotEmpty) {
+        try {
+          await _sendInvoiceEmail(
+            bookingId: widget.bookingId,
+            amountMYR: widget.amountMYR,
+            description: widget.description,
+            toEmail: widget.userEmail,
+            paymentIntentId: intentId,
+          );
+        } catch (e) {
+          debugPrint("Invoice send failed (ignored): $e");
+        }
+      }
 
       if (!mounted) return;
 
@@ -108,14 +168,11 @@ class _PaymentPageState extends State<PaymentPage> {
         const SnackBar(content: Text("Payment successful ✅")),
       );
 
-      Navigator.pop(context, true); // return success
+      Navigator.pop(context, true);
     } on StripeException catch (e) {
       if (!mounted) return;
-
       final msg = e.error.localizedMessage ?? "Payment cancelled/failed.";
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(msg)),
-      );
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
@@ -130,15 +187,67 @@ class _PaymentPageState extends State<PaymentPage> {
     Navigator.pop(context, false);
   }
 
+  Future<void> _cancelBooking() async {
+    if (_loading) return;
+
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text("Cancel booking?"),
+        content: const Text(
+          "Are you sure you want to cancel this booking? This action cannot be undone.",
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text("No"),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            child: const Text("Yes, cancel"),
+          ),
+        ],
+      ),
+    );
+
+    if (confirm != true) return;
+
+    setState(() => _loading = true);
+
+    try {
+      await Supabase.instance.client.from('confinement_bookings').update({
+        'status': 'Cancelled',
+        'payment_status': 'Cancelled',
+        'payment_intent_id': null,
+      }).eq('id', widget.bookingId);
+
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Booking cancelled ❌")),
+      );
+
+      // ✅ Redirect to HomePage and clear stack
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (_) => const HomePage()),
+        (route) => false,
+      );
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Cancel failed: $e")),
+      );
+    } finally {
+      if (mounted) setState(() => _loading = false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 207, 241, 238),
       appBar: AppBar(
-        title: const Text(
-          "Payment",
-          style: TextStyle(fontFamily: "Calsans"),
-        ),
+        title: const Text("Payment", style: TextStyle(fontFamily: "Calsans")),
         backgroundColor: const Color.fromARGB(255, 207, 241, 238),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_outlined),
@@ -188,10 +297,14 @@ class _PaymentPageState extends State<PaymentPage> {
                     const SizedBox(height: 8),
                     Text(
                       "Booking ID: ${widget.bookingId}",
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: Colors.black54,
-                      ),
+                      style:
+                          const TextStyle(fontSize: 12, color: Colors.black54),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      "Invoice email: ${widget.userEmail.isEmpty ? "Not available" : widget.userEmail}",
+                      style:
+                          const TextStyle(fontSize: 12, color: Colors.black54),
                     ),
                   ],
                 ),
@@ -249,6 +362,31 @@ class _PaymentPageState extends State<PaymentPage> {
                       fontFamily: "Calsans",
                       fontSize: 16,
                       color: Colors.black87,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
+
+              // CANCEL
+              SizedBox(
+                width: double.infinity,
+                height: 48,
+                child: OutlinedButton(
+                  onPressed: _loading ? null : _cancelBooking,
+                  style: OutlinedButton.styleFrom(
+                    side: const BorderSide(color: Colors.redAccent),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: const Text(
+                    "Cancel Booking",
+                    style: TextStyle(
+                      fontFamily: "Calsans",
+                      fontSize: 16,
+                      color: Colors.redAccent,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ),

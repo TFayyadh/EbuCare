@@ -70,7 +70,7 @@ class _ConfinementDetails14DaysPageState
     });
 
     final startStr = _formatDate(startDate);
-    final endStr = _formatDate(startDate.add(const Duration(days: 6)));
+    final endStr = _formatDate(startDate.add(const Duration(days: 13)));
 
     try {
       final conflictData = await Supabase.instance.client
@@ -234,7 +234,7 @@ class _ConfinementDetails14DaysPageState
                         if (selectedDate != null)
                           Text(
                             "${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year} - "
-                            "${selectedDate!.add(const Duration(days: 6)).day}/${selectedDate!.add(const Duration(days: 6)).month}/${selectedDate!.add(const Duration(days: 6)).year}",
+                            "${selectedDate!.add(const Duration(days: 13)).day}/${selectedDate!.add(const Duration(days: 13)).month}/${selectedDate!.add(const Duration(days: 13)).year}",
                             style: const TextStyle(
                               fontFamily: "Calsans",
                               fontSize: 16,
@@ -465,7 +465,7 @@ class _ConfinementDetails14DaysPageState
                   // EXTRA SAFETY: re-check overlap for this nanny
                   final startStr = _formatDate(selectedDate!);
                   final endStr =
-                      _formatDate(selectedDate!.add(const Duration(days: 6)));
+                      _formatDate(selectedDate!.add(const Duration(days: 13)));
 
                   final conflicts = await Supabase.instance.client
                       .from('confinement_bookings')
@@ -529,6 +529,7 @@ class _ConfinementDetails14DaysPageState
                           amountMYR: 3150,
                           description: "Confinement Care 14 Days Package",
                           bookingId: bookingId,
+                          userEmail: user.email ?? '',
                         ),
                       ),
                     );

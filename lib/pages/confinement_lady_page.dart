@@ -75,11 +75,11 @@ class _ConfinementLadyPageState extends State<ConfinementLadyPage> {
                                   children: [
                                     Padding(
                                       padding: const EdgeInsets.only(
-                                          left: 8, right: 8, top: 0, bottom: 0),
+                                          left: 8, right: 8, top: 0, bottom: 5),
                                       child: Text(
                                         "New Booking",
                                         style: TextStyle(
-                                            fontWeight: FontWeight.w100,
+                                            fontWeight: FontWeight.w800,
                                             fontFamily: "Calsans",
                                             fontSize: 18,
                                             color: Colors.white),
@@ -141,11 +141,11 @@ class _ConfinementLadyPageState extends State<ConfinementLadyPage> {
                                   children: [
                                     Padding(
                                       padding: const EdgeInsets.only(
-                                          left: 8, right: 8, top: 8, bottom: 0),
+                                          left: 8, right: 8, top: 0, bottom: 5),
                                       child: Text(
                                         "View Bookings",
                                         style: TextStyle(
-                                            fontWeight: FontWeight.w100,
+                                            fontWeight: FontWeight.w800,
                                             fontFamily: "Calsans",
                                             fontSize: 18,
                                             color: Colors.white),

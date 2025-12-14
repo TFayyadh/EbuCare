@@ -529,6 +529,7 @@ class _ConfinementDetails7DaysPageState
                           amountMYR: 1500,
                           description: "Confinement Care 7 Days Package",
                           bookingId: bookingId,
+                          userEmail: user.email ?? '',
                         ),
                       ),
                     );

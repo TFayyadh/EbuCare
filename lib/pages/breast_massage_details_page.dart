@@ -1,3 +1,4 @@
+import 'package:ebucare_app/pages/breast_massage_page.dart';
 import 'package:flutter/material.dart';
 
 class BreastMassageDetailsPage extends StatefulWidget {
@@ -87,7 +88,7 @@ class _BreastMassageDetailsPageState extends State<BreastMassageDetailsPage> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => BreastMassageDetailsPage()));
+                        builder: (context) => BreastMassagePage()));
               },
               style: ButtonStyle(
                 backgroundColor:

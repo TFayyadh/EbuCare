@@ -243,7 +243,7 @@ Widget reminder(context) {
                       Text(
                         "Daily Reminder",
                         style: TextStyle(
-                            fontWeight: FontWeight.w100,
+                            fontWeight: FontWeight.w500,
                             fontFamily: "Calsans",
                             fontSize: 18,
                             color: Colors.white),
@@ -307,7 +307,7 @@ Widget checkin(context) {
                       Text(
                         "Daily Check-In",
                         style: TextStyle(
-                            fontWeight: FontWeight.w100,
+                            fontWeight: FontWeight.w500,
                             fontFamily: "Calsans",
                             fontSize: 18,
                             color: Colors.white),

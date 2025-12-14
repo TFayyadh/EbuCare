@@ -1,4 +1,5 @@
 import 'package:ebucare_app/auth/auth_service.dart';
+import 'package:ebucare_app/pages/forgot_password_page.dart';
 import 'package:ebucare_app/pages/home_page.dart';
 import 'package:ebucare_app/pages/register_page.dart';
 import 'package:ebucare_app/pages/start_decider.dart';
@@ -139,12 +140,27 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-              Text("Forgot Password?",
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontFamily: "Calsans",
-                      fontSize: 14,
-                      fontWeight: FontWeight.w200)),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 5),
+                child: SizedBox(
+                  width: double.maxFinite,
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ForgotPasswordPage()),
+                      );
+                    },
+                    child: Text("Forgot Password? ",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: "Calsans",
+                            fontSize: 14,
+                            fontWeight: FontWeight.w200)),
+                  ),
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 20.0),
                 child: SizedBox(

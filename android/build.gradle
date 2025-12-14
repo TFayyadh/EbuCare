@@ -1,15 +1,4 @@
-buildscript {
-        repositories {
-            google()
-            mavenCentral()
-        }
-        dependencies {
-            classpath 'com.android.tools.build:gradle:8.7.2' // Aligned with settings.gradle and Gradle 8.13
-            classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.24" // Aligned with settings.gradle
-        }
-    }
-    
-    allprojects {
+allprojects {
     repositories {
         google()
         mavenCentral()
@@ -20,19 +9,27 @@ rootProject.buildDir = "../build"
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
 }
-subprojects {
-    project.evaluationDependsOn(":app")
-}
+subprojects { sub ->
+    afterEvaluate {
+        if (sub.hasProperty("android")) {
+            sub.android {
+                compileSdkVersion 36
+                defaultConfig { targetSdkVersion 36 }
+                compileOptions {
+                    sourceCompatibility JavaVersion.VERSION_17
+                    targetCompatibility JavaVersion.VERSION_17
+                }
+            }
+        }
 
-// Ensure Android modules compile against the same SDK without using afterEvaluate
-subprojects { subproject ->
-    subproject.plugins.withId("com.android.library") {
-        def androidExt = subproject.extensions.findByName("android")
-        if (androidExt != null && androidExt.hasProperty("compileSdk")) {
-            androidExt.compileSdk = 36
+        // ADD THIS PART (Kotlin)
+        tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+            kotlinOptions { jvmTarget = "17" }
         }
     }
 }
+
+
 
 tasks.register("clean", Delete) {
     delete rootProject.buildDir

@@ -23,11 +23,11 @@ class _EduPageState extends State<EduPage> {
   Future<Set<String>> fetchUserFavourites(String userId) async {
     final data = await Supabase.instance.client
         .from('favourites')
-        .select('article_id')
+        .select('resource_id')
         .eq('user_id', userId);
 
     // Convert to a set of article IDs for fast lookup
-    return data.map<String>((fav) => fav['article_id'].toString()).toSet();
+    return data.map<String>((fav) => fav['resource_id'].toString()).toSet();
   }
 
   @override
@@ -147,14 +147,14 @@ class _EduPageState extends State<EduPage> {
                                                 .from('favourites')
                                                 .delete()
                                                 .eq('user_id', userId)
-                                                .eq('article_id', articleId);
+                                                .eq('resource_id', articleId);
                                           } else {
                                             // Add to favourites
                                             await Supabase.instance.client
                                                 .from('favourites')
                                                 .insert({
                                               'user_id': userId,
-                                              'article_id': articleId,
+                                              'resource_id': articleId,
                                             });
                                           }
                                           setState(() {});

@@ -1,5 +1,5 @@
-// meditation_player_page.dart
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -52,28 +52,87 @@ class _MeditationPlayerPageState extends State<MeditationPlayerPage> {
 
   @override
   void dispose() {
-    _audioPlayer.stop(); // ⬅ stop audio immediately
-    _audioPlayer.dispose(); // ⬅ release resources
+    _audioPlayer.stop();
+    _audioPlayer.dispose();
     super.dispose();
   }
 
   Future<void> _togglePlay() async {
+    // If you want to temporarily disable audio on web (to avoid crash), uncomment:
+    /*
+    if (kIsWeb) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Audio playback is only available on mobile app for now.'),
+        ),
+      );
+      return;
+    }
+    */
+
     final audioPath = widget.meditation['audio_path']?.toString();
     final url = getPublicAudioUrl(audioPath);
 
     if (url == null) {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Audio file not available')),
       );
       return;
     }
 
-    if (_isPlaying) {
-      await _audioPlayer.pause();
-      setState(() => _isPlaying = false);
-    } else {
-      await _audioPlayer.play(UrlSource(url));
-      setState(() => _isPlaying = true);
+    debugPrint('Trying to play URL: $url');
+
+    try {
+      if (_isPlaying) {
+        await _audioPlayer.pause();
+        if (!mounted) return;
+        setState(() => _isPlaying = false);
+      } else {
+        await _audioPlayer.stop();
+
+        try {
+          // Separate try/catch for source
+          await _audioPlayer.setSourceUrl(
+            url,
+            mimeType: 'audio/mpeg',
+          );
+        } catch (e) {
+          debugPrint('setSourceUrl error: $e');
+          if (!mounted) return;
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Browser cannot load this audio source.'),
+            ),
+          );
+          return;
+        }
+
+        try {
+          await _audioPlayer.resume();
+        } catch (e) {
+          debugPrint('resume error: $e');
+          if (!mounted) return;
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Failed to start audio playback.'),
+            ),
+          );
+          return;
+        }
+
+        if (!mounted) return;
+        setState(() => _isPlaying = true);
+      }
+    } catch (e) {
+      // last-resort catch
+      debugPrint('Audio play error (outer): $e');
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Audio playback error. Please try again.'),
+        ),
+      );
     }
   }
 
@@ -90,9 +149,15 @@ class _MeditationPlayerPageState extends State<MeditationPlayerPage> {
     final subtitle =
         widget.meditation['subtitle']?.toString() ?? '7 DAYS OF CALM';
 
-    final total = _duration.inSeconds == 0
-        ? (widget.meditation['duration_seconds'] ?? 0) as int
-        : _duration.inSeconds;
+    int metaSeconds = 0;
+    final rawDuration = widget.meditation['duration_seconds'];
+    if (rawDuration is int) {
+      metaSeconds = rawDuration;
+    } else if (rawDuration is String) {
+      metaSeconds = int.tryParse(rawDuration) ?? 0;
+    }
+
+    final total = _duration.inSeconds == 0 ? metaSeconds : _duration.inSeconds;
 
     final sliderMax = total > 0 ? total.toDouble() : 1.0;
     final sliderValue =
@@ -122,6 +187,7 @@ class _MeditationPlayerPageState extends State<MeditationPlayerPage> {
               ),
             ),
             const SizedBox(height: 8),
+
             // Illustration
             SizedBox(
               height: 180,
@@ -131,6 +197,7 @@ class _MeditationPlayerPageState extends State<MeditationPlayerPage> {
               ),
             ),
             const SizedBox(height: 24),
+
             Text(
               title,
               textAlign: TextAlign.center,
@@ -153,7 +220,6 @@ class _MeditationPlayerPageState extends State<MeditationPlayerPage> {
             ),
             const SizedBox(height: 32),
 
-            // Big play button + optional knobs (just icons for now)
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 48.0),
               child: Row(
@@ -165,6 +231,7 @@ class _MeditationPlayerPageState extends State<MeditationPlayerPage> {
               ),
             ),
             const SizedBox(height: 16),
+
             Container(
               width: 140,
               height: 140,
@@ -208,7 +275,6 @@ class _MeditationPlayerPageState extends State<MeditationPlayerPage> {
             ),
             const SizedBox(height: 32),
 
-            // Slider + time labels
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24.0),
               child: Column(
@@ -220,6 +286,7 @@ class _MeditationPlayerPageState extends State<MeditationPlayerPage> {
                     onChanged: (value) async {
                       final position = Duration(seconds: value.toInt());
                       await _audioPlayer.seek(position);
+                      if (!mounted) return;
                       setState(() => _position = position);
                     },
                     activeColor: const Color.fromARGB(255, 173, 151, 233),

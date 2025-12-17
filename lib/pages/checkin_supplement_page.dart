@@ -239,8 +239,7 @@ class _CheckinSupplementPageState extends State<CheckinSupplementPage> {
       await Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => CheckinSummaryPage(
-              entries: List<Map<String, dynamic>>.from(rows)),
+          builder: (_) => CheckinSummaryPage(),
         ),
       );
 

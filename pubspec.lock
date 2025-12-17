@@ -10,7 +10,7 @@ packages:
     source: hosted
     version: "1.0.0"
   app_links:
-    dependency: "direct overridden"
+    dependency: "direct main"
     description:
       path: "plugins/app_links_fixed"
       relative: true

@@ -1,10 +1,75 @@
 import 'package:flutter/material.dart';
-import 'home_page.dart'; // <-- change to your actual home page file name
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'home_page.dart';
 
-class CheckinSummaryPage extends StatelessWidget {
-  /// Each entry is a map like: { 'payload': {...}, 'created_at': '2025-06-06T08:00:00Z' }
-  final List<Map<String, dynamic>> entries;
-  const CheckinSummaryPage({super.key, required this.entries});
+class CheckinSummaryPage extends StatefulWidget {
+  const CheckinSummaryPage({super.key});
+
+  @override
+  State<CheckinSummaryPage> createState() => _CheckinSummaryPageState();
+}
+
+class _CheckinSummaryPageState extends State<CheckinSummaryPage> {
+  bool _loading = true;
+  String? _error;
+
+  /// Each entry:
+  /// { 'payload': {...}, 'created_at': '2025-06-06T08:00:00Z' }
+  List<Map<String, dynamic>> entries = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadEntries();
+  }
+
+  Future<void> _loadEntries() async {
+    setState(() {
+      _loading = true;
+      _error = null;
+    });
+
+    try {
+      final client = Supabase.instance.client;
+
+      final uid = client.auth.currentUser?.id; // <-- auth user id (uuid string)
+      if (uid == null) {
+        throw Exception("User not logged in (auth.currentUser is null).");
+      }
+
+      final res = await client
+          .from('daily_checkin')
+          .select('created_at, payload')
+          .eq('user_id', uid) // ✅ IMPORTANT: filter by current user
+          .order('created_at', ascending: false);
+
+      final list = (res as List).map<Map<String, dynamic>>((row) {
+        final map = Map<String, dynamic>.from(row as Map);
+
+        final rawPayload = map['payload'];
+        final payload = rawPayload is Map
+            ? Map<String, dynamic>.from(rawPayload)
+            : <String, dynamic>{};
+
+        return {
+          'created_at': map['created_at'],
+          'payload': payload,
+        };
+      }).toList();
+
+      if (!mounted) return;
+      setState(() => entries = list);
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        entries = [];
+        _error = e.toString();
+      });
+    } finally {
+      if (!mounted) return;
+      setState(() => _loading = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,34 +115,61 @@ class CheckinSummaryPage extends StatelessWidget {
               ),
             ),
 
-            // List
+            // Body
             Expanded(
-              child: ListView.separated(
-                padding: const EdgeInsets.fromLTRB(16, 18, 16, 24),
-                itemCount: entries.length,
-                separatorBuilder: (_, __) => const SizedBox(height: 14),
-                itemBuilder: (context, i) {
-                  final createdAt =
-                      DateTime.tryParse('${entries[i]['created_at']}');
-                  final payload =
-                      Map<String, dynamic>.from(entries[i]['payload'] ?? {});
-                  final dateStr = _formatDate(createdAt);
+              child: _loading
+                  ? const Center(child: CircularProgressIndicator())
+                  : (_error != null)
+                      ? Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(16),
+                            child: Text(
+                              "Failed to load summary.\n\n$_error",
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        )
+                      : entries.isEmpty
+                          ? const Center(
+                              child: Text(
+                                "No well-being entries yet.",
+                                style: TextStyle(fontSize: 14),
+                              ),
+                            )
+                          : ListView.separated(
+                              padding:
+                                  const EdgeInsets.fromLTRB(16, 18, 16, 24),
+                              itemCount: entries.length,
+                              separatorBuilder: (_, __) =>
+                                  const SizedBox(height: 14),
+                              itemBuilder: (context, i) {
+                                final createdAt = DateTime.tryParse(
+                                    '${entries[i]['created_at']}');
 
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(dateStr,
-                          style: const TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w700)),
-                      const SizedBox(height: 8),
-                      _SummaryCard(payload: payload),
-                    ],
-                  );
-                },
-              ),
+                                final payload = Map<String, dynamic>.from(
+                                    entries[i]['payload'] ?? {});
+
+                                final dateStr = _formatDate(createdAt);
+
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      dateStr,
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    _SummaryCard(payload: payload),
+                                  ],
+                                );
+                              },
+                            ),
             ),
 
-            // Continue (you can navigate somewhere else)
+            // Continue
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
               child: SizedBox(
@@ -90,16 +182,13 @@ class CheckinSummaryPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(20),
                     ),
                     padding: EdgeInsets.zero,
-                    backgroundColor: Color.fromARGB(255, 255, 126, 207),
+                    backgroundColor: const Color.fromARGB(255, 255, 126, 207),
                   ),
                   onPressed: () {
-                    // Navigate to Home and clear all previous pages
                     Navigator.pushAndRemoveUntil(
                       context,
-                      MaterialPageRoute(
-                          builder: (_) =>
-                              const HomePage()), // change widget name if needed
-                      (route) => false, // remove all previous routes
+                      MaterialPageRoute(builder: (_) => const HomePage()),
+                      (route) => false,
                     );
                   },
                   child: Row(
@@ -108,9 +197,10 @@ class CheckinSummaryPage extends StatelessWidget {
                       Text(
                         'Continue',
                         style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white),
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
+                        ),
                       ),
                       SizedBox(width: 10),
                       Icon(Icons.arrow_forward_rounded, color: Colors.white),
@@ -141,7 +231,8 @@ class _SummaryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const cardColor = Color(0xFFEEC5D7); // soft pink/purple like mock
+    const cardColor = Color(0xFFEEC5D7);
+
     final physical = List<String>.from(payload['physical'] ?? const []);
     final emotional = List<String>.from(payload['emotional'] ?? const []);
 
@@ -178,7 +269,8 @@ class _SummaryCard extends StatelessWidget {
               Text('Hours: ${sleep['hours'] ?? '-'}'),
               if (sleep['impacts'] != null)
                 Text(
-                    'Impacts: ${List<String>.from(sleep['impacts']).join(', ')}'),
+                  'Impacts: ${List<String>.from(sleep['impacts']).join(', ')}',
+                ),
               const SizedBox(height: 8),
             ],
             if (nutrition.isNotEmpty) ...[
@@ -186,7 +278,8 @@ class _SummaryCard extends StatelessWidget {
               Text('Meals: ${nutrition['meals'] ?? '-'}'),
               Text('Appetite: ${nutrition['appetite'] ?? '-'}'),
               Text(
-                  'Water: ${nutrition['water_ml'] != null ? '${nutrition['water_ml']} ml' : '-'}'),
+                'Water: ${nutrition['water_ml'] != null ? '${nutrition['water_ml']} ml' : '-'}',
+              ),
               if (nutrition['others'] != null)
                 Text('Others: ${nutrition['others']}'),
               const SizedBox(height: 8),
@@ -217,9 +310,13 @@ class _Label extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 2),
-      child: Text(text,
-          style: const TextStyle(
-              fontWeight: FontWeight.w700, color: Colors.white)),
+      child: Text(
+        text,
+        style: const TextStyle(
+          fontWeight: FontWeight.w700,
+          color: Colors.white,
+        ),
+      ),
     );
   }
 }

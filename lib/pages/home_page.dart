@@ -1,5 +1,6 @@
 import 'package:ebucare_app/auth/auth_service.dart';
 import 'package:ebucare_app/pages/baby_care_page.dart';
+import 'package:ebucare_app/pages/checkin_page.dart';
 import 'package:ebucare_app/pages/checkin_physical_page.dart';
 import 'package:ebucare_app/pages/confinement_lady_page.dart';
 import 'package:ebucare_app/pages/edu_page.dart';
@@ -283,7 +284,7 @@ Widget checkin(context) {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const CheckinPhysicalPage(),
+              builder: (context) => const CheckinPage(),
             ));
       },
       child: Padding(
@@ -305,7 +306,7 @@ Widget checkin(context) {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
                       Text(
-                        "Daily Check-In",
+                        "Daily Well-Being",
                         style: TextStyle(
                             fontWeight: FontWeight.w500,
                             fontFamily: "Calsans",

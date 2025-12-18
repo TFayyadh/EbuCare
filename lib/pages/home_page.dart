@@ -1,7 +1,6 @@
 import 'package:ebucare_app/auth/auth_service.dart';
 import 'package:ebucare_app/pages/baby_care_page.dart';
 import 'package:ebucare_app/pages/checkin_page.dart';
-import 'package:ebucare_app/pages/checkin_physical_page.dart';
 import 'package:ebucare_app/pages/confinement_lady_page.dart';
 import 'package:ebucare_app/pages/edu_page.dart';
 import 'package:ebucare_app/pages/login_page.dart';
@@ -10,7 +9,6 @@ import 'package:ebucare_app/pages/meditations_page.dart';
 import 'package:ebucare_app/pages/reminder_page.dart';
 import 'package:ebucare_app/pages/resource_articles.dart';
 import 'package:ebucare_app/pages/traditional_page.dart';
-import 'package:ebucare_app/pages/home/widgets/header.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:ebucare_app/pages/onboarding_birthdate_page.dart'; // <-- your screen
@@ -254,7 +252,8 @@ Widget reminder(context) {
                         "Medication/Hydration/Appointments",
                         style: TextStyle(
                             fontFamily: "Raleway",
-                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14,
                             color: Colors.white),
                       )
                     ],
@@ -318,7 +317,7 @@ Widget checkin(context) {
                         "Users daily well-being check-in.",
                         style: TextStyle(
                             fontFamily: "Raleway",
-                            fontSize: 12,
+                            fontSize: 15,
                             color: Colors.white),
                       )
                     ],
@@ -362,7 +361,7 @@ Widget confinement(BuildContext context) {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontFamily: "Calsans",
-                      fontSize: 12,
+                      fontSize: 15,
                       fontWeight: FontWeight.w500,
                       color: Colors.white),
                 ),
@@ -390,14 +389,7 @@ Widget confinement(BuildContext context) {
                 ),
               ),
             ),
-            Text(
-              "View or make \nnew bookings.",
-              style: TextStyle(
-                  fontSize: 10,
-                  fontFamily: "Raleway",
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
-            ),
+            SizedBox(),
           ],
         )),
   );
@@ -424,7 +416,7 @@ Widget resources(BuildContext context) {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontFamily: "Calsans",
-                      fontSize: 12,
+                      fontSize: 15,
                       fontWeight: FontWeight.w500,
                       color: Colors.white),
                 ),
@@ -452,14 +444,7 @@ Widget resources(BuildContext context) {
                 ),
               ),
             ),
-            Text(
-              "Explore resources here.",
-              style: TextStyle(
-                  fontSize: 10,
-                  fontFamily: "Raleway",
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
-            ),
+            SizedBox(),
           ],
         )),
   );
@@ -547,7 +532,7 @@ Widget meditation(BuildContext context) {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontFamily: "Calsans",
-                      fontSize: 12,
+                      fontSize: 15,
                       fontWeight: FontWeight.w500,
                       color: Colors.white),
                 ),
@@ -575,14 +560,7 @@ Widget meditation(BuildContext context) {
                 ),
               ),
             ),
-            Text(
-              "Let the calmness in here.",
-              style: TextStyle(
-                  fontSize: 10,
-                  fontFamily: "Raleway",
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
-            ),
+            SizedBox(),
           ],
         )),
   );
@@ -609,7 +587,7 @@ Widget babyCare(BuildContext context) {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontFamily: "Calsans",
-                      fontSize: 12,
+                      fontSize: 15,
                       fontWeight: FontWeight.w500,
                       color: Colors.white),
                 ),
@@ -637,15 +615,7 @@ Widget babyCare(BuildContext context) {
                 ),
               ),
             ),
-            Text(
-              "Tracking baby's \ncare.",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 10,
-                  fontFamily: "Raleway",
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
-            ),
+            SizedBox(),
           ],
         )),
   );

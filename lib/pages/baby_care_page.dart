@@ -52,7 +52,7 @@ class _BabyCarePageState extends State<BabyCarePage> {
                             height: 40,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(30),
-                              color: const Color.fromARGB(255, 154, 103, 163),
+                              color: const Color.fromRGBO(210, 145, 188, 1),
                             ),
                             child: Padding(
                               padding: const EdgeInsets.all(5.0),
@@ -63,8 +63,7 @@ class _BabyCarePageState extends State<BabyCarePage> {
                                     fontSize: 20,
                                     fontWeight: FontWeight.normal,
                                     fontFamily: "Calsans",
-                                    color: const Color.fromARGB(
-                                        255, 255, 255, 255)),
+                                    color: Colors.white),
                               ),
                             ),
                           ),
@@ -90,7 +89,7 @@ class _BabyCarePageState extends State<BabyCarePage> {
                                         "assets/images/baby_blue.png"),
                                     fit: BoxFit.fitHeight),
                                 borderRadius: BorderRadius.circular(30),
-                                color: const Color.fromARGB(255, 255, 255, 255),
+                                color: const Color.fromRGBO(210, 145, 188, 1),
                               ),
                             ),
                           ),
@@ -105,7 +104,7 @@ class _BabyCarePageState extends State<BabyCarePage> {
                             height: 40,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(30),
-                              color: const Color.fromARGB(255, 154, 103, 163),
+                              color: const Color.fromRGBO(210, 145, 188, 1),
                             ),
                             child: Padding(
                               padding: const EdgeInsets.all(5.0),
@@ -116,8 +115,7 @@ class _BabyCarePageState extends State<BabyCarePage> {
                                     fontSize: 20,
                                     fontWeight: FontWeight.normal,
                                     fontFamily: "Calsans",
-                                    color: const Color.fromARGB(
-                                        255, 255, 255, 255)),
+                                    color: Colors.white),
                               ),
                             ),
                           ),
@@ -143,7 +141,7 @@ class _BabyCarePageState extends State<BabyCarePage> {
                                         "assets/images/baby_milks.jpg"),
                                     fit: BoxFit.fitHeight),
                                 borderRadius: BorderRadius.circular(30),
-                                color: const Color.fromARGB(255, 255, 255, 255),
+                                color: const Color.fromRGBO(210, 145, 188, 1),
                               ),
                             ),
                           ),

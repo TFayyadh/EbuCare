@@ -72,14 +72,14 @@ class _CheckinPageState extends State<CheckinPage> {
                                 children: [
                                   Padding(
                                     padding: EdgeInsets.only(
-                                      left: 8,
-                                      right: 8,
-                                      bottom: 0,
+                                      left: 40,
+                                      right: 0,
+                                      bottom: 5,
                                     ),
                                     child: Text(
                                       "New Well-Being",
                                       style: TextStyle(
-                                        fontWeight: FontWeight.w100,
+                                        fontWeight: FontWeight.w800,
                                         fontFamily: "Calsans",
                                         fontSize: 18,
                                         color: Colors.white,
@@ -88,17 +88,18 @@ class _CheckinPageState extends State<CheckinPage> {
                                   ),
                                   Padding(
                                     padding: EdgeInsets.only(
-                                      left: 8,
-                                      right: 8,
+                                      left: 20,
+                                      right: 0,
                                       top: 0,
-                                      bottom: 4,
+                                      bottom: 0,
                                     ),
                                     child: Text(
-                                      "Track your daily well-being here.",
+                                      "Entry your daily well-being here.",
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                         fontFamily: "Raleway",
                                         fontSize: 12,
+                                        fontWeight: FontWeight.w600,
                                         color: Colors.white,
                                       ),
                                     ),
@@ -153,13 +154,13 @@ class _CheckinPageState extends State<CheckinPage> {
                                     padding: EdgeInsets.only(
                                       left: 8,
                                       right: 8,
-                                      top: 8,
-                                      bottom: 0,
+                                      top: 0,
+                                      bottom: 5,
                                     ),
                                     child: Text(
                                       "View Summary",
                                       style: TextStyle(
-                                        fontWeight: FontWeight.w100,
+                                        fontWeight: FontWeight.w800,
                                         fontFamily: "Calsans",
                                         fontSize: 18,
                                         color: Colors.white,
@@ -168,10 +169,10 @@ class _CheckinPageState extends State<CheckinPage> {
                                   ),
                                   Padding(
                                     padding: EdgeInsets.only(
-                                      left: 8,
-                                      right: 8,
+                                      left: 20,
+                                      right: 0,
                                       top: 0,
-                                      bottom: 4,
+                                      bottom: 0,
                                     ),
                                     child: Text(
                                       "View your previous well-being entries.",
@@ -179,6 +180,7 @@ class _CheckinPageState extends State<CheckinPage> {
                                       style: TextStyle(
                                         fontFamily: "Raleway",
                                         fontSize: 12,
+                                        fontWeight: FontWeight.w600,
                                         color: Colors.white,
                                       ),
                                     ),

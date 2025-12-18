@@ -93,6 +93,7 @@ class _ConfinementLadyPageState extends State<ConfinementLadyPage> {
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                             fontFamily: "Raleway",
+                                            fontWeight: FontWeight.w600,
                                             fontSize: 12,
                                             color: Colors.white),
                                       ),
@@ -160,6 +161,7 @@ class _ConfinementLadyPageState extends State<ConfinementLadyPage> {
                                         style: TextStyle(
                                             fontFamily: "Raleway",
                                             fontSize: 12,
+                                            fontWeight: FontWeight.w600,
                                             color: Colors.white),
                                       ),
                                     )

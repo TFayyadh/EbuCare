@@ -90,6 +90,7 @@ class _ReminderPageState extends State<ReminderPage> {
                                       style: TextStyle(
                                           fontFamily: "Raleway",
                                           fontSize: 12,
+                                          fontWeight: FontWeight.w600,
                                           color: Colors.white),
                                     ),
                                   )
@@ -156,6 +157,7 @@ class _ReminderPageState extends State<ReminderPage> {
                                       style: TextStyle(
                                           fontFamily: "Raleway",
                                           fontSize: 12,
+                                          fontWeight: FontWeight.w600,
                                           color: Colors.white),
                                     ),
                                   )

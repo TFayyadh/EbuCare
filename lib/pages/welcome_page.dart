@@ -47,7 +47,7 @@ class _WelcomePageState extends State<WelcomePage> {
                   "Welcome to EBUCARE.",
                   style: TextStyle(
                       fontSize: 16,
-                      fontWeight: FontWeight.w100,
+                      fontWeight: FontWeight.w500,
                       fontFamily: "Raleway",
                       color: Colors.white),
                 ),

@@ -65,7 +65,7 @@ class _PelvicDetailsPageState extends State<PelvicDetailsPage> {
                       ),
                       SizedBox(height: 20),
                       Text(
-                        "• Aroma Massage + Pelvic Restoration + Diastasis Recti Repair  \n Aroma Massage + Pelvic Restoration + Diastasis Recti Repair \n"
+                        "• Aroma Massage + Pelvic Restoration + Diastasis Recti Repair + Uterine Reposition \n+ Uterine Fumigation + Belly Wrap \n (2 hours)\n\n"
                         "Benefits:\n"
                         "• Restores body alignment & waistline shape\n"
                         "• Reduces vaginal looseness & sagging sensation\n"

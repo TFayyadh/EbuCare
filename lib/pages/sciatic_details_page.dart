@@ -65,7 +65,7 @@ class _SciaticDetailsPageState extends State<SciaticDetailsPage> {
                       ),
                       SizedBox(height: 20),
                       Text(
-                        "• Traditional Massage + Sciatica Nerve Therapy \n Traditional Massage + Sciatica Nerve Therapy \n"
+                        "• Traditional Massage + Sciatica Nerve Therapy + Soothing Spray Therapy \n+ Hot Compress + Physiotherapy Exercise \n(2 hours)\n\n"
                         "Benefits:\n"
                         "• Relieves radiating sciatic nerve pain\n"
                         "• Loosens piriformis muscle to reduce numbness & tightness\n"

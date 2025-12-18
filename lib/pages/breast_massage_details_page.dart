@@ -66,7 +66,7 @@ class _BreastMassageDetailsPageState extends State<BreastMassageDetailsPage> {
                       ),
                       SizedBox(height: 20),
                       Text(
-                        "• Breast Massage + Body Massage + Hot Compress (1 Hour 30 Minutes) \n"
+                        "• Breast Massage + Body Massage \n+ Hot Compress \n(1 Hour 30 Minutes) \n\n"
                         "Benefits:\n"
                         "• Reduces breast engorgement & pain\n"
                         "• Prevents blocked milk ducts\n"

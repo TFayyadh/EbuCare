@@ -65,7 +65,7 @@ class _FertilityDetailsPageState extends State<FertilityDetailsPage> {
                       ),
                       SizedBox(height: 20),
                       Text(
-                        "• Aroma Massage + Uterine Massage + Uterine Reposition \n + Uterine Fumigation + Kegel Exercise (2 Hours)\n"
+                        "• Aroma Massage + Uterine Massage + Uterine Reposition \n + Uterine Fumigation + Kegel Exercise \n(2 Hours)\n\n"
                         "Benefits:\n"
                         "• Supports female reproductive system & boosts fertility\n"
                         "• Improves egg quality and increases chances of conception\n",

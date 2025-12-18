@@ -317,7 +317,8 @@ Widget checkin(context) {
                         "Users daily well-being check-in.",
                         style: TextStyle(
                             fontFamily: "Raleway",
-                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14,
                             color: Colors.white),
                       )
                     ],

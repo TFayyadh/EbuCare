@@ -1,3 +1,4 @@
+import 'package:ebucare_app/pages/confinement_feedback_page.dart';
 import 'package:ebucare_app/pages/payment_page.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -22,6 +23,11 @@ class _ViewBookingsPageState extends State<ViewBookingsPage> {
     return data;
   }
 
+  bool _isPaid(dynamic booking) {
+    final s = (booking['payment_status'] ?? '').toString().toLowerCase();
+    return s == 'paid';
+  }
+
   bool _isUnpaid(dynamic booking) {
     final status = (booking['payment_status'] ?? '').toString().toLowerCase();
     return status == 'unpaid';
@@ -43,6 +49,44 @@ class _ViewBookingsPageState extends State<ViewBookingsPage> {
     if (v is int) return v;
     if (v is double) return v.round();
     return int.tryParse(v.toString()) ?? fallback;
+  }
+
+  DateTime? _parseDateTime(String dateStr, String timeStr,
+      {bool endOfDayFallback = false}) {
+    try {
+      final d = dateStr.trim();
+      var t = timeStr.trim();
+
+      if (d.isEmpty) return null;
+
+      if (t.isEmpty) {
+        t = endOfDayFallback ? "23:59:59" : "00:00:00";
+      } else {
+        // normalize: HH:mm -> HH:mm:00
+        if (RegExp(r'^\d{2}:\d{2}$').hasMatch(t)) t = "$t:00";
+      }
+
+      return DateTime.parse("${d}T$t");
+    } catch (_) {
+      return null;
+    }
+  }
+
+  bool _bookingEnded(dynamic b) {
+    final endDate = _safeStr(b['end_date'], "");
+    final endTime = _safeStr(b['end_time'], "");
+    final endDT = _parseDateTime(endDate, endTime, endOfDayFallback: true);
+    if (endDT == null) return false;
+    return endDT.isBefore(DateTime.now());
+  }
+
+  Future<bool> _hasFeedback(int bookingId) async {
+    final data = await Supabase.instance.client
+        .from('confinement_feedback')
+        .select('id')
+        .eq('booking_id', bookingId)
+        .maybeSingle();
+    return data != null;
   }
 
   Future<void> _cancelBooking(String bookingId) async {
@@ -157,7 +201,13 @@ class _ViewBookingsPageState extends State<ViewBookingsPage> {
                           final cancelled = _isCancelled(b);
                           final canPay = unpaid && !cancelled;
 
-                          final bookingId = _safeStr(b['id']);
+                          final ended = _bookingEnded(b);
+                          final paid = _isPaid(b);
+
+                          // ✅ FEEDBACK RULE: only when booking ended + not cancelled + (optional) paid
+                          final canFeedbackByDate = ended && !cancelled && paid;
+
+                          final int bookingId = _safeInt(b['id']);
                           final status = _safeStr(b['status']);
                           final packageType = _safeStr(b['package_type']);
                           final startDate = _safeStr(b['start_date']);
@@ -184,7 +234,7 @@ class _ViewBookingsPageState extends State<ViewBookingsPage> {
                                           builder: (_) => PaymentPage(
                                             amountMYR: amountMYR,
                                             description: packageType,
-                                            bookingId: bookingId,
+                                            bookingId: bookingId.toString(),
                                             userEmail: Supabase.instance.client
                                                     .auth.currentUser?.email ??
                                                 '',
@@ -217,7 +267,7 @@ class _ViewBookingsPageState extends State<ViewBookingsPage> {
                                           ),
                                           Flexible(
                                             child: Text(
-                                              bookingId,
+                                              bookingId.toString(),
                                               style: const TextStyle(
                                                 fontFamily: "Calsans",
                                                 color: Colors.black87,
@@ -410,9 +460,72 @@ class _ViewBookingsPageState extends State<ViewBookingsPage> {
                                               final confirm =
                                                   await _confirmCancelDialog();
                                               if (!confirm) return;
-                                              await _cancelBooking(bookingId);
+                                              await _cancelBooking(
+                                                  bookingId.toString());
                                             },
                                           ),
+                                        ),
+                                      ],
+
+                                      // ✅ Feedback: only after date ended + paid + not cancelled
+                                      if (canFeedbackByDate) ...[
+                                        const SizedBox(height: 12),
+                                        FutureBuilder<bool>(
+                                          future: _hasFeedback(bookingId),
+                                          builder: (context, snap) {
+                                            final submitted = snap.data == true;
+
+                                            if (submitted) {
+                                              return SizedBox(
+                                                width: double.infinity,
+                                                height: 44,
+                                                child: OutlinedButton.icon(
+                                                  onPressed: null,
+                                                  icon: const Icon(Icons
+                                                      .check_circle_outline),
+                                                  label: const Text(
+                                                    "Feedback Submitted ✅",
+                                                    style: TextStyle(
+                                                        fontFamily: "Calsans"),
+                                                  ),
+                                                ),
+                                              );
+                                            }
+
+                                            return SizedBox(
+                                              width: double.infinity,
+                                              height: 44,
+                                              child: ElevatedButton.icon(
+                                                icon: const Icon(
+                                                    Icons.rate_review_outlined),
+                                                label: const Text(
+                                                  "Give Feedback",
+                                                  style: TextStyle(
+                                                      fontFamily: "Calsans"),
+                                                ),
+                                                onPressed: () async {
+                                                  final ok = await Navigator
+                                                      .push<bool>(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (_) =>
+                                                          ConfinementFeedbackPage(
+                                                        bookingId: bookingId,
+                                                        userId: userId,
+                                                        packageType:
+                                                            packageType,
+                                                      ),
+                                                    ),
+                                                  );
+
+                                                  if (!mounted) return;
+                                                  if (ok == true) {
+                                                    setState(() {});
+                                                  }
+                                                },
+                                              ),
+                                            );
+                                          },
                                         ),
                                       ],
                                     ],

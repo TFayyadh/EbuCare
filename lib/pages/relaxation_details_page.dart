@@ -65,7 +65,7 @@ class _RelaxationDetailsPageState extends State<RelaxationDetailsPage> {
                       ),
                       SizedBox(height: 20),
                       Text(
-                        "• Aroma Massage + Hot Compress (1 Hour 30 Minutes)\n"
+                        "• Aroma Massage + Hot Compress \n(1 Hour 30 Minutes)\n\n"
                         "Benefits:\n"
                         "• Enhances blood circulation\n"
                         "• Reduces muscle pain & stiff nerves\n"

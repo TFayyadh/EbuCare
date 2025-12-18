@@ -254,6 +254,7 @@ Widget reminder(context) {
                         "Medication/Hydration/Appointments",
                         style: TextStyle(
                             fontFamily: "Raleway",
+                            fontWeight: FontWeight.w600,
                             fontSize: 12,
                             color: Colors.white),
                       )
@@ -318,6 +319,7 @@ Widget checkin(context) {
                         "Users daily well-being check-in.",
                         style: TextStyle(
                             fontFamily: "Raleway",
+                            fontWeight: FontWeight.w600,
                             fontSize: 12,
                             color: Colors.white),
                       )
@@ -354,19 +356,14 @@ Widget confinement(BuildContext context) {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Confinement Lady \nBookings",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontFamily: "Calsans",
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white),
-                ),
-              ],
+            Text(
+              "Confinement Lady \nBookings",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontFamily: "Calsans",
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.white),
             ),
             Container(
               width: 50,
@@ -390,14 +387,7 @@ Widget confinement(BuildContext context) {
                 ),
               ),
             ),
-            Text(
-              "View or make \nnew bookings.",
-              style: TextStyle(
-                  fontSize: 10,
-                  fontFamily: "Raleway",
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
-            ),
+            SizedBox()
           ],
         )),
   );
@@ -419,14 +409,17 @@ Widget resources(BuildContext context) {
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  "Resources",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontFamily: "Calsans",
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  child: Text(
+                    "Resources",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontFamily: "Calsans",
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white),
+                  ),
                 ),
               ],
             ),
@@ -452,14 +445,7 @@ Widget resources(BuildContext context) {
                 ),
               ),
             ),
-            Text(
-              "Explore resources here.",
-              style: TextStyle(
-                  fontSize: 10,
-                  fontFamily: "Raleway",
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
-            ),
+            SizedBox()
           ],
         )),
   );
@@ -542,14 +528,17 @@ Widget meditation(BuildContext context) {
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  "Meditation",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontFamily: "Calsans",
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  child: Text(
+                    "Meditation",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontFamily: "Calsans",
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white),
+                  ),
                 ),
               ],
             ),
@@ -575,14 +564,7 @@ Widget meditation(BuildContext context) {
                 ),
               ),
             ),
-            Text(
-              "Let the calmness in here.",
-              style: TextStyle(
-                  fontSize: 10,
-                  fontFamily: "Raleway",
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
-            ),
+            SizedBox(),
           ],
         )),
   );
@@ -609,7 +591,7 @@ Widget babyCare(BuildContext context) {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontFamily: "Calsans",
-                      fontSize: 12,
+                      fontSize: 15,
                       fontWeight: FontWeight.w500,
                       color: Colors.white),
                 ),
@@ -637,15 +619,7 @@ Widget babyCare(BuildContext context) {
                 ),
               ),
             ),
-            Text(
-              "Tracking baby's \ncare.",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 10,
-                  fontFamily: "Raleway",
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
-            ),
+            SizedBox()
           ],
         )),
   );

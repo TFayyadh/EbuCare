@@ -89,6 +89,7 @@ class _ResourceArticlesState extends State<ResourceArticles> {
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                           fontFamily: "Raleway",
+                                          fontWeight: FontWeight.w600,
                                           fontSize: 12,
                                           color: Colors.white),
                                     ),
@@ -156,6 +157,7 @@ class _ResourceArticlesState extends State<ResourceArticles> {
                                       style: TextStyle(
                                           fontFamily: "Raleway",
                                           fontSize: 12,
+                                          fontWeight: FontWeight.w600,
                                           color: Colors.white),
                                     ),
                                   )

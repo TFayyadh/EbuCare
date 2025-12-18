@@ -99,11 +99,17 @@ flutter:
   # Custom fonts are disabled because the specified files are not present.
   # To re-enable, add your .ttf files under a `fonts/` folder and list them here.
   # Example:
-  # fonts:
-  #   - family: Calsans
-  #     fonts:
-  #       - asset: fonts/CalSans-Regular.ttf
-  #   - family: Raleway
-  #     fonts:
-  #       - asset: fonts/Raleway-Bold.ttf
-  #       - asset: fonts/Raleway-Regular.ttf
+  fonts:
+  - family: Calsans
+    fonts:
+      - asset: assets/fonts/CalSans-Regular.ttf
+
+  - family: Raleway
+    fonts:
+      - asset: assets/fonts/Raleway-VariableFont_wght.ttf
+      - asset: assets/fonts/Raleway-Italic-VariableFont_wght.ttf
+        style: italic
+      - asset: assets/fonts/Raleway-SemiBold.ttf
+        weight: 600
+      - asset: assets/fonts/Raleway-Regular.ttf
+        weight: 400

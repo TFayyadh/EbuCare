@@ -18,7 +18,7 @@ class _ConfinementCarePageState extends State<ConfinementCarePage> {
       backgroundColor: const Color.fromARGB(255, 207, 241, 238),
       appBar: AppBar(
         title: Text(
-          "Confinement Care \nPackages",
+          "Confinement Care",
           maxLines: 2,
           textAlign: TextAlign.center,
           style: TextStyle(

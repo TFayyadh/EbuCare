@@ -48,21 +48,25 @@ class _ConfinementServicesPagesState extends State<ConfinementServicesPages> {
                       ));
                 },
                 child: Container(
-                  height: 150,
-                  width: 300,
+                  height: 200,
+                  width: double.infinity,
                   decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('assets/images/nanny.png'),
+                      fit: BoxFit.fitWidth,
+                    ),
                     color: const Color.fromARGB(255, 251, 182, 183),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Align(
                     alignment: Alignment.topCenter,
                     child: Transform.translate(
-                      offset: Offset(0, -30),
+                      offset: Offset(0, 190),
                       child: Container(
                         height: 40,
                         width: 250,
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: const Color.fromRGBO(210, 145, 188, 1),
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: Padding(
@@ -73,7 +77,7 @@ class _ConfinementServicesPagesState extends State<ConfinementServicesPages> {
                             style: TextStyle(
                                 fontSize: 20,
                                 fontFamily: "Calsans",
-                                color: const Color.fromARGB(255, 106, 63, 114)),
+                                color: Colors.white),
                           ),
                         ),
                       ),
@@ -90,21 +94,25 @@ class _ConfinementServicesPagesState extends State<ConfinementServicesPages> {
                       ));
                 },
                 child: Container(
-                  height: 150,
-                  width: 300,
+                  height: 200,
+                  width: double.infinity,
                   decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 251, 182, 183),
+                    image: DecorationImage(
+                      image: AssetImage('assets/images/spa.png'),
+                      fit: BoxFit.fitWidth,
+                    ),
+                    color: const Color.fromRGBO(210, 145, 188, 1),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Align(
                     alignment: Alignment.topCenter,
                     child: Transform.translate(
-                      offset: Offset(0, -30),
+                      offset: Offset(0, 190),
                       child: Container(
                         height: 40,
                         width: 250,
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: const Color.fromRGBO(210, 145, 188, 1),
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: Padding(
@@ -115,7 +123,7 @@ class _ConfinementServicesPagesState extends State<ConfinementServicesPages> {
                             style: TextStyle(
                                 fontSize: 20,
                                 fontFamily: "Calsans",
-                                color: const Color.fromARGB(255, 106, 63, 114)),
+                                color: Colors.white),
                           ),
                         ),
                       ),

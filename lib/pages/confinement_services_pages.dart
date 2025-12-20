@@ -65,7 +65,7 @@ class _ConfinementServicesPagesState extends State<ConfinementServicesPages> {
                         height: 40,
                         width: 250,
                         decoration: BoxDecoration(
-                          color: const Color.fromRGBO(210, 145, 188, 1),
+                          color: Colors.white,
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: Padding(
@@ -76,7 +76,7 @@ class _ConfinementServicesPagesState extends State<ConfinementServicesPages> {
                             style: TextStyle(
                                 fontSize: 20,
                                 fontFamily: "Calsans",
-                                color: Colors.white),
+                                color: const Color.fromRGBO(210, 145, 188, 1)),
                           ),
                         ),
                       ),
@@ -111,7 +111,7 @@ class _ConfinementServicesPagesState extends State<ConfinementServicesPages> {
                         height: 40,
                         width: 250,
                         decoration: BoxDecoration(
-                          color: const Color.fromRGBO(210, 145, 188, 1),
+                          color: Colors.white,
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: Padding(
@@ -122,7 +122,7 @@ class _ConfinementServicesPagesState extends State<ConfinementServicesPages> {
                             style: TextStyle(
                                 fontSize: 20,
                                 fontFamily: "Calsans",
-                                color: Colors.white),
+                                color: const Color.fromRGBO(210, 145, 188, 1)),
                           ),
                         ),
                       ),

@@ -52,7 +52,7 @@ class _BabyCarePageState extends State<BabyCarePage> {
                             height: 40,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(30),
-                              color: const Color.fromRGBO(210, 145, 188, 1),
+                              color: Colors.white,
                             ),
                             child: Padding(
                               padding: const EdgeInsets.all(5.0),
@@ -63,7 +63,8 @@ class _BabyCarePageState extends State<BabyCarePage> {
                                     fontSize: 20,
                                     fontWeight: FontWeight.normal,
                                     fontFamily: "Calsans",
-                                    color: Colors.white),
+                                    color:
+                                        const Color.fromRGBO(210, 145, 188, 1)),
                               ),
                             ),
                           ),
@@ -104,7 +105,7 @@ class _BabyCarePageState extends State<BabyCarePage> {
                             height: 40,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(30),
-                              color: const Color.fromRGBO(210, 145, 188, 1),
+                              color: Colors.white,
                             ),
                             child: Padding(
                               padding: const EdgeInsets.all(5.0),
@@ -115,7 +116,8 @@ class _BabyCarePageState extends State<BabyCarePage> {
                                     fontSize: 20,
                                     fontWeight: FontWeight.normal,
                                     fontFamily: "Calsans",
-                                    color: Colors.white),
+                                    color:
+                                        const Color.fromRGBO(210, 145, 188, 1)),
                               ),
                             ),
                           ),

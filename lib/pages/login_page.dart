@@ -1,6 +1,5 @@
 import 'package:ebucare_app/auth/auth_service.dart';
 import 'package:ebucare_app/pages/forgot_password_page.dart';
-import 'package:ebucare_app/pages/home_page.dart';
 import 'package:ebucare_app/pages/register_page.dart';
 import 'package:ebucare_app/pages/start_decider.dart';
 import 'package:flutter/material.dart';

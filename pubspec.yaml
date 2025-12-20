@@ -88,6 +88,13 @@ flutter:
     - assets/images/noti.png
     - assets/images/spa.png
     - assets/images/check.jpg
+    - assets/images/medication_new.png
+    - assets/images/hydration_new.png
+    - assets/images/appointments_new.png
+    - assets/images/drinking.png
+    - assets/images/medication.png
+    - assets/images/appointments.png
+
     
 
   # An image asset can refer to one or more resolution-specific "variants", see

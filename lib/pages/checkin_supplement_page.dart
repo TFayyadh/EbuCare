@@ -228,7 +228,7 @@ class _CheckinSupplementPageState extends State<CheckinSupplementPage> {
       });
 
       // Fetch recent (latest 7) to show on Summary
-      final rows = await supabase
+      await supabase
           .from('daily_checkin')
           .select('payload, created_at')
           .eq('user_id', currentUserId)

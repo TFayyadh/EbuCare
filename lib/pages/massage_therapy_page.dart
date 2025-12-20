@@ -1,7 +1,5 @@
 import 'package:ebucare_app/pages/breast_massage_details_page.dart';
-import 'package:ebucare_app/pages/confinement_10days_page.dart';
-import 'package:ebucare_app/pages/confinement_14days_page.dart';
-import 'package:ebucare_app/pages/confinement_7days_page.dart';
+
 import 'package:ebucare_app/pages/fertility_details_page.dart';
 import 'package:ebucare_app/pages/pelvic_details_page.dart';
 import 'package:ebucare_app/pages/relaxation_details_page.dart';

@@ -89,14 +89,12 @@ class _ManageProfileState extends State<ManageProfile> {
         .eq('id', userId)
         .single();
 
-    if (response != null) {
-      setState(() {
-        nameController.text = response['name'] ?? '';
-        phoneNumberController.text = response['phone_number'] ?? '';
-        ageController.text = response['age']?.toString() ?? '';
-        birthDateController.text = response['baby_birthdate'] ?? '';
-      });
-    }
+    setState(() {
+      nameController.text = response['name'] ?? '';
+      phoneNumberController.text = response['phone_number'] ?? '';
+      ageController.text = response['age']?.toString() ?? '';
+      birthDateController.text = response['baby_birthdate'] ?? '';
+    });
   }
 
   @override

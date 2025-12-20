@@ -51,13 +51,17 @@ class _NewReminderPageState extends State<NewReminderPage> {
                     height: 150,
                     width: 300,
                     decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage("assets/images/drinking.png"),
+                        fit: BoxFit.fitWidth,
+                      ),
                       color: const Color.fromARGB(255, 123, 101, 180),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Align(
                       alignment: Alignment.topCenter,
                       child: Transform.translate(
-                        offset: Offset(0, -20),
+                        offset: Offset(0, 140),
                         child: Container(
                           height: 40,
                           width: 150,
@@ -97,13 +101,17 @@ class _NewReminderPageState extends State<NewReminderPage> {
                     height: 150,
                     width: 300,
                     decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage("assets/images/medication.png"),
+                        fit: BoxFit.fitWidth,
+                      ),
                       color: const Color.fromARGB(255, 123, 101, 180),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Align(
                       alignment: Alignment.topCenter,
                       child: Transform.translate(
-                        offset: Offset(0, -20),
+                        offset: Offset(0, 140),
                         child: Container(
                           height: 40,
                           width: 150,
@@ -143,13 +151,18 @@ class _NewReminderPageState extends State<NewReminderPage> {
                     height: 150,
                     width: 300,
                     decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage("assets/images/appointments.png"),
+                        fit: BoxFit.fitWidth,
+                        alignment: Alignment(0, 0),
+                      ),
                       color: const Color.fromARGB(255, 123, 101, 180),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Align(
                       alignment: Alignment.topCenter,
                       child: Transform.translate(
-                        offset: Offset(0, -20),
+                        offset: Offset(0, 140),
                         child: Container(
                           height: 40,
                           width: 150,

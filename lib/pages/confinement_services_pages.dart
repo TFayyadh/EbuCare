@@ -1,6 +1,5 @@
 import 'package:ebucare_app/pages/confinement_care_page.dart';
 import 'package:ebucare_app/pages/massage_therapy_page.dart';
-import 'package:ebucare_app/pages/reminder_page.dart';
 import 'package:flutter/material.dart';
 
 class ConfinementServicesPages extends StatefulWidget {

@@ -22,6 +22,12 @@ subprojects { sub ->
             }
         }
 
+        if (sub.hasProperty("android") &&
+                sub.name == "flutter_native_timezone" &&
+                sub.android.namespace == null) {
+            sub.android.namespace = "com.pravera.flutter_native_timezone"
+        }
+
         // ADD THIS PART (Kotlin)
         tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
             kotlinOptions { jvmTarget = "17" }

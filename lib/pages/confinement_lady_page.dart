@@ -1,4 +1,3 @@
-import 'package:ebucare_app/pages/booking_page.dart';
 import 'package:ebucare_app/pages/confinement_services_pages.dart';
 import 'package:ebucare_app/pages/view_bookings_page.dart';
 import 'package:flutter/material.dart';

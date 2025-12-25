@@ -1,7 +1,6 @@
 import 'package:ebucare_app/pages/confinement_10days_page.dart';
 import 'package:ebucare_app/pages/confinement_14days_page.dart';
 import 'package:ebucare_app/pages/confinement_7days_page.dart';
-import 'package:ebucare_app/pages/reminder_page.dart';
 import 'package:flutter/material.dart';
 
 class ConfinementCarePage extends StatefulWidget {

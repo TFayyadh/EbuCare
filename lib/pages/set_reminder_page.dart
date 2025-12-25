@@ -324,6 +324,27 @@ class _SetReminderPageState extends State<SetReminderPage> {
                                   }
 
                                   await notiService.initNotification();
+                                  final androidImplementation = notiService
+                                      .notificationsPlugin
+                                      .resolvePlatformSpecificImplementation<
+                                          AndroidFlutterLocalNotificationsPlugin>();
+                                  final canScheduleExact =
+                                      await androidImplementation
+                                          ?.canScheduleExactNotifications();
+                                  if (canScheduleExact == false) {
+                                    await androidImplementation
+                                        ?.requestExactAlarmsPermission();
+                                    if (mounted) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                              'Enable exact alarms to schedule reminders.'),
+                                        ),
+                                      );
+                                    }
+                                    return;
+                                  }
                                   if (isDaily) {
                                     await notiService.scheduleNotification(
                                       id: notificationId,
@@ -341,6 +362,18 @@ class _SetReminderPageState extends State<SetReminderPage> {
                                       selectedMinute,
                                     );
 
+                                    if (ScheduledDate.isBefore(
+                                        DateTime.now())) {
+                                      if (mounted) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(SnackBar(
+                                          content: Text(
+                                              'Selected time is in the past.'),
+                                        ));
+                                      }
+                                      return;
+                                    }
+
                                     await notiService.notificationsPlugin
                                         .zonedSchedule(
                                       notificationId,
@@ -350,16 +383,21 @@ class _SetReminderPageState extends State<SetReminderPage> {
                                           ScheduledDate, tz.local),
                                       notiService.notificationDetails(),
                                       androidScheduleMode: AndroidScheduleMode
-                                          .inexactAllowWhileIdle,
+                                          .exactAllowWhileIdle,
                                       matchDateTimeComponents: null,
                                     );
                                   }
 
                                   if (mounted) {
+                                    final pending = await notiService
+                                        .notificationsPlugin
+                                        .pendingNotificationRequests();
                                     ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(
-                                            content: Text(
-                                                'Reminder Set Successfully!')));
+                                      SnackBar(
+                                        content: Text(
+                                            'Reminder set. Pending: ${pending.length}'),
+                                      ),
+                                    );
                                     Navigator.pop(context);
                                   }
                                 },

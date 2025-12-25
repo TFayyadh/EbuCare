@@ -29,6 +29,18 @@ class NotiService {
     await notificationsPlugin.initialize(
       initSettings,
     );
+
+    final androidImplementation =
+        notificationsPlugin.resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>();
+    await androidImplementation?.requestNotificationsPermission();
+    final canScheduleExact =
+        await androidImplementation?.canScheduleExactNotifications();
+    if (canScheduleExact == false) {
+      await androidImplementation?.requestExactAlarmsPermission();
+    }
+
+    _isinitialized = true;
   }
 
 //Setup Notification Details
@@ -78,7 +90,7 @@ class NotiService {
     await notificationsPlugin.zonedSchedule(
       id, title, body, scheduledDate, notificationDetails(),
 
-      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
 
       //Make Notification Repeating Daily
       matchDateTimeComponents: DateTimeComponents.time,

@@ -1,15 +1,15 @@
-import 'package:ebucare_app/pages/baby_care_tracker_page.dart';
-import 'package:ebucare_app/pages/baby_growth/baby_growth_home_page.dart';
+import 'package:ebucare_app/pages/baby_feed_page.dart';
+import 'package:ebucare_app/pages/baby_sleep_page.dart';
 import 'package:flutter/material.dart';
 
-class BabyCarePage extends StatefulWidget {
-  const BabyCarePage({super.key});
+class BabyCareTrackerPage extends StatefulWidget {
+  const BabyCareTrackerPage({super.key});
 
   @override
-  State<BabyCarePage> createState() => _BabyCarePageState();
+  State<BabyCareTrackerPage> createState() => _BabyCareTrackerPageState();
 }
 
-class _BabyCarePageState extends State<BabyCarePage> {
+class _BabyCareTrackerPageState extends State<BabyCareTrackerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +31,7 @@ class _BabyCarePageState extends State<BabyCarePage> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 5.0),
                 child: Text(
-                  "Track Baby Care",
+                  "Sleep & Feed",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontSize: 35,
@@ -57,7 +57,7 @@ class _BabyCarePageState extends State<BabyCarePage> {
                             child: Padding(
                               padding: const EdgeInsets.all(5.0),
                               child: Text(
-                                "Growth & Milestones",
+                                "Sleep Tracker",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontSize: 20,
@@ -77,7 +77,7 @@ class _BabyCarePageState extends State<BabyCarePage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => BabyGrowthHomePage(),
+                                  builder: (context) => BabySleepPage(),
                                 ),
                               );
                             },
@@ -86,10 +86,9 @@ class _BabyCarePageState extends State<BabyCarePage> {
                               height: 200,
                               decoration: BoxDecoration(
                                 image: DecorationImage(
-                                    alignment: Alignment(0, 0),
-                                    image:
-                                        AssetImage("assets/images/growth.jpg"),
-                                    fit: BoxFit.cover),
+                                    image: AssetImage(
+                                        "assets/images/baby_blue.png"),
+                                    fit: BoxFit.fitHeight),
                                 borderRadius: BorderRadius.circular(30),
                                 color: const Color.fromRGBO(210, 145, 188, 1),
                               ),
@@ -111,7 +110,7 @@ class _BabyCarePageState extends State<BabyCarePage> {
                             child: Padding(
                               padding: const EdgeInsets.all(5.0),
                               child: Text(
-                                "Sleep & Feed",
+                                "Feed Tracker",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontSize: 20,
@@ -131,7 +130,7 @@ class _BabyCarePageState extends State<BabyCarePage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => BabyCareTrackerPage(),
+                                  builder: (context) => BabyFeedPage(),
                                 ),
                               );
                             },
@@ -140,9 +139,9 @@ class _BabyCarePageState extends State<BabyCarePage> {
                               height: 200,
                               decoration: BoxDecoration(
                                 image: DecorationImage(
-                                    image:
-                                        AssetImage("assets/images/parents.jpg"),
-                                    fit: BoxFit.fitWidth),
+                                    image: AssetImage(
+                                        "assets/images/baby_milks.jpg"),
+                                    fit: BoxFit.fitHeight),
                                 borderRadius: BorderRadius.circular(30),
                                 color: const Color.fromRGBO(210, 145, 188, 1),
                               ),

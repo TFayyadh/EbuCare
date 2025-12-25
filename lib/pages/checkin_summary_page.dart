@@ -74,7 +74,6 @@ class _CheckinSummaryPageState extends State<CheckinSummaryPage> {
   @override
   Widget build(BuildContext context) {
     const pinkBg = Color(0xFFFFE6EC);
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -182,7 +181,7 @@ class _CheckinSummaryPageState extends State<CheckinSummaryPage> {
                       borderRadius: BorderRadius.circular(20),
                     ),
                     padding: EdgeInsets.zero,
-                    backgroundColor: const Color.fromARGB(255, 255, 126, 207),
+                    backgroundColor: const Color.fromARGB(255, 106, 63, 114),
                   ),
                   onPressed: () {
                     Navigator.pushAndRemoveUntil(

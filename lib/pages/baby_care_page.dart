@@ -1,5 +1,6 @@
 import 'package:ebucare_app/pages/baby_care_tracker_page.dart';
 import 'package:ebucare_app/pages/baby_growth/baby_growth_home_page.dart';
+import 'package:ebucare_app/pages/health/health_page.dart';
 import 'package:flutter/material.dart';
 
 class BabyCarePage extends StatefulWidget {
@@ -143,6 +144,59 @@ class _BabyCarePageState extends State<BabyCarePage> {
                                     image:
                                         AssetImage("assets/images/parents.jpg"),
                                     fit: BoxFit.fitWidth),
+                                borderRadius: BorderRadius.circular(30),
+                                color: const Color.fromRGBO(210, 145, 188, 1),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        SizedBox(
+                          child: Container(
+                            width: double.infinity,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              color: Colors.white,
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Text(
+                                "Health & Vaccines",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.normal,
+                                    fontFamily: "Calsans",
+                                    color:
+                                        const Color.fromRGBO(210, 145, 188, 1)),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0, vertical: 5),
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => HealthPage(),
+                                ),
+                              );
+                            },
+                            child: Container(
+                              width: double.infinity,
+                              height: 200,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image:
+                                        AssetImage("assets/images/growth2.png"),
+                                    fit: BoxFit.fitHeight),
                                 borderRadius: BorderRadius.circular(30),
                                 color: const Color.fromRGBO(210, 145, 188, 1),
                               ),

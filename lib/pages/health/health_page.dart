@@ -12,7 +12,6 @@ class HealthPage extends StatefulWidget {
 
 class _HealthPageState extends State<HealthPage> {
   final _svc = HealthSupabaseService();
-
   late Future<_Counts> _countsFuture;
 
   @override
@@ -36,7 +35,7 @@ class _HealthPageState extends State<HealthPage> {
       context,
       MaterialPageRoute(builder: (_) => const MedicalHistoryPage()),
     );
-    setState(_loadCounts); // refresh counts when coming back
+    setState(_loadCounts);
   }
 
   Future<void> _openVaccine() async {
@@ -49,10 +48,12 @@ class _HealthPageState extends State<HealthPage> {
 
   @override
   Widget build(BuildContext context) {
+    final bg = Colors.pink.shade100; // same as BabyGrowthHomePage
+
     return Scaffold(
-      backgroundColor: const Color(0xFF1F2430),
+      backgroundColor: bg,
       appBar: AppBar(
-        backgroundColor: const Color(0xFFB8B6D6),
+        backgroundColor: bg,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black87),
@@ -61,12 +62,10 @@ class _HealthPageState extends State<HealthPage> {
         title: const Text(
           "Health",
           style: TextStyle(
+            fontFamily: "Calsans",
             color: Colors.black87,
-            fontSize: 22,
-            fontWeight: FontWeight.w600,
           ),
         ),
-        centerTitle: true,
       ),
       body: SafeArea(
         child: FutureBuilder<_Counts>(
@@ -81,38 +80,149 @@ class _HealthPageState extends State<HealthPage> {
                 child: Text(
                   "Failed to load data\n${snap.error}",
                   textAlign: TextAlign.center,
-                  style: const TextStyle(color: Colors.white70),
+                  style: const TextStyle(
+                    fontFamily: "Raleway",
+                    color: Colors.black87,
+                  ),
                 ),
               );
             }
 
             final data = snap.data!;
-            return Padding(
+
+            return ListView(
               padding: const EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  _SectionCard(
-                    title: "Medical",
-                    titleBg: const Color(0xFF7FB069),
-                    bodyLeftText: "${data.medical} records stored",
-                    rightTextButton: "View",
-                    onRightTextTap: _openMedical,
-                    onPlusTap: _openMedical,
+              children: [
+                _sectionCard(
+                  title: "Medical",
+                  color: const Color(0xFF7FAE67), // matches Growth green vibe
+                  onAdd: _openMedical, // + opens medical
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            "${data.medical} record${data.medical == 1 ? "" : "s"} stored",
+                            style: const TextStyle(
+                              fontFamily: "Raleway",
+                              fontSize: 15,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: data.medical == 0 ? null : _openMedical,
+                          child: const Text(
+                            "View",
+                            style: TextStyle(
+                              fontFamily: "Raleway",
+                              color: Colors.white,
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  const SizedBox(height: 16),
-                  _SectionCard(
-                    title: "Vaccine",
-                    titleBg: const Color(0xFFB8B6D6),
-                    bodyLeftText: "${data.vaccine} records stored",
-                    rightTextButton: "View",
-                    onRightTextTap: _openVaccine,
-                    onPlusTap: _openVaccine,
+                ),
+                const SizedBox(height: 16),
+                _sectionCard(
+                  title: "Vaccine",
+                  color:
+                      const Color(0xFF9EA0B8), // matches Milestones purple/grey
+                  onAdd: _openVaccine, // + opens vaccine
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            "${data.vaccine} record${data.vaccine == 1 ? "" : "s"} stored",
+                            style: const TextStyle(
+                              fontFamily: "Raleway",
+                              fontSize: 15,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: data.vaccine == 0 ? null : _openVaccine,
+                          child: const Text(
+                            "View",
+                            style: TextStyle(
+                              fontFamily: "Raleway",
+                              color: Colors.white,
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ],
-              ),
+                ),
+              ],
             );
           },
         ),
+      ),
+    );
+  }
+
+  /// SAME card UI style as BabyGrowthHomePage
+  Widget _sectionCard({
+    required String title,
+    required Color color,
+    required Widget child,
+    required VoidCallback onAdd,
+  }) {
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color(0xFF3B3F4E),
+        borderRadius: BorderRadius.circular(18),
+      ),
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+            decoration: BoxDecoration(
+              color: color,
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(18),
+              ),
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    title,
+                    style: const TextStyle(
+                      fontFamily: "Calsans",
+                      fontSize: 22,
+                      color: Colors.black87,
+                    ),
+                  ),
+                ),
+                InkWell(
+                  onTap: onAdd,
+                  borderRadius: BorderRadius.circular(24),
+                  child: Container(
+                    width: 44,
+                    height: 44,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF2F8E62),
+                      borderRadius: BorderRadius.circular(22),
+                    ),
+                    child: const Icon(Icons.add, color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          child,
+        ],
       ),
     );
   }
@@ -122,97 +232,4 @@ class _Counts {
   final int medical;
   final int vaccine;
   _Counts({required this.medical, required this.vaccine});
-}
-
-class _SectionCard extends StatelessWidget {
-  final String title;
-  final Color titleBg;
-  final String bodyLeftText;
-  final String rightTextButton;
-  final VoidCallback onRightTextTap;
-  final VoidCallback onPlusTap;
-
-  const _SectionCard({
-    required this.title,
-    required this.titleBg,
-    required this.bodyLeftText,
-    required this.rightTextButton,
-    required this.onRightTextTap,
-    required this.onPlusTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: const Color(0xFF2A2F3D),
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: Colors.white10),
-      ),
-      child: Column(
-        children: [
-          Container(
-            height: 66,
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            decoration: BoxDecoration(
-              color: titleBg,
-              borderRadius:
-                  const BorderRadius.vertical(top: Radius.circular(18)),
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    title,
-                    style: const TextStyle(
-                      color: Color(0xFF101317),
-                      fontSize: 28,
-                      fontWeight: FontWeight.w700,
-                      fontFamily: 'Serif',
-                    ),
-                  ),
-                ),
-                InkWell(
-                  onTap: onPlusTap,
-                  child: Container(
-                    width: 40,
-                    height: 40,
-                    decoration: const BoxDecoration(
-                      color: Color(0xFF2E8B57),
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(Icons.add, color: Colors.white, size: 26),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    bodyLeftText,
-                    style: const TextStyle(color: Colors.white70, fontSize: 16),
-                  ),
-                ),
-                InkWell(
-                  onTap: onRightTextTap,
-                  child: Text(
-                    rightTextButton,
-                    style: const TextStyle(
-                      color: Colors.white70,
-                      fontSize: 16,
-                      decoration: TextDecoration.underline,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }

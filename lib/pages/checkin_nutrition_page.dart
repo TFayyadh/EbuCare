@@ -17,7 +17,15 @@ class _CheckinNutritionPageState extends State<CheckinNutritionPage> {
   final List<String> _appetite = const ['Poor', 'Normal', 'Good'];
   String? _appetiteToday;
 
-  final List<int> _waterChoices = const [150, 200, 250, 300, 350, 400]; // ml
+  final List<int> _waterChoices = const [
+    150,
+    200,
+    250,
+    300,
+    350,
+    400,
+    500
+  ]; // ml
   int? _waterMl;
 
   final TextEditingController _othersCtrl = TextEditingController();
@@ -112,7 +120,7 @@ class _CheckinNutritionPageState extends State<CheckinNutritionPage> {
 
                     const SizedBox(height: 24),
                     // Water
-                    const Text('How many of water did you drink today?',
+                    const Text('How much water did you drink today?',
                         style: TextStyle(
                             fontSize: 14, fontWeight: FontWeight.w700)),
                     const SizedBox(height: 10),

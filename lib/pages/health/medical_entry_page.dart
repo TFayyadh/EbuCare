@@ -19,6 +19,8 @@ class _MedicalEntryPageState extends State<MedicalEntryPage> {
   DateTime _time = DateTime.now();
   String? _selectedMedication;
 
+  bool _saving = false;
+
   bool get _isEdit => widget.existing != null;
 
   @override
@@ -50,7 +52,25 @@ class _MedicalEntryPageState extends State<MedicalEntryPage> {
     return "Today  $hour:$min$ampm";
   }
 
+  Future<void> _pickTime() async {
+    final picked = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.fromDateTime(_time),
+    );
+    if (picked == null) return;
+    setState(() {
+      _time = DateTime(
+        _time.year,
+        _time.month,
+        _time.day,
+        picked.hour,
+        picked.minute,
+      );
+    });
+  }
+
   Future<void> _save() async {
+    setState(() => _saving = true);
     try {
       if (_isEdit) {
         await _svc.updateMedicalEntry(
@@ -75,7 +95,8 @@ class _MedicalEntryPageState extends State<MedicalEntryPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-              _isEdit ? "Medical entry updated ✅" : "Medical entry saved ✅"),
+            _isEdit ? "Medical entry updated ✅" : "Medical entry saved ✅",
+          ),
         ),
       );
       Navigator.pop(context);
@@ -84,6 +105,8 @@ class _MedicalEntryPageState extends State<MedicalEntryPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Save failed: $e")),
       );
+    } finally {
+      if (mounted) setState(() => _saving = false);
     }
   }
 
@@ -92,22 +115,23 @@ class _MedicalEntryPageState extends State<MedicalEntryPage> {
       context: context,
       builder: (_) => AlertDialog(
         backgroundColor: const Color(0xFF2A2F3D),
-        title:
-            const Text("Delete entry?", style: TextStyle(color: Colors.white)),
+        title: const Text("Delete entry?",
+            style: TextStyle(color: Colors.white, fontFamily: "Raleway")),
         content: const Text(
           "This cannot be undone.",
-          style: TextStyle(color: Colors.white70),
+          style: TextStyle(color: Colors.white70, fontFamily: "Raleway"),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child:
-                const Text("Cancel", style: TextStyle(color: Colors.white70)),
+            child: const Text("Cancel",
+                style: TextStyle(color: Colors.white70, fontFamily: "Raleway")),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child:
-                const Text("Delete", style: TextStyle(color: Colors.redAccent)),
+            child: const Text("Delete",
+                style:
+                    TextStyle(color: Colors.redAccent, fontFamily: "Raleway")),
           ),
         ],
       ),
@@ -118,320 +142,190 @@ class _MedicalEntryPageState extends State<MedicalEntryPage> {
     try {
       await _svc.deleteMedicalEntry(widget.existing!['id'].toString());
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Deleted ✅")),
-      );
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text("Deleted ✅")));
       Navigator.pop(context);
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Delete failed: $e")),
-      );
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Delete failed: $e")));
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1F2430),
-      body: SafeArea(
-        child: Column(
-          children: [
-            _TopBar(
-              title: "Medical",
-              leftIcon: Icons.close,
-              leftTap: () => Navigator.pop(context),
-              rightText: "Save",
-              rightTap: _save,
-              showDelete: _isEdit,
-              onDelete: _delete,
-            ),
-            Expanded(
-              child: ListView(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
-                children: [
-                  _RowItem(
-                    label: "Time",
-                    value: _formatTime(_time),
-                    onTap: () async {
-                      final picked = await showTimePicker(
-                        context: context,
-                        initialTime: TimeOfDay.fromDateTime(_time),
-                      );
-                      if (picked == null) return;
-                      setState(() {
-                        _time = DateTime(
-                          _time.year,
-                          _time.month,
-                          _time.day,
-                          picked.hour,
-                          picked.minute,
-                        );
-                      });
-                    },
-                  ),
-                  _RowItem(
-                    label: "Temperature",
-                    value: _tempCtrl.text.isEmpty ? "Add" : _tempCtrl.text,
-                    valueColor: _tempCtrl.text.isEmpty
-                        ? const Color(0xFF66C08B)
-                        : Colors.white70,
-                    onTap: () async {
-                      final v = await _openTextDialog(
-                        title: "Temperature",
-                        hint: "e.g. 37.5°C",
-                        initial: _tempCtrl.text,
-                      );
-                      if (v == null) return;
-                      setState(() => _tempCtrl.text = v);
-                    },
-                  ),
-                  _RowItem(
-                    label: "Medication",
-                    value: _selectedMedication ?? "Add",
-                    trailing: Icons.chevron_right,
-                    valueColor: _selectedMedication == null
-                        ? const Color(0xFF66C08B)
-                        : Colors.white70,
-                    onTap: () async {
-                      final selected = await Navigator.push<String>(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => MedicationPickerPage(
-                            selected: _selectedMedication,
-                          ),
-                        ),
-                      );
-                      if (selected == null) return;
-                      setState(() => _selectedMedication = selected);
-                    },
-                  ),
-                  _RowItem(
-                    label: "Notes",
-                    value: _notesCtrl.text.isEmpty ? "" : "Added",
-                    valueColor: Colors.white70,
-                    onTap: () async {
-                      final v = await _openTextDialog(
-                        title: "Notes",
-                        hint: "Write notes...",
-                        initial: _notesCtrl.text,
-                        maxLines: 6,
-                      );
-                      if (v == null) return;
-                      setState(() => _notesCtrl.text = v);
-                    },
-                  ),
-                  const SizedBox(height: 18),
-                  _PhotoButton(
-                    text: "Add Photo",
-                    onTap: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                            content: Text("Photo upload next step (Storage).")),
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Future<String?> _openTextDialog({
-    required String title,
-    required String hint,
-    required String initial,
-    int maxLines = 1,
-  }) async {
-    final ctrl = TextEditingController(text: initial);
-    return showDialog<String>(
-      context: context,
-      builder: (_) => AlertDialog(
-        backgroundColor: const Color(0xFF2A2F3D),
-        title: Text(title, style: const TextStyle(color: Colors.white)),
-        content: TextField(
-          controller: ctrl,
-          maxLines: maxLines,
-          style: const TextStyle(color: Colors.white),
-          decoration: InputDecoration(
-            hintText: hint,
-            hintStyle: const TextStyle(color: Colors.white54),
-            enabledBorder: const UnderlineInputBorder(
-              borderSide: BorderSide(color: Colors.white24),
-            ),
-            focusedBorder: const UnderlineInputBorder(
-              borderSide: BorderSide(color: Colors.white70),
-            ),
-          ),
-        ),
+      backgroundColor: const Color(0xFF2D3140), // same as GrowthAddRecordPage
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF7FAE67), // same style as Growth header
+        title: const Text("Medical", style: TextStyle(fontFamily: "Calsans")),
         actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child:
-                const Text("Cancel", style: TextStyle(color: Colors.white70)),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(context, ctrl.text.trim()),
-            child:
-                const Text("Done", style: TextStyle(color: Color(0xFF66C08B))),
-          ),
+          if (_isEdit)
+            IconButton(
+              onPressed: _saving ? null : _delete,
+              icon: const Icon(Icons.delete_outline),
+            ),
         ],
       ),
-    );
-  }
-}
-
-class _TopBar extends StatelessWidget {
-  final String title;
-  final IconData leftIcon;
-  final VoidCallback leftTap;
-  final String rightText;
-  final VoidCallback rightTap;
-
-  final bool showDelete;
-  final VoidCallback? onDelete;
-
-  const _TopBar({
-    required this.title,
-    required this.leftIcon,
-    required this.leftTap,
-    required this.rightText,
-    required this.rightTap,
-    this.showDelete = false,
-    this.onDelete,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 56,
-      decoration: const BoxDecoration(color: Color(0xFFB8B6D6)),
-      child: Row(
+      body: ListView(
+        padding: const EdgeInsets.all(16),
         children: [
-          IconButton(
-            onPressed: leftTap,
-            icon: Icon(leftIcon, color: Colors.black87),
-          ),
-          Expanded(
-            child: Center(
+          // Time (like Date row in growth)
+          ListTile(
+            contentPadding: EdgeInsets.zero,
+            title: const Text(
+              "Time",
+              style: TextStyle(color: Colors.white, fontFamily: "Raleway"),
+            ),
+            trailing: TextButton(
+              onPressed: _saving ? null : _pickTime,
               child: Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 28,
-                  color: Colors.black87,
-                  fontFamily: 'Serif',
-                ),
+                _formatTime(_time),
+                style:
+                    const TextStyle(color: Colors.white, fontFamily: "Raleway"),
               ),
             ),
           ),
-          if (showDelete)
-            IconButton(
-              onPressed: onDelete,
-              icon: const Icon(Icons.delete_outline, color: Colors.black87),
-            ),
-          TextButton(
-            onPressed: rightTap,
-            child: Text(
-              rightText,
-              style: const TextStyle(fontSize: 16, color: Colors.black87),
-            ),
+          const Divider(color: Colors.white24),
+
+          // Temperature input (direct TextField like Growth page)
+          _field("Temperature (e.g. 37.5°C)", _tempCtrl,
+              keyboardType: TextInputType.text),
+
+          const SizedBox(height: 8),
+
+          // Medication picker (styled like a field)
+          const Text(
+            "Medication",
+            style: TextStyle(color: Colors.white, fontFamily: "Raleway"),
           ),
-        ],
-      ),
-    );
-  }
-}
-
-class _RowItem extends StatelessWidget {
-  final String label;
-  final String value;
-  final VoidCallback onTap;
-  final IconData? trailing;
-  final Color? valueColor;
-
-  const _RowItem({
-    required this.label,
-    required this.value,
-    required this.onTap,
-    this.trailing,
-    this.valueColor,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        InkWell(
-          onTap: onTap,
-          child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 18),
-            child: Row(
-              children: [
-                SizedBox(
-                  width: 140,
-                  child: Text(
-                    label,
-                    style: const TextStyle(
-                      color: Colors.white70,
-                      fontSize: 20,
-                      fontFamily: 'Serif',
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Align(
-                    alignment: Alignment.centerRight,
+          const SizedBox(height: 6),
+          InkWell(
+            onTap: _saving
+                ? null
+                : () async {
+                    final selected = await Navigator.push<String>(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => MedicationPickerPage(
+                          selected: _selectedMedication,
+                        ),
+                      ),
+                    );
+                    if (selected == null) return;
+                    setState(() => _selectedMedication = selected);
+                  },
+            borderRadius: BorderRadius.circular(14),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 16),
+              decoration: BoxDecoration(
+                color: const Color(0xFF3B3F4E),
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(color: Colors.white24),
+              ),
+              child: Row(
+                children: [
+                  Expanded(
                     child: Text(
-                      value,
+                      _selectedMedication ?? "Tap to choose",
                       style: TextStyle(
-                        color: valueColor ?? Colors.white70,
-                        fontSize: 18,
+                        fontFamily: "Raleway",
+                        color: _selectedMedication == null
+                            ? Colors.white54
+                            : Colors.white,
                       ),
                     ),
                   ),
-                ),
-                if (trailing != null) ...[
-                  const SizedBox(width: 8),
-                  Icon(trailing, color: Colors.white54),
+                  const Icon(Icons.chevron_right, color: Colors.white54),
                 ],
-              ],
+              ),
             ),
           ),
-        ),
-        const Divider(height: 1, color: Color(0xFF2D3446)),
-      ],
+
+          const SizedBox(height: 12),
+
+          // Notes
+          const Text("Notes",
+              style: TextStyle(color: Colors.white, fontFamily: "Raleway")),
+          const SizedBox(height: 6),
+          TextField(
+            controller: _notesCtrl,
+            maxLines: 4,
+            style: const TextStyle(color: Colors.white, fontFamily: "Raleway"),
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: const Color(0xFF3B3F4E),
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
+            ),
+          ),
+
+          const SizedBox(height: 18),
+
+          // Photo button (same placement/style like Growth, but logic not added yet)
+          const Text("Photo",
+              style: TextStyle(color: Colors.white, fontFamily: "Raleway")),
+          const SizedBox(height: 8),
+
+          OutlinedButton.icon(
+            onPressed: _saving
+                ? null
+                : () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("Photo upload next step (Storage)."),
+                      ),
+                    );
+                  },
+            icon: const Icon(Icons.add_a_photo_outlined),
+            label: const Text("Add Photo",
+                style: TextStyle(fontFamily: "Raleway")),
+          ),
+
+          const SizedBox(height: 16),
+
+          // Save button (same as Growth)
+          SizedBox(
+            width: double.infinity,
+            child: FilledButton(
+              onPressed: _saving ? null : _save,
+              child: _saving
+                  ? const SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  : Text(
+                      _isEdit ? "Update" : "Save",
+                      style:
+                          const TextStyle(fontFamily: "Calsans", fontSize: 16),
+                    ),
+            ),
+          ),
+        ],
+      ),
     );
   }
-}
 
-class _PhotoButton extends StatelessWidget {
-  final String text;
-  final VoidCallback onTap;
-  const _PhotoButton({required this.text, required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(26),
-        child: Container(
-          width: 180,
-          height: 44,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: const Color(0xFF2A2F3D),
-            borderRadius: BorderRadius.circular(26),
-            border: Border.all(color: Colors.white24),
-          ),
-          child: Text(
-            text,
-            style: const TextStyle(color: Color(0xFF66C08B), fontSize: 16),
-          ),
+  Widget _field(
+    String label,
+    TextEditingController c, {
+    TextInputType keyboardType =
+        const TextInputType.numberWithOptions(decimal: true),
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: TextField(
+        controller: c,
+        keyboardType: keyboardType,
+        style: const TextStyle(color: Colors.white, fontFamily: "Raleway"),
+        decoration: InputDecoration(
+          labelText: label,
+          labelStyle:
+              const TextStyle(color: Colors.white70, fontFamily: "Raleway"),
+          filled: true,
+          fillColor: const Color(0xFF3B3F4E),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
         ),
       ),
     );

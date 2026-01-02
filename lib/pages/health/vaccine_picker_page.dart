@@ -42,136 +42,121 @@ class _VaccinePickerPageState extends State<VaccinePickerPage> {
     }).toList();
 
     return Scaffold(
-      backgroundColor: const Color(0xFF1F2430),
-      body: SafeArea(
-        child: Column(
-          children: [
-            _HeaderBack(title: "Vaccine", onBack: () => Navigator.pop(context)),
-            Padding(
-              padding: const EdgeInsets.all(14),
+      backgroundColor: const Color(0xFF2D3140),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF7FAE67),
+        title: const Text("Vaccine", style: TextStyle(fontFamily: "Calsans")),
+      ),
+      body: ListView(
+        padding: const EdgeInsets.all(16),
+        children: [
+          // Search box (same style like your fields)
+          TextField(
+            controller: _search,
+            onChanged: (_) => setState(() {}),
+            style: const TextStyle(color: Colors.white, fontFamily: "Raleway"),
+            decoration: InputDecoration(
+              labelText: "Search vaccine",
+              labelStyle: const TextStyle(
+                color: Colors.white70,
+                fontFamily: "Raleway",
+              ),
+              filled: true,
+              fillColor: const Color(0xFF3B3F4E),
+              prefixIcon: const Icon(Icons.search, color: Colors.white70),
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
+            ),
+          ),
+
+          const SizedBox(height: 14),
+
+          const Text(
+            "Vaccines",
+            style: TextStyle(color: Colors.white54, fontFamily: "Raleway"),
+          ),
+          const SizedBox(height: 10),
+
+          if (filtered.isEmpty)
+            const Padding(
+              padding: EdgeInsets.only(top: 30),
+              child: Center(
+                child: Text(
+                  "No results",
+                  style:
+                      TextStyle(color: Colors.white70, fontFamily: "Raleway"),
+                ),
+              ),
+            ),
+
+          ...filtered.map((item) {
+            final name = item["name"] ?? "";
+            final desc = item["desc"] ?? "";
+            final isSelected = widget.selected == name;
+
+            return InkWell(
+              onTap: () => Navigator.pop(context, name),
+              borderRadius: BorderRadius.circular(16),
               child: Container(
-                height: 44,
+                margin: const EdgeInsets.only(bottom: 12),
+                padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF2A2F3D),
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: Colors.white10),
+                  color: const Color(0xFF3B3F4E),
+                  borderRadius: BorderRadius.circular(16),
                 ),
                 child: Row(
                   children: [
-                    const SizedBox(width: 10),
-                    const Icon(Icons.add, color: Colors.white70),
-                    const SizedBox(width: 8),
-                    const Text(
-                      "Add Vaccine",
-                      style: TextStyle(color: Colors.white70, fontSize: 16),
-                    ),
-                    const Spacer(),
-                    SizedBox(
-                      width: 160,
-                      child: TextField(
-                        controller: _search,
-                        onChanged: (_) => setState(() {}),
-                        style: const TextStyle(color: Colors.white),
-                        decoration: const InputDecoration(
-                          hintText: "Search",
-                          hintStyle: TextStyle(color: Colors.white38),
-                          border: InputBorder.none,
-                          contentPadding: EdgeInsets.only(bottom: 10),
-                        ),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            name,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontFamily: "Raleway",
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                            ),
+                          ),
+                          if (desc.isNotEmpty) ...[
+                            const SizedBox(height: 6),
+                            Text(
+                              desc,
+                              style: const TextStyle(
+                                color: Colors.white54,
+                                fontFamily: "Raleway",
+                                fontSize: 13,
+                              ),
+                            ),
+                          ],
+                        ],
                       ),
                     ),
                     const SizedBox(width: 10),
+                    Container(
+                      width: 34,
+                      height: 34,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: isSelected
+                              ? Colors.white
+                              : const Color(0xFF66C08B),
+                          width: 2,
+                        ),
+                      ),
+                      child: Icon(
+                        isSelected ? Icons.check : Icons.add,
+                        color:
+                            isSelected ? Colors.white : const Color(0xFF66C08B),
+                      ),
+                    ),
                   ],
                 ),
               ),
-            ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 14),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "Vaccines",
-                  style: TextStyle(color: Colors.white54, fontSize: 14),
-                ),
-              ),
-            ),
-            const SizedBox(height: 8),
-            Expanded(
-              child: ListView.separated(
-                itemCount: filtered.length,
-                separatorBuilder: (_, __) =>
-                    const Divider(height: 1, color: Color(0xFF2D3446)),
-                itemBuilder: (_, i) {
-                  final item = filtered[i];
-                  final name = item["name"] ?? "";
-                  final desc = item["desc"] ?? "";
-
-                  return ListTile(
-                    title: Text(
-                      name,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 22,
-                        fontFamily: 'Serif',
-                      ),
-                    ),
-                    subtitle: desc.isEmpty
-                        ? null
-                        : Text(desc,
-                            style: const TextStyle(color: Colors.white54)),
-                    trailing: InkWell(
-                      onTap: () => Navigator.pop(context, name),
-                      child: Container(
-                        width: 34,
-                        height: 34,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                              color: const Color(0xFF66C08B), width: 2),
-                        ),
-                        child: const Icon(Icons.add, color: Color(0xFF66C08B)),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _HeaderBack extends StatelessWidget {
-  final String title;
-  final VoidCallback onBack;
-  const _HeaderBack({required this.title, required this.onBack});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 56,
-      decoration: const BoxDecoration(color: Color(0xFFB8B6D6)),
-      child: Row(
-        children: [
-          IconButton(
-            onPressed: onBack,
-            icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black87),
-          ),
-          Expanded(
-            child: Center(
-              child: Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 28,
-                  color: Colors.black87,
-                  fontFamily: 'Serif',
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(width: 48),
+            );
+          }),
         ],
       ),
     );

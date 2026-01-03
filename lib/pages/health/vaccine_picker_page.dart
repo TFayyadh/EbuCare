@@ -13,17 +13,40 @@ class _VaccinePickerPageState extends State<VaccinePickerPage> {
 
   final List<Map<String, String>> _vaccines = const [
     {"name": "BCG", "desc": "Bacille Calmette–Guérin (tuberculosis)"},
-    {"name": "COVID-19", "desc": ""},
+    {"name": "HepB", "desc": "Hepatitis B"},
     {
-      "name": "DTaP",
+      "name": "DTaP (Dose 1)",
       "desc": "Diphtheria, tetanus & whooping cough (pertussis)"
     },
-    {"name": "HPV", "desc": "Human papillomavirus"},
-    {"name": "HepA", "desc": "Hepatitis A"},
-    {"name": "HepB", "desc": "Hepatitis B"},
-    {"name": "Hib", "desc": "Haemophilus influenzae type b"},
-    {"name": "IIV", "desc": "Flu (influenza)"},
-    {"name": "IPV", "desc": "Polio"},
+    {
+      "name": "DTaP (Dose 2)",
+      "desc": "Diphtheria, tetanus & whooping cough (pertussis)"
+    },
+    {
+      "name": "Pneumokokal (Dose 1)",
+      "desc": "pneumonia, meningitis, and bloodstream infections"
+    },
+    {
+      "name": "DTaP (Dose 3)",
+      "desc": "Diphtheria, tetanus & whooping cough (pertussis)"
+    },
+    {
+      "name": "Pneumokokal (Dose 2)",
+      "desc": "pneumonia, meningitis, and bloodstream infections"
+    },
+    {"name": "Measles", "desc": "highly contagious, serious viral illness"},
+    {"name": "JE (Dose 1)", "desc": "Japanese encephalitis"},
+    {"name": "MMR (Dose 1)", "desc": "Measles, mumps, rubella"},
+    {"name": "MMR (Dose 2)", "desc": "Measles, mumps, rubella"},
+    {
+      "name": "Pneumokokal (Booster)",
+      "desc": "pneumonia, meningitis, and bloodstream infections"
+    },
+    {
+      "name": "DTaP (Booster)",
+      "desc": "Diphtheria, tetanus & whooping cough (pertussis)"
+    },
+    {"name": "JE (Dose 1)", "desc": "Japanese encephalitis"},
   ];
 
   @override

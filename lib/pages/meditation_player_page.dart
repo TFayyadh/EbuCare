@@ -164,7 +164,7 @@ class _MeditationPlayerPageState extends State<MeditationPlayerPage> {
         _position.inSeconds.clamp(0, sliderMax.toInt()).toDouble();
 
     return Scaffold(
-      backgroundColor: const Color(0xFFFDF6EE),
+      backgroundColor: Color.fromARGB(255, 247, 226, 226),
       body: SafeArea(
         child: Column(
           children: [

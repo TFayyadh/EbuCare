@@ -13,9 +13,9 @@ class _ConfinementLadyPageState extends State<ConfinementLadyPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 207, 241, 238),
+      backgroundColor: Color.fromARGB(255, 247, 226, 226),
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 207, 241, 238),
+        backgroundColor: Color.fromARGB(255, 247, 226, 226),
         leading: IconButton(
             onPressed: () {
               Navigator.pop(context);
@@ -60,7 +60,7 @@ class _ConfinementLadyPageState extends State<ConfinementLadyPage> {
                           width: 350,
                           height: 100,
                           decoration: BoxDecoration(
-                            color: const Color.fromARGB(204, 246, 174, 74),
+                            color: Color.fromARGB(255, 205, 222, 158),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Padding(
@@ -127,7 +127,7 @@ class _ConfinementLadyPageState extends State<ConfinementLadyPage> {
                           width: 350,
                           height: 100,
                           decoration: BoxDecoration(
-                            color: const Color.fromARGB(204, 246, 174, 74),
+                            color: Color.fromARGB(255, 205, 222, 158),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Padding(

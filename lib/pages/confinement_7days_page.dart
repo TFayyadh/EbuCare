@@ -12,7 +12,7 @@ class _Confinement7daysPageState extends State<Confinement7daysPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 207, 241, 238),
+      backgroundColor: Color.fromARGB(255, 247, 226, 226),
       appBar: AppBar(
         title: Text(
           "7 Days Confinement Care",
@@ -22,7 +22,7 @@ class _Confinement7daysPageState extends State<Confinement7daysPage> {
           ),
         ),
         centerTitle: true,
-        backgroundColor: const Color.fromARGB(255, 207, 241, 238),
+        backgroundColor: Color.fromARGB(255, 247, 226, 226),
         leading: IconButton(
             onPressed: () {
               Navigator.pop(context);
@@ -82,7 +82,7 @@ class _Confinement7daysPageState extends State<Confinement7daysPage> {
               },
               style: ButtonStyle(
                 backgroundColor:
-                    WidgetStatePropertyAll(Color.fromARGB(255, 174, 121, 183)),
+                    WidgetStatePropertyAll(Color.fromARGB(255, 205, 222, 158)),
                 maximumSize: WidgetStatePropertyAll(Size(350, 50)),
                 padding: WidgetStatePropertyAll(
                     EdgeInsets.symmetric(horizontal: 50, vertical: 15)),

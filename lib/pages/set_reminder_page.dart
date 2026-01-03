@@ -33,7 +33,7 @@ class _SetReminderPageState extends State<SetReminderPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 207, 241, 238),
+      backgroundColor: const Color.fromARGB(255, 247, 226, 226),
       appBar: AppBar(
         title: Text(
           "Set Reminder",
@@ -43,7 +43,7 @@ class _SetReminderPageState extends State<SetReminderPage> {
           ),
         ),
         centerTitle: true,
-        backgroundColor: const Color.fromARGB(255, 207, 241, 238),
+        backgroundColor: const Color.fromARGB(255, 247, 226, 226),
         leading: IconButton(
             onPressed: () {
               Navigator.pop(context);
@@ -118,7 +118,7 @@ class _SetReminderPageState extends State<SetReminderPage> {
                         height: 120,
                         width: double.infinity,
                         decoration: BoxDecoration(
-                          color: const Color.fromARGB(255, 123, 101, 180),
+                          color: const Color.fromARGB(255, 172, 154, 218),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         padding: EdgeInsets.all(10),
@@ -154,7 +154,7 @@ class _SetReminderPageState extends State<SetReminderPage> {
                   height: double.infinity,
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 123, 101, 180),
+                    color: const Color.fromARGB(255, 172, 154, 218),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Column(

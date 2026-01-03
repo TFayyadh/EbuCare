@@ -14,7 +14,7 @@ class _ConfinementCarePageState extends State<ConfinementCarePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 207, 241, 238),
+      backgroundColor: Color.fromARGB(255, 247, 226, 226),
       appBar: AppBar(
         title: Text(
           "Confinement Care",
@@ -26,7 +26,7 @@ class _ConfinementCarePageState extends State<ConfinementCarePage> {
           ),
         ),
         centerTitle: true,
-        backgroundColor: const Color.fromARGB(255, 207, 241, 238),
+        backgroundColor: Color.fromARGB(255, 247, 226, 226),
         leading: IconButton(
             onPressed: () {
               Navigator.pop(context);

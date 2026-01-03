@@ -315,9 +315,9 @@ class _ConfinementFeedbackPageState extends State<ConfinementFeedbackPage> {
     final items = _getChecklistItems(widget.packageType);
 
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 207, 241, 238),
+      backgroundColor: Color.fromARGB(255, 247, 226, 226),
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 207, 241, 238),
+        backgroundColor: Color.fromARGB(255, 247, 226, 226),
         title: const Text(
           "Package Feedback",
           style: TextStyle(

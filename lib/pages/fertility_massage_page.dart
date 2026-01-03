@@ -196,7 +196,7 @@ class _FertilityMassagePageState extends State<FertilityMassagePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 207, 241, 238),
+      backgroundColor: Color.fromARGB(255, 247, 226, 226),
       appBar: AppBar(
         title: const Text(
           "Booking Details",
@@ -206,7 +206,7 @@ class _FertilityMassagePageState extends State<FertilityMassagePage> {
           ),
         ),
         centerTitle: true,
-        backgroundColor: const Color.fromARGB(255, 207, 241, 238),
+        backgroundColor: Color.fromARGB(255, 247, 226, 226),
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
           icon: const Icon(Icons.arrow_back_ios_new_outlined),
@@ -677,7 +677,7 @@ class NannyLadyProfilePage extends StatelessWidget {
     final avatarUrl = nanny['avatar_url']?.toString();
 
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 207, 241, 238),
+      backgroundColor: Color.fromARGB(255, 247, 226, 226),
       appBar: AppBar(
         title: const Text(
           "Nanny Profile",

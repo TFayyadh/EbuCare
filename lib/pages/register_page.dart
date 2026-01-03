@@ -53,7 +53,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 243, 233, 224),
+      backgroundColor: Color.fromARGB(255, 247, 226, 226),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),

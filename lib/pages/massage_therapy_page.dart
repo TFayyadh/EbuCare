@@ -17,7 +17,7 @@ class _ConfinementCarePageState extends State<MassageTherapyPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 207, 241, 238),
+      backgroundColor: Color.fromARGB(255, 247, 226, 226),
       appBar: AppBar(
         title: const Text(
           "Massage Therapy",
@@ -29,7 +29,7 @@ class _ConfinementCarePageState extends State<MassageTherapyPage> {
           ),
         ),
         centerTitle: true,
-        backgroundColor: const Color.fromARGB(255, 207, 241, 238),
+        backgroundColor: Color.fromARGB(255, 247, 226, 226),
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
           icon: const Icon(Icons.arrow_back_ios_new_outlined),

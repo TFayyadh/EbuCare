@@ -145,7 +145,7 @@ class _CheckinSupplementPageState extends State<CheckinSupplementPage> {
                       borderRadius: BorderRadius.circular(20),
                     ),
                     padding: EdgeInsets.zero,
-                    backgroundColor: Color.fromARGB(255, 255, 126, 207),
+                    backgroundColor: Color.fromARGB(255, 205, 222, 158),
                   ),
                   onPressed: _saving ? null : _saveAndGoToSummary,
                   child: Row(

@@ -14,7 +14,7 @@ class _BabyCarePageState extends State<BabyCarePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 207, 241, 238),
+      backgroundColor: Color.fromARGB(255, 247, 226, 226),
       appBar: AppBar(
         leading: IconButton(
             onPressed: () {
@@ -22,7 +22,7 @@ class _BabyCarePageState extends State<BabyCarePage> {
             },
             icon: Icon(Icons.arrow_back_ios_new_outlined)),
         automaticallyImplyLeading: false,
-        backgroundColor: const Color.fromARGB(255, 207, 241, 238),
+        backgroundColor: Color.fromARGB(255, 247, 226, 226),
       ),
       body: SafeArea(
         child: Padding(
@@ -84,7 +84,7 @@ class _BabyCarePageState extends State<BabyCarePage> {
                             },
                             child: Container(
                               width: double.infinity,
-                              height: 200,
+                              height: 180,
                               decoration: BoxDecoration(
                                 image: DecorationImage(
                                     alignment: Alignment(0, 0),
@@ -138,7 +138,7 @@ class _BabyCarePageState extends State<BabyCarePage> {
                             },
                             child: Container(
                               width: double.infinity,
-                              height: 200,
+                              height: 180,
                               decoration: BoxDecoration(
                                 image: DecorationImage(
                                     image:
@@ -190,7 +190,7 @@ class _BabyCarePageState extends State<BabyCarePage> {
                             },
                             child: Container(
                               width: double.infinity,
-                              height: 200,
+                              height: 180,
                               decoration: BoxDecoration(
                                 image: DecorationImage(
                                     image:

@@ -227,7 +227,7 @@ Widget reminder(context) {
           width: 350,
           height: 100,
           decoration: BoxDecoration(
-            color: const Color.fromARGB(204, 246, 174, 74),
+            color: const Color.fromARGB(255, 205, 222, 158),
             borderRadius: BorderRadius.circular(10),
           ),
           child: Padding(
@@ -245,7 +245,7 @@ Widget reminder(context) {
                             fontWeight: FontWeight.w500,
                             fontFamily: "Calsans",
                             fontSize: 18,
-                            color: Colors.white),
+                            color: Colors.black),
                       ),
                       SizedBox(height: 6),
                       Text(
@@ -254,7 +254,7 @@ Widget reminder(context) {
                             fontFamily: "Raleway",
                             fontWeight: FontWeight.w600,
                             fontSize: 14,
-                            color: Colors.white),
+                            color: Colors.black),
                       )
                     ],
                   ),
@@ -292,7 +292,7 @@ Widget checkin(context) {
           width: 350,
           height: 100,
           decoration: BoxDecoration(
-            color: const Color.fromARGB(204, 246, 174, 74),
+            color: Color.fromARGB(255, 205, 222, 158),
             borderRadius: BorderRadius.circular(10),
           ),
           child: Padding(
@@ -310,7 +310,7 @@ Widget checkin(context) {
                             fontWeight: FontWeight.w500,
                             fontFamily: "Calsans",
                             fontSize: 18,
-                            color: Colors.white),
+                            color: Colors.black),
                       ),
                       SizedBox(height: 6),
                       Text(
@@ -319,7 +319,7 @@ Widget checkin(context) {
                             fontFamily: "Raleway",
                             fontWeight: FontWeight.w600,
                             fontSize: 14,
-                            color: Colors.white),
+                            color: Colors.black),
                       )
                     ],
                   ),
@@ -327,7 +327,7 @@ Widget checkin(context) {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: Icon(
-                    Icons.notifications,
+                    Icons.health_and_safety_outlined,
                     size: 40,
                     color: Colors.white,
                   ),
@@ -364,14 +364,18 @@ Widget confinement(BuildContext context) {
                       fontFamily: "Calsans",
                       fontSize: 15,
                       fontWeight: FontWeight.w500,
-                      color: Colors.white),
+                      color: Colors.black),
                 ),
               ],
             ),
             Container(
-              width: 50,
-              height: 50,
+              width: 120,
+              height: 120,
               decoration: BoxDecoration(
+                  image: DecorationImage(
+                      alignment: Alignment(0, 0),
+                      image: AssetImage("assets/images/logo4.png"),
+                      fit: BoxFit.fitHeight),
                   borderRadius: BorderRadius.circular(10),
                   color: Color.fromARGB(255, 230, 186, 192)),
               child: GestureDetector(
@@ -383,11 +387,6 @@ Widget confinement(BuildContext context) {
                     ),
                   );
                 },
-                child: Icon(
-                  Icons.book_rounded,
-                  size: 30,
-                  color: Color.fromARGB(255, 255, 255, 255),
-                ),
               ),
             ),
             SizedBox(),
@@ -419,14 +418,18 @@ Widget resources(BuildContext context) {
                       fontFamily: "Calsans",
                       fontSize: 15,
                       fontWeight: FontWeight.w500,
-                      color: Colors.white),
+                      color: Colors.black),
                 ),
               ],
             ),
             Container(
-              width: 50,
-              height: 50,
+              width: 140,
+              height: 140,
               decoration: BoxDecoration(
+                  image: DecorationImage(
+                      alignment: Alignment(0, 0),
+                      image: AssetImage("assets/images/logo3.png"),
+                      fit: BoxFit.fitHeight),
                   borderRadius: BorderRadius.circular(10),
                   color: Color.fromARGB(255, 230, 186, 192)),
               child: GestureDetector(
@@ -438,11 +441,11 @@ Widget resources(BuildContext context) {
                     ),
                   );
                 },
-                child: Icon(
-                  Icons.article_outlined,
-                  size: 30,
-                  color: Color.fromARGB(255, 255, 255, 255),
-                ),
+                // child: Icon(
+                //   Icons.article_outlined,
+                //   size: 30,
+                //   color: Color.fromARGB(255, 255, 255, 255),
+                // ),
               ),
             ),
             SizedBox(),
@@ -535,16 +538,21 @@ Widget meditation(BuildContext context) {
                       fontFamily: "Calsans",
                       fontSize: 15,
                       fontWeight: FontWeight.w500,
-                      color: Colors.white),
+                      color: Colors.black),
                 ),
               ],
             ),
             Container(
-              width: 50,
-              height: 50,
+              width: 120,
+              height: 120,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Color.fromARGB(255, 230, 186, 192)),
+                image: DecorationImage(
+                    alignment: Alignment(0, 0),
+                    image: AssetImage("assets/images/meditate.png"),
+                    fit: BoxFit.cover),
+                borderRadius: BorderRadius.circular(10),
+                color: Color.fromARGB(255, 230, 186, 192),
+              ),
               child: GestureDetector(
                 onTap: () {
                   Navigator.push(
@@ -554,11 +562,11 @@ Widget meditation(BuildContext context) {
                     ),
                   );
                 },
-                child: Icon(
-                  Icons.my_library_music_outlined,
-                  size: 30,
-                  color: Color.fromARGB(255, 255, 255, 255),
-                ),
+                // child: Icon(
+                //   Icons.my_library_music_outlined,
+                //   size: 40,
+                //   color: Color.fromARGB(255, 255, 255, 255),
+                // ),
               ),
             ),
             SizedBox(),
@@ -590,14 +598,18 @@ Widget babyCare(BuildContext context) {
                       fontFamily: "Calsans",
                       fontSize: 15,
                       fontWeight: FontWeight.w500,
-                      color: Colors.white),
+                      color: Colors.black),
                 ),
               ],
             ),
             Container(
-              width: 50,
-              height: 50,
+              width: 120,
+              height: 120,
               decoration: BoxDecoration(
+                  image: DecorationImage(
+                      alignment: Alignment(0, 0),
+                      image: AssetImage("assets/images/growth.jpg"),
+                      fit: BoxFit.cover),
                   borderRadius: BorderRadius.circular(10),
                   color: Color.fromARGB(255, 230, 186, 192)),
               child: GestureDetector(
@@ -609,11 +621,6 @@ Widget babyCare(BuildContext context) {
                     ),
                   );
                 },
-                child: Icon(
-                  Icons.baby_changing_station_outlined,
-                  size: 30,
-                  color: Color.fromARGB(255, 255, 255, 255),
-                ),
               ),
             ),
             SizedBox(),
@@ -733,7 +740,7 @@ class _HomePageState extends State<HomePage> {
     //final userEmail = authService.getCurrentUserEmail();
 
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 207, 241, 238),
+      backgroundColor: const Color.fromARGB(255, 247, 226, 226),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(

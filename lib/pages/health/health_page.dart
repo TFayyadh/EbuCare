@@ -51,9 +51,9 @@ class _HealthPageState extends State<HealthPage> {
     final bg = Colors.pink.shade100; // same as BabyGrowthHomePage
 
     return Scaffold(
-      backgroundColor: bg,
+      backgroundColor: Color.fromARGB(255, 247, 226, 226),
       appBar: AppBar(
-        backgroundColor: bg,
+        backgroundColor: Color.fromARGB(255, 247, 226, 226),
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black87),
@@ -95,7 +95,8 @@ class _HealthPageState extends State<HealthPage> {
               children: [
                 _sectionCard(
                   title: "Medical",
-                  color: const Color(0xFF7FAE67), // matches Growth green vibe
+                  color: Color.fromARGB(
+                      255, 205, 222, 158), // matches Growth green vibe
                   onAdd: _openMedical, // + opens medical
                   child: Padding(
                     padding: const EdgeInsets.all(16),
@@ -130,8 +131,8 @@ class _HealthPageState extends State<HealthPage> {
                 const SizedBox(height: 16),
                 _sectionCard(
                   title: "Vaccine",
-                  color:
-                      const Color(0xFF9EA0B8), // matches Milestones purple/grey
+                  color: Color.fromARGB(
+                      255, 205, 222, 158), // matches Milestones purple/grey
                   onAdd: _openVaccine, // + opens vaccine
                   child: Padding(
                     padding: const EdgeInsets.all(16),

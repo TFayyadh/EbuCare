@@ -115,7 +115,7 @@ class _GrowthAddRecordPageState extends State<GrowthAddRecordPage> {
     return Scaffold(
       backgroundColor: const Color(0xFF2D3140),
       appBar: AppBar(
-        backgroundColor: const Color(0xFF7FAE67),
+        backgroundColor: Color.fromARGB(255, 205, 222, 158),
         title: const Text("Growth", style: TextStyle(fontFamily: "Calsans")),
       ),
       body: ListView(

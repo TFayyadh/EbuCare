@@ -79,7 +79,7 @@ class _OnboardingBirthdatePageState extends State<OnboardingBirthdatePage> {
         ? 'Tap to select'
         : DateFormat.yMMMMd().format(_selected!);
     return Scaffold(
-      backgroundColor: Colors.pink.shade100,
+      backgroundColor: Color.fromARGB(255, 247, 226, 226),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20),

@@ -157,7 +157,8 @@ class _MedicalEntryPageState extends State<MedicalEntryPage> {
     return Scaffold(
       backgroundColor: const Color(0xFF2D3140), // same as GrowthAddRecordPage
       appBar: AppBar(
-        backgroundColor: const Color(0xFF7FAE67), // same style as Growth header
+        backgroundColor:
+            Color.fromARGB(255, 205, 222, 158), // same style as Growth header
         title: const Text("Medical", style: TextStyle(fontFamily: "Calsans")),
         actions: [
           if (_isEdit)

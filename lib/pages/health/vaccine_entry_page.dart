@@ -144,7 +144,8 @@ class _VaccineEntryPageState extends State<VaccineEntryPage> {
     return Scaffold(
       backgroundColor: const Color(0xFF2D3140), // same as MedicalEntryPage UI
       appBar: AppBar(
-        backgroundColor: const Color(0xFF7FAE67), // same header style
+        backgroundColor:
+            Color.fromARGB(255, 205, 222, 158), // same header style
         title: const Text("Vaccine", style: TextStyle(fontFamily: "Calsans")),
         actions: [
           if (_isEdit)

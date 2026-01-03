@@ -13,7 +13,7 @@ class _BabyCareTrackerPageState extends State<BabyCareTrackerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 207, 241, 238),
+      backgroundColor: Color.fromARGB(255, 247, 226, 226),
       appBar: AppBar(
         leading: IconButton(
             onPressed: () {
@@ -21,7 +21,7 @@ class _BabyCareTrackerPageState extends State<BabyCareTrackerPage> {
             },
             icon: Icon(Icons.arrow_back_ios_new_outlined)),
         automaticallyImplyLeading: false,
-        backgroundColor: const Color.fromARGB(255, 207, 241, 238),
+        backgroundColor: Color.fromARGB(255, 247, 226, 226),
       ),
       body: SafeArea(
         child: Padding(

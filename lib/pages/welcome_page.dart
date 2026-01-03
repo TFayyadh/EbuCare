@@ -12,7 +12,7 @@ class _WelcomePageState extends State<WelcomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(244, 170, 219, 0.757),
+      backgroundColor: Color.fromARGB(255, 247, 226, 226),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(

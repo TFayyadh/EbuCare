@@ -252,7 +252,7 @@ class _CheckinSleepPageState extends State<CheckinSleepPage> {
                       borderRadius: BorderRadius.circular(20),
                     ),
                     padding: EdgeInsets.zero,
-                    backgroundColor: Color.fromARGB(255, 255, 126, 207),
+                    backgroundColor: Color.fromARGB(255, 205, 222, 158),
                   ),
                   onPressed: _completeFlow,
                   child: Row(

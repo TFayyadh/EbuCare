@@ -33,11 +33,11 @@ class _BabyGrowthHomePageState extends State<BabyGrowthHomePage> {
     final bg = Colors.pink.shade100;
 
     return Scaffold(
-      backgroundColor: bg,
+      backgroundColor: Color.fromARGB(255, 247, 226, 226),
       appBar: AppBar(
         title: const Text("Baby Growth & Milestones",
             style: TextStyle(fontFamily: "Calsans")),
-        backgroundColor: bg,
+        backgroundColor: Color.fromARGB(255, 247, 226, 226),
         elevation: 0,
       ),
       body: SafeArea(
@@ -46,7 +46,7 @@ class _BabyGrowthHomePageState extends State<BabyGrowthHomePage> {
           children: [
             _sectionCard(
               title: "Growth",
-              color: const Color(0xFF7FAE67),
+              color: Color.fromARGB(255, 205, 222, 158),
               onAdd: () {
                 Navigator.push(
                   context,
@@ -118,7 +118,7 @@ class _BabyGrowthHomePageState extends State<BabyGrowthHomePage> {
             const SizedBox(height: 16),
             _sectionCard(
               title: "Milestones",
-              color: const Color(0xFF9EA0B8),
+              color: Color.fromARGB(255, 205, 222, 158),
               onAdd: () {
                 Navigator.push(
                   context,

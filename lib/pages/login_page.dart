@@ -49,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 243, 233, 224),
+      backgroundColor: Color.fromARGB(255, 247, 226, 226),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
@@ -128,7 +128,7 @@ class _LoginPageState extends State<LoginPage> {
                   width: 350,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                        backgroundColor: Color.fromRGBO(231, 108, 190, 0.757)),
+                        backgroundColor: Color.fromARGB(255, 205, 222, 158)),
                     onPressed: login,
                     child: Text("Login",
                         style: TextStyle(

@@ -2,6 +2,7 @@ import 'package:ebucare_app/pages/confinement_feedback_page.dart';
 import 'package:ebucare_app/pages/payment_page.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'receipt_page.dart';
 
 class ViewBookingsPage extends StatefulWidget {
   const ViewBookingsPage({super.key});
@@ -436,6 +437,42 @@ class _ViewBookingsPageState extends State<ViewBookingsPage> {
                                             fontFamily: "Calsans",
                                             fontSize: 12,
                                             color: Colors.black54,
+                                          ),
+                                        ),
+                                      ],
+
+                                      // ✅ Receipt button: only when paid + not cancelled
+                                      if (paid && !cancelled) ...[
+                                        const SizedBox(height: 12),
+                                        SizedBox(
+                                          width: double.infinity,
+                                          height: 44,
+                                          child: ElevatedButton.icon(
+                                            icon: const Icon(
+                                                Icons.receipt_long_outlined),
+                                            label: const Text(
+                                              "View Receipt / Invoice",
+                                              style: TextStyle(
+                                                  fontFamily: "Calsans"),
+                                            ),
+                                            onPressed: () async {
+                                              await Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (_) => ReceiptPage(
+                                                    booking: Map<String,
+                                                        dynamic>.from(b as Map),
+                                                    userEmail: Supabase
+                                                            .instance
+                                                            .client
+                                                            .auth
+                                                            .currentUser
+                                                            ?.email ??
+                                                        '',
+                                                  ),
+                                                ),
+                                              );
+                                            },
                                           ),
                                         ),
                                       ],

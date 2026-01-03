@@ -39,6 +39,9 @@ dependencies:
   app_links: ^6.0.0
   image_picker: ^1.1.2
   fl_chart: ^0.69.0
+  pdf: ^3.10.8
+  file_saver: ^0.2.12
+  open_filex: ^4.5.0
 
 
   # The following adds the Cupertino Icons font to your application.

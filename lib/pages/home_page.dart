@@ -423,8 +423,8 @@ Widget resources(BuildContext context) {
               ],
             ),
             Container(
-              width: 140,
-              height: 140,
+              width: 120,
+              height: 120,
               decoration: BoxDecoration(
                   image: DecorationImage(
                       alignment: Alignment(0, 0),
@@ -608,7 +608,7 @@ Widget babyCare(BuildContext context) {
               decoration: BoxDecoration(
                   image: DecorationImage(
                       alignment: Alignment(0, 0),
-                      image: AssetImage("assets/images/growth.jpg"),
+                      image: AssetImage("assets/images/baby_growth.png"),
                       fit: BoxFit.cover),
                   borderRadius: BorderRadius.circular(10),
                   color: Color.fromARGB(255, 230, 186, 192)),

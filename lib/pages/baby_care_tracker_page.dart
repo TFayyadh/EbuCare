@@ -1,5 +1,6 @@
 import 'package:ebucare_app/pages/baby_feed_page.dart';
 import 'package:ebucare_app/pages/baby_sleep_page.dart';
+import 'package:ebucare_app/pages/baby_summary_page.dart';
 import 'package:flutter/material.dart';
 
 class BabyCareTrackerPage extends StatefulWidget {
@@ -83,7 +84,7 @@ class _BabyCareTrackerPageState extends State<BabyCareTrackerPage> {
                             },
                             child: Container(
                               width: double.infinity,
-                              height: 200,
+                              height: 180,
                               decoration: BoxDecoration(
                                 image: DecorationImage(
                                     image: AssetImage(
@@ -136,11 +137,63 @@ class _BabyCareTrackerPageState extends State<BabyCareTrackerPage> {
                             },
                             child: Container(
                               width: double.infinity,
-                              height: 200,
+                              height: 180,
                               decoration: BoxDecoration(
                                 image: DecorationImage(
                                     image: AssetImage(
                                         "assets/images/baby_milks.jpg"),
+                                    fit: BoxFit.fitHeight),
+                                borderRadius: BorderRadius.circular(30),
+                                color: const Color.fromRGBO(210, 145, 188, 1),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        SizedBox(
+                          child: Container(
+                            width: double.infinity,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              color: Colors.white,
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Text(
+                                "View Summary",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.normal,
+                                    fontFamily: "Calsans",
+                                    color:
+                                        const Color.fromRGBO(210, 145, 188, 1)),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0, vertical: 5),
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => BabySummaryPage(),
+                                ),
+                              );
+                            },
+                            child: Container(
+                              width: double.infinity,
+                              height: 160,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: AssetImage("assets/images/milk.jpg"),
                                     fit: BoxFit.fitHeight),
                                 borderRadius: BorderRadius.circular(30),
                                 color: const Color.fromRGBO(210, 145, 188, 1),

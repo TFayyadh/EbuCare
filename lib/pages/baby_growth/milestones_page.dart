@@ -324,7 +324,7 @@ class _MilestonesPageState extends State<MilestonesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF2D3140),
+      backgroundColor: Color(0xFFFFE6EC),
       appBar: AppBar(
         backgroundColor: const Color(0xFF7FAE67),
         leading: IconButton(
@@ -362,12 +362,12 @@ class _MilestonesPageState extends State<MilestonesPage> {
     return Theme(
       data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
       child: ExpansionTile(
-        collapsedIconColor: Colors.white70,
-        iconColor: Colors.white70,
+        collapsedIconColor: Colors.black,
+        iconColor: Colors.black,
         title: Text(
           "${g.month} months",
           style: const TextStyle(
-            color: Colors.white,
+            color: Colors.black,
             fontFamily: "Raleway",
             fontWeight: FontWeight.w700,
           ),
@@ -385,7 +385,7 @@ class _MilestonesPageState extends State<MilestonesPage> {
                 title: Text(
                   m.title,
                   style: TextStyle(
-                    color: done ? Colors.white54 : Colors.white,
+                    color: done ? Colors.black : Colors.black,
                     fontFamily: "Raleway",
                   ),
                 ),
@@ -393,7 +393,7 @@ class _MilestonesPageState extends State<MilestonesPage> {
                     ? Text(
                         ageText,
                         style: const TextStyle(
-                          color: Colors.white54,
+                          color: Colors.black,
                           fontFamily: "Raleway",
                           fontSize: 12,
                         ),
@@ -403,7 +403,7 @@ class _MilestonesPageState extends State<MilestonesPage> {
                             // show chosen date briefly for selected items (optional)
                             "Selected: ${_draftMap[m.key]!.date.year}-${_draftMap[m.key]!.date.month.toString().padLeft(2, '0')}-${_draftMap[m.key]!.date.day.toString().padLeft(2, '0')}",
                             style: const TextStyle(
-                              color: Colors.white54,
+                              color: Colors.black,
                               fontFamily: "Raleway",
                               fontSize: 12,
                             ),
@@ -436,7 +436,7 @@ class _MilestonesPageState extends State<MilestonesPage> {
                           ),
                           child: Icon(
                             selected ? Icons.check : Icons.add,
-                            color: Colors.white,
+                            color: Colors.black,
                           ),
                         ),
                       ),

@@ -45,9 +45,11 @@ class _MedicalHistoryPageState extends State<MedicalHistoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF2D3140), // same as GrowthSummaryPage
+      backgroundColor:
+          Color.fromARGB(255, 247, 226, 226), // same as GrowthSummaryPage
       appBar: AppBar(
-        backgroundColor: const Color(0xFF7FAE67), // same as GrowthSummaryPage
+        backgroundColor:
+            Color.fromARGB(255, 205, 222, 158), // same as GrowthSummaryPage
         title: const Text(
           "Medical Records",
           style: TextStyle(fontFamily: "Calsans"),
@@ -113,7 +115,7 @@ class _MedicalHistoryPageState extends State<MedicalHistoryPage> {
                   margin: const EdgeInsets.only(bottom: 12),
                   padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF3B3F4E),
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Column(
@@ -124,7 +126,7 @@ class _MedicalHistoryPageState extends State<MedicalHistoryPage> {
                         Text(
                           _prettyTime(e['entry_time']),
                           style: const TextStyle(
-                            color: Colors.white54,
+                            color: Colors.black,
                             fontFamily: "Raleway",
                             fontSize: 12,
                           ),
@@ -135,7 +137,7 @@ class _MedicalHistoryPageState extends State<MedicalHistoryPage> {
                       Text(
                         mainLine,
                         style: const TextStyle(
-                          color: Colors.white,
+                          color: Colors.black,
                           fontFamily: "Raleway",
                           fontWeight: FontWeight.w600,
                         ),
@@ -147,7 +149,7 @@ class _MedicalHistoryPageState extends State<MedicalHistoryPage> {
                         Text(
                           notes,
                           style: const TextStyle(
-                            color: Colors.white70,
+                            color: Colors.black,
                             fontFamily: "Raleway",
                             fontSize: 14,
                           ),

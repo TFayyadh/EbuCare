@@ -155,7 +155,8 @@ class _MedicalEntryPageState extends State<MedicalEntryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF2D3140), // same as GrowthAddRecordPage
+      backgroundColor:
+          Color.fromARGB(255, 247, 226, 226), // same as GrowthAddRecordPage
       appBar: AppBar(
         backgroundColor:
             Color.fromARGB(255, 205, 222, 158), // same style as Growth header
@@ -176,14 +177,14 @@ class _MedicalEntryPageState extends State<MedicalEntryPage> {
             contentPadding: EdgeInsets.zero,
             title: const Text(
               "Time",
-              style: TextStyle(color: Colors.white, fontFamily: "Raleway"),
+              style: TextStyle(color: Colors.black, fontFamily: "Raleway"),
             ),
             trailing: TextButton(
               onPressed: _saving ? null : _pickTime,
               child: Text(
                 _formatTime(_time),
                 style:
-                    const TextStyle(color: Colors.white, fontFamily: "Raleway"),
+                    const TextStyle(color: Colors.black, fontFamily: "Raleway"),
               ),
             ),
           ),
@@ -198,7 +199,7 @@ class _MedicalEntryPageState extends State<MedicalEntryPage> {
           // Medication picker (styled like a field)
           const Text(
             "Medication",
-            style: TextStyle(color: Colors.white, fontFamily: "Raleway"),
+            style: TextStyle(color: Colors.black, fontFamily: "Raleway"),
           ),
           const SizedBox(height: 6),
           InkWell(
@@ -220,7 +221,7 @@ class _MedicalEntryPageState extends State<MedicalEntryPage> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 16),
               decoration: BoxDecoration(
-                color: const Color(0xFF3B3F4E),
+                color: Colors.white,
                 borderRadius: BorderRadius.circular(14),
                 border: Border.all(color: Colors.white24),
               ),
@@ -232,12 +233,12 @@ class _MedicalEntryPageState extends State<MedicalEntryPage> {
                       style: TextStyle(
                         fontFamily: "Raleway",
                         color: _selectedMedication == null
-                            ? Colors.white54
-                            : Colors.white,
+                            ? Colors.black
+                            : Colors.black,
                       ),
                     ),
                   ),
-                  const Icon(Icons.chevron_right, color: Colors.white54),
+                  const Icon(Icons.chevron_right, color: Colors.black),
                 ],
               ),
             ),
@@ -247,15 +248,15 @@ class _MedicalEntryPageState extends State<MedicalEntryPage> {
 
           // Notes
           const Text("Notes",
-              style: TextStyle(color: Colors.white, fontFamily: "Raleway")),
+              style: TextStyle(color: Colors.black, fontFamily: "Raleway")),
           const SizedBox(height: 6),
           TextField(
             controller: _notesCtrl,
             maxLines: 4,
-            style: const TextStyle(color: Colors.white, fontFamily: "Raleway"),
+            style: const TextStyle(color: Colors.black, fontFamily: "Raleway"),
             decoration: InputDecoration(
               filled: true,
-              fillColor: const Color(0xFF3B3F4E),
+              fillColor: Colors.white,
               border:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
             ),
@@ -319,13 +320,13 @@ class _MedicalEntryPageState extends State<MedicalEntryPage> {
       child: TextField(
         controller: c,
         keyboardType: keyboardType,
-        style: const TextStyle(color: Colors.white, fontFamily: "Raleway"),
+        style: const TextStyle(color: Colors.black, fontFamily: "Raleway"),
         decoration: InputDecoration(
           labelText: label,
           labelStyle:
-              const TextStyle(color: Colors.white70, fontFamily: "Raleway"),
+              const TextStyle(color: Colors.black, fontFamily: "Raleway"),
           filled: true,
-          fillColor: const Color(0xFF3B3F4E),
+          fillColor: Colors.white,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
         ),
       ),

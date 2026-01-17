@@ -78,7 +78,7 @@ class _ResourceArticlesState extends State<ResourceArticles> {
                                           fontWeight: FontWeight.w100,
                                           fontFamily: "Calsans",
                                           fontSize: 22,
-                                          color: Colors.white),
+                                          color: Colors.black),
                                     ),
                                   ),
                                   Padding(
@@ -91,7 +91,7 @@ class _ResourceArticlesState extends State<ResourceArticles> {
                                           fontFamily: "Raleway",
                                           fontWeight: FontWeight.w600,
                                           fontSize: 12,
-                                          color: Colors.white),
+                                          color: Colors.black),
                                     ),
                                   )
                                 ],
@@ -99,7 +99,7 @@ class _ResourceArticlesState extends State<ResourceArticles> {
                               Icon(
                                 Icons.arrow_forward_ios,
                                 size: 40,
-                                color: Colors.white,
+                                color: Colors.black,
                               )
                             ],
                           ),
@@ -145,7 +145,7 @@ class _ResourceArticlesState extends State<ResourceArticles> {
                                           fontWeight: FontWeight.w100,
                                           fontFamily: "Calsans",
                                           fontSize: 20,
-                                          color: Colors.white),
+                                          color: Colors.black),
                                     ),
                                   ),
                                   Padding(
@@ -158,7 +158,7 @@ class _ResourceArticlesState extends State<ResourceArticles> {
                                           fontFamily: "Raleway",
                                           fontSize: 12,
                                           fontWeight: FontWeight.w600,
-                                          color: Colors.white),
+                                          color: Colors.black),
                                     ),
                                   )
                                 ],
@@ -166,7 +166,7 @@ class _ResourceArticlesState extends State<ResourceArticles> {
                               Icon(
                                 Icons.arrow_forward_ios,
                                 size: 40,
-                                color: Colors.white,
+                                color: Colors.black,
                               ),
                             ],
                           ),

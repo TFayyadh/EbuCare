@@ -38,9 +38,9 @@ class _MedicationPickerPageState extends State<MedicationPickerPage> {
     final filtered = _meds.where((m) => m.toLowerCase().contains(q)).toList();
 
     return Scaffold(
-      backgroundColor: const Color(0xFF2D3140),
+      backgroundColor: Color.fromARGB(255, 247, 226, 226),
       appBar: AppBar(
-        backgroundColor: const Color(0xFF7FAE67),
+        backgroundColor: Color.fromARGB(255, 205, 222, 158),
         title:
             const Text("Medication", style: TextStyle(fontFamily: "Calsans")),
       ),
@@ -54,12 +54,12 @@ class _MedicationPickerPageState extends State<MedicationPickerPage> {
             decoration: InputDecoration(
               labelText: "Search medication",
               labelStyle: const TextStyle(
-                color: Colors.white70,
+                color: Colors.black,
                 fontFamily: "Raleway",
               ),
               filled: true,
-              fillColor: const Color(0xFF3B3F4E),
-              prefixIcon: const Icon(Icons.search, color: Colors.white70),
+              fillColor: Colors.white,
+              prefixIcon: const Icon(Icons.search, color: Colors.black),
               border:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
             ),
@@ -67,7 +67,7 @@ class _MedicationPickerPageState extends State<MedicationPickerPage> {
           const SizedBox(height: 14),
           const Text(
             "Medications",
-            style: TextStyle(color: Colors.white54, fontFamily: "Raleway"),
+            style: TextStyle(color: Colors.black, fontFamily: "Raleway"),
           ),
           const SizedBox(height: 10),
           if (filtered.isEmpty)
@@ -91,7 +91,7 @@ class _MedicationPickerPageState extends State<MedicationPickerPage> {
                 margin: const EdgeInsets.only(bottom: 12),
                 padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF3B3F4E),
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Row(
@@ -100,7 +100,7 @@ class _MedicationPickerPageState extends State<MedicationPickerPage> {
                       child: Text(
                         name,
                         style: const TextStyle(
-                          color: Colors.white,
+                          color: Colors.black,
                           fontFamily: "Raleway",
                           fontWeight: FontWeight.w600,
                           fontSize: 16,

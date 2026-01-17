@@ -81,7 +81,7 @@ class _ConfinementLadyPageState extends State<ConfinementLadyPage> {
                                             fontWeight: FontWeight.w600,
                                             fontFamily: "Calsans",
                                             fontSize: 18,
-                                            color: Colors.white),
+                                            color: Colors.black),
                                       ),
                                     ),
                                     Padding(
@@ -94,7 +94,7 @@ class _ConfinementLadyPageState extends State<ConfinementLadyPage> {
                                             fontFamily: "Raleway",
                                             fontWeight: FontWeight.w600,
                                             fontSize: 14,
-                                            color: Colors.white),
+                                            color: Colors.black),
                                       ),
                                     )
                                   ],
@@ -102,7 +102,7 @@ class _ConfinementLadyPageState extends State<ConfinementLadyPage> {
                                 Icon(
                                   Icons.arrow_forward_ios,
                                   size: 40,
-                                  color: Colors.white,
+                                  color: Colors.black,
                                 )
                               ],
                             ),
@@ -148,7 +148,7 @@ class _ConfinementLadyPageState extends State<ConfinementLadyPage> {
                                             fontWeight: FontWeight.w600,
                                             fontFamily: "Calsans",
                                             fontSize: 18,
-                                            color: Colors.white),
+                                            color: Colors.black),
                                       ),
                                     ),
                                     Padding(
@@ -161,7 +161,7 @@ class _ConfinementLadyPageState extends State<ConfinementLadyPage> {
                                             fontFamily: "Raleway",
                                             fontSize: 14,
                                             fontWeight: FontWeight.w600,
-                                            color: Colors.white),
+                                            color: Colors.black),
                                       ),
                                     )
                                   ],
@@ -169,7 +169,7 @@ class _ConfinementLadyPageState extends State<ConfinementLadyPage> {
                                 Icon(
                                   Icons.arrow_forward_ios,
                                   size: 40,
-                                  color: Colors.white,
+                                  color: Colors.black,
                                 ),
                               ],
                             ),

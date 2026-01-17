@@ -103,16 +103,16 @@ class _VaccineEntryPageState extends State<VaccineEntryPage> {
       builder: (_) => AlertDialog(
         backgroundColor: const Color(0xFF2A2F3D),
         title: const Text("Delete entry?",
-            style: TextStyle(color: Colors.white, fontFamily: "Raleway")),
+            style: TextStyle(color: Colors.black, fontFamily: "Raleway")),
         content: const Text(
           "This cannot be undone.",
-          style: TextStyle(color: Colors.white70, fontFamily: "Raleway"),
+          style: TextStyle(color: Colors.black, fontFamily: "Raleway"),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
             child: const Text("Cancel",
-                style: TextStyle(color: Colors.white70, fontFamily: "Raleway")),
+                style: TextStyle(color: Colors.black, fontFamily: "Raleway")),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
@@ -142,7 +142,8 @@ class _VaccineEntryPageState extends State<VaccineEntryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF2D3140), // same as MedicalEntryPage UI
+      backgroundColor:
+          Color.fromARGB(255, 247, 226, 226), // same as MedicalEntryPage UI
       appBar: AppBar(
         backgroundColor:
             Color.fromARGB(255, 205, 222, 158), // same header style
@@ -163,14 +164,14 @@ class _VaccineEntryPageState extends State<VaccineEntryPage> {
             contentPadding: EdgeInsets.zero,
             title: const Text(
               "Date",
-              style: TextStyle(color: Colors.white, fontFamily: "Raleway"),
+              style: TextStyle(color: Colors.black, fontFamily: "Raleway"),
             ),
             trailing: TextButton(
               onPressed: _saving ? null : _pickDate,
               child: Text(
                 _prettyDate(_date),
                 style:
-                    const TextStyle(color: Colors.white, fontFamily: "Raleway"),
+                    const TextStyle(color: Colors.black, fontFamily: "Raleway"),
               ),
             ),
           ),
@@ -179,7 +180,7 @@ class _VaccineEntryPageState extends State<VaccineEntryPage> {
           // Vaccine picker (styled like a field)
           const Text(
             "Vaccine",
-            style: TextStyle(color: Colors.white, fontFamily: "Raleway"),
+            style: TextStyle(color: Colors.black, fontFamily: "Raleway"),
           ),
           const SizedBox(height: 6),
           InkWell(
@@ -200,7 +201,7 @@ class _VaccineEntryPageState extends State<VaccineEntryPage> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 16),
               decoration: BoxDecoration(
-                color: const Color(0xFF3B3F4E),
+                color: Colors.white,
                 borderRadius: BorderRadius.circular(14),
                 border: Border.all(color: Colors.white24),
               ),
@@ -212,8 +213,8 @@ class _VaccineEntryPageState extends State<VaccineEntryPage> {
                       style: TextStyle(
                         fontFamily: "Raleway",
                         color: _selectedVaccine == null
-                            ? Colors.white54
-                            : Colors.white,
+                            ? Colors.black
+                            : Colors.black,
                       ),
                     ),
                   ),
@@ -227,15 +228,15 @@ class _VaccineEntryPageState extends State<VaccineEntryPage> {
 
           // Notes (same as MedicalEntryPage)
           const Text("Notes",
-              style: TextStyle(color: Colors.white, fontFamily: "Raleway")),
+              style: TextStyle(color: Colors.black, fontFamily: "Raleway")),
           const SizedBox(height: 6),
           TextField(
             controller: _notesCtrl,
             maxLines: 4,
-            style: const TextStyle(color: Colors.white, fontFamily: "Raleway"),
+            style: const TextStyle(color: Colors.black, fontFamily: "Raleway"),
             decoration: InputDecoration(
               filled: true,
-              fillColor: const Color(0xFF3B3F4E),
+              fillColor: Colors.white,
               border:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
             ),

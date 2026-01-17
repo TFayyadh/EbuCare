@@ -14,9 +14,9 @@ class _ConfinementCarePageState extends State<ConfinementCarePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 247, 226, 226),
+      backgroundColor: const Color.fromARGB(255, 247, 226, 226),
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "Confinement Care",
           maxLines: 2,
           textAlign: TextAlign.center,
@@ -26,309 +26,119 @@ class _ConfinementCarePageState extends State<ConfinementCarePage> {
           ),
         ),
         centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 247, 226, 226),
+        backgroundColor: const Color.fromARGB(255, 247, 226, 226),
         leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Icon(Icons.arrow_back_ios_new_outlined)),
+          onPressed: () => Navigator.pop(context),
+          icon: const Icon(Icons.arrow_back_ios_new_outlined),
+        ),
       ),
       body: SafeArea(
-          child: Padding(
-        padding: EdgeInsets.all(8.0),
-        child: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(8.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Container(
-                height: 150,
-                width: 400,
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 251, 182, 183),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Stack(
-                  children: [
-                    Positioned(
-                      top: 20, // Adjust this value to move content higher/lower
-                      left: 0,
-                      right: 0,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: Image.asset(
-                              'assets/images/baby_blue.png',
-                              height: 80,
-                              width: 120,
-                              fit: BoxFit.contain,
-                            ),
-                          ),
-                          Expanded(
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Professional Care (7 Days)",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontFamily: "Calsans",
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 8.0),
-                                    child: Text(
-                                      "Professional care for mother and baby, supportive recovery and giving a peace of mind.",
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                        fontFamily: "Raleway",
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => Confinement7daysPage(),
-                            ));
-                      },
-                      child: Align(
-                        alignment: Alignment.topCenter,
-                        child: Transform.translate(
-                          offset: Offset(5, 130),
-                          child: Container(
-                            height: 40,
-                            width: 150,
-                            decoration: BoxDecoration(
-                              color: const Color.fromARGB(255, 251, 247, 247),
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(5),
-                              child: Text(
-                                "Book Now",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontFamily: "Calsans",
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+              _ConfinementCard(
+                title: "Professional Care (7 Days)",
+                desc:
+                    "Professional care for mother and baby, supportive recovery and giving a peace of mind.",
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => const Confinement7daysPage()),
+                  );
+                },
               ),
-              Container(
-                height: 150,
-                width: 400,
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 251, 182, 183),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Stack(
-                  children: [
-                    Positioned(
-                      top: 20, // Adjust this value to move content higher/lower
-                      left: 0,
-                      right: 0,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: Image.asset(
-                              'assets/images/baby_blue.png',
-                              height: 80,
-                              width: 120,
-                              fit: BoxFit.contain,
-                            ),
-                          ),
-                          Expanded(
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Professional Care (10 Days)",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontFamily: "Calsans",
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 8.0),
-                                    child: Text(
-                                      "Professional care for mother and baby, supportive recovery and giving a peace of mind.",
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                        fontFamily: "Raleway",
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => Confinement10daysPage(),
-                            ));
-                      },
-                      child: Align(
-                        alignment: Alignment.topCenter,
-                        child: Transform.translate(
-                          offset: Offset(5, 130),
-                          child: Container(
-                            height: 40,
-                            width: 150,
-                            decoration: BoxDecoration(
-                              color: const Color.fromARGB(255, 251, 247, 247),
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(5),
-                              child: Text(
-                                "Book Now",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontFamily: "Calsans",
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+              const SizedBox(height: 14),
+              _ConfinementCard(
+                title: "Professional Care (10 Days)",
+                desc:
+                    "Professional care for mother and baby, supportive recovery and giving a peace of mind.",
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => const Confinement10daysPage()),
+                  );
+                },
               ),
-              Container(
-                height: 150,
-                width: 400,
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 251, 182, 183),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Stack(
+              const SizedBox(height: 14),
+              _ConfinementCard(
+                title: "Professional Care (14 Days)",
+                desc:
+                    "Professional care for mother and baby, supportive recovery and giving a peace of mind.",
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => const Confinement14daysPage()),
+                  );
+                },
+              ),
+              const SizedBox(height: 18),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ConfinementCard extends StatelessWidget {
+  final String title;
+  final String desc;
+  final VoidCallback onTap;
+
+  const _ConfinementCard({
+    required this.title,
+    required this.desc,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: const Color.fromARGB(255, 251, 182, 183),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Image.asset(
+                'assets/images/baby_blue.png',
+                height: 70,
+                width: 70,
+                fit: BoxFit.contain,
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Positioned(
-                      top: 20, // Adjust this value to move content higher/lower
-                      left: 0,
-                      right: 0,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: Image.asset(
-                              'assets/images/baby_blue.png',
-                              height: 80,
-                              width: 120,
-                              fit: BoxFit.contain,
-                            ),
-                          ),
-                          Expanded(
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Professional Care (14 Days)",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontFamily: "Calsans",
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 8.0),
-                                    child: Text(
-                                      "Professional care for mother and baby, supportive recovery and giving a peace of mind.",
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                        fontFamily: "Raleway",
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontFamily: "Calsans",
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => Confinement14daysPage(),
-                            ));
-                      },
-                      child: Align(
-                        alignment: Alignment.topCenter,
-                        child: Transform.translate(
-                          offset: Offset(5, 130),
-                          child: Container(
-                            height: 40,
-                            width: 150,
-                            decoration: BoxDecoration(
-                              color: const Color.fromARGB(255, 251, 247, 247),
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(5),
-                              child: Text(
-                                "Book Now",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontFamily: "Calsans",
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
+                    const SizedBox(height: 6),
+                    Text(
+                      desc,
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 15,
+                        fontFamily: "Raleway",
+                        color: Colors.black,
                       ),
                     ),
                   ],
@@ -336,8 +146,31 @@ class _ConfinementCarePageState extends State<ConfinementCarePage> {
               ),
             ],
           ),
-        ),
-      )),
+          const SizedBox(height: 12),
+          SizedBox(
+            height: 40,
+            width: 150,
+            child: ElevatedButton(
+              onPressed: onTap,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromARGB(255, 251, 247, 247),
+                foregroundColor: Colors.black,
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(6),
+                ),
+              ),
+              child: const Text(
+                "Book Now",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontFamily: "Calsans",
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -676,7 +676,7 @@ class _SummaryCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(18),
       ),
       child: DefaultTextStyle(
-        style: const TextStyle(fontSize: 13.5, color: Colors.white),
+        style: const TextStyle(fontSize: 13.5, color: Colors.black),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -859,7 +859,7 @@ class _Label extends StatelessWidget {
         text,
         style: const TextStyle(
           fontWeight: FontWeight.w700,
-          color: Colors.white,
+          color: Colors.black,
         ),
       ),
     );

@@ -22,7 +22,7 @@ class GrowthSummaryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF2D3140),
+      backgroundColor: Color(0xFFFFE6EC),
       appBar: AppBar(
         backgroundColor: const Color(0xFF7FAE67),
         title: const Text(
@@ -79,7 +79,7 @@ class GrowthSummaryPage extends StatelessWidget {
                 margin: const EdgeInsets.only(bottom: 12),
                 padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF3B3F4E),
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Column(
@@ -91,7 +91,7 @@ class GrowthSummaryPage extends StatelessWidget {
                         DateFormat.yMMMEd()
                             .format(DateTime.parse(r['recorded_at'])),
                         style: const TextStyle(
-                          color: Colors.white54,
+                          color: Colors.black,
                           fontFamily: "Raleway",
                           fontSize: 12,
                         ),
@@ -102,7 +102,7 @@ class GrowthSummaryPage extends StatelessWidget {
                     Text(
                       parts.isEmpty ? "No values recorded" : parts.join(" • "),
                       style: const TextStyle(
-                        color: Colors.white,
+                        color: Colors.black,
                         fontFamily: "Raleway",
                         fontWeight: FontWeight.w600,
                       ),

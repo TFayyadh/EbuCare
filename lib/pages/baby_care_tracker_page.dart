@@ -14,202 +14,136 @@ class _BabyCareTrackerPageState extends State<BabyCareTrackerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 247, 226, 226),
+      backgroundColor: const Color.fromARGB(255, 247, 226, 226),
       appBar: AppBar(
         leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Icon(Icons.arrow_back_ios_new_outlined)),
+          onPressed: () => Navigator.pop(context),
+          icon: const Icon(Icons.arrow_back_ios_new_outlined),
+        ),
         automaticallyImplyLeading: false,
-        backgroundColor: Color.fromARGB(255, 247, 226, 226),
+        backgroundColor: const Color.fromARGB(255, 247, 226, 226),
       ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                child: Text(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+            child: Column(
+              children: [
+                const SizedBox(height: 6),
+                const Text(
                   "Sleep & Feed",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      fontSize: 35,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: "Calsans",
-                      color: const Color.fromARGB(255, 106, 63, 114)),
+                    fontSize: 35,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: "Calsans",
+                    color: Color.fromARGB(255, 106, 63, 114),
+                  ),
                 ),
-              ),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Column(
-                      children: [
-                        SizedBox(
-                          child: Container(
-                            width: double.infinity,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
-                              color: Colors.white,
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: Text(
-                                "Sleep Tracker",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.normal,
-                                    fontFamily: "Calsans",
-                                    color:
-                                        const Color.fromRGBO(210, 145, 188, 1)),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8.0, vertical: 5),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => BabySleepPage(),
-                                ),
-                              );
-                            },
-                            child: Container(
-                              width: double.infinity,
-                              height: 180,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: AssetImage(
-                                        "assets/images/baby_blue.png"),
-                                    fit: BoxFit.fitHeight),
-                                borderRadius: BorderRadius.circular(30),
-                                color: const Color.fromRGBO(210, 145, 188, 1),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        SizedBox(
-                          child: Container(
-                            width: double.infinity,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
-                              color: Colors.white,
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: Text(
-                                "Feed Tracker",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.normal,
-                                    fontFamily: "Calsans",
-                                    color:
-                                        const Color.fromRGBO(210, 145, 188, 1)),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8.0, vertical: 5),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => BabyFeedPage(),
-                                ),
-                              );
-                            },
-                            child: Container(
-                              width: double.infinity,
-                              height: 180,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: AssetImage(
-                                        "assets/images/baby_milks.jpg"),
-                                    fit: BoxFit.fitHeight),
-                                borderRadius: BorderRadius.circular(30),
-                                color: const Color.fromRGBO(210, 145, 188, 1),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        SizedBox(
-                          child: Container(
-                            width: double.infinity,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
-                              color: Colors.white,
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: Text(
-                                "View Summary",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.normal,
-                                    fontFamily: "Calsans",
-                                    color:
-                                        const Color.fromRGBO(210, 145, 188, 1)),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8.0, vertical: 5),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => BabySummaryPage(),
-                                ),
-                              );
-                            },
-                            child: Container(
-                              width: double.infinity,
-                              height: 160,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: AssetImage("assets/images/milk.jpg"),
-                                    fit: BoxFit.fitHeight),
-                                borderRadius: BorderRadius.circular(30),
-                                color: const Color.fromRGBO(210, 145, 188, 1),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+                const SizedBox(height: 12),
+                _TrackerCard(
+                  title: "Sleep Tracker",
+                  imagePath: "assets/images/baby_blue.png",
+                  height: 180,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => BabySleepPage()),
+                    );
+                  },
+                  fit: BoxFit.fitHeight,
                 ),
-              )
-            ],
+                const SizedBox(height: 16),
+                _TrackerCard(
+                  title: "Feed Tracker",
+                  imagePath: "assets/images/baby_milks.jpg",
+                  height: 180,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => BabyFeedPage()),
+                    );
+                  },
+                  fit: BoxFit.fitHeight,
+                ),
+                const SizedBox(height: 16),
+                _TrackerCard(
+                  title: "View Summary",
+                  imagePath: "assets/images/milk.jpg",
+                  height: 160,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => BabySummaryPage()),
+                    );
+                  },
+                  fit: BoxFit.fitHeight,
+                ),
+                const SizedBox(height: 20),
+              ],
+            ),
           ),
         ),
       ),
+    );
+  }
+}
+
+class _TrackerCard extends StatelessWidget {
+  final String title;
+  final String imagePath;
+  final double height;
+  final VoidCallback onTap;
+  final BoxFit fit;
+
+  const _TrackerCard({
+    required this.title,
+    required this.imagePath,
+    required this.height,
+    required this.onTap,
+    this.fit = BoxFit.cover,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          width: double.infinity,
+          height: 40,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(30),
+            color: Colors.white,
+          ),
+          alignment: Alignment.center,
+          child: Text(
+            title,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.normal,
+              fontFamily: "Calsans",
+              color: Color.fromRGBO(210, 145, 188, 1),
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        GestureDetector(
+          onTap: onTap,
+          child: Container(
+            width: double.infinity,
+            height: height,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(imagePath),
+                fit: fit,
+              ),
+              borderRadius: BorderRadius.circular(30),
+              color: const Color.fromRGBO(210, 145, 188, 1),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

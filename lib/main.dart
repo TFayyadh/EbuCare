@@ -47,7 +47,6 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
 
-    // keep your auth listener if you want
     _authSub = Supabase.instance.client.auth.onAuthStateChange.listen((data) {
       if (data.event == AuthChangeEvent.passwordRecovery) {
         navigatorKey.currentState?.push(
@@ -56,20 +55,25 @@ class _MyAppState extends State<MyApp> {
       }
     });
 
-    // ✅ NEW: handle deep links from email/browser
-    _handleIncomingLinks();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _handleIncomingLinks();
+    });
   }
 
   Future<void> _handleIncomingLinks() async {
-    // If app opened from terminated state
-    final initialUri = await _appLinks.getInitialLink();
-    if (initialUri != null) {
-      await _consumeSupabaseLink(initialUri);
+    try {
+      final initialUri = await _appLinks.getInitialLink();
+      if (initialUri != null) {
+        _consumeSupabaseLink(initialUri);
+      }
+    } catch (e) {
+      debugPrint("Initial link error: $e");
     }
 
-    // If app is already running
-    _linkSub = _appLinks.uriLinkStream.listen((uri) async {
-      await _consumeSupabaseLink(uri);
+    _linkSub = _appLinks.uriLinkStream.listen((uri) {
+      _consumeSupabaseLink(uri);
+    }, onError: (err) {
+      debugPrint("Link stream error: $err");
     });
   }
 

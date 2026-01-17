@@ -65,9 +65,9 @@ class _VaccinePickerPageState extends State<VaccinePickerPage> {
     }).toList();
 
     return Scaffold(
-      backgroundColor: const Color(0xFF2D3140),
+      backgroundColor: Color.fromARGB(255, 247, 226, 226),
       appBar: AppBar(
-        backgroundColor: const Color(0xFF7FAE67),
+        backgroundColor: Color.fromARGB(255, 205, 222, 158),
         title: const Text("Vaccine", style: TextStyle(fontFamily: "Calsans")),
       ),
       body: ListView(
@@ -77,16 +77,16 @@ class _VaccinePickerPageState extends State<VaccinePickerPage> {
           TextField(
             controller: _search,
             onChanged: (_) => setState(() {}),
-            style: const TextStyle(color: Colors.white, fontFamily: "Raleway"),
+            style: const TextStyle(color: Colors.black, fontFamily: "Raleway"),
             decoration: InputDecoration(
               labelText: "Search vaccine",
               labelStyle: const TextStyle(
-                color: Colors.white70,
+                color: Colors.black,
                 fontFamily: "Raleway",
               ),
               filled: true,
-              fillColor: const Color(0xFF3B3F4E),
-              prefixIcon: const Icon(Icons.search, color: Colors.white70),
+              fillColor: Colors.white,
+              prefixIcon: const Icon(Icons.search, color: Colors.black),
               border:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
             ),
@@ -96,7 +96,7 @@ class _VaccinePickerPageState extends State<VaccinePickerPage> {
 
           const Text(
             "Vaccines",
-            style: TextStyle(color: Colors.white54, fontFamily: "Raleway"),
+            style: TextStyle(color: Colors.black, fontFamily: "Raleway"),
           ),
           const SizedBox(height: 10),
 
@@ -124,7 +124,7 @@ class _VaccinePickerPageState extends State<VaccinePickerPage> {
                 margin: const EdgeInsets.only(bottom: 12),
                 padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF3B3F4E),
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Row(
@@ -136,7 +136,7 @@ class _VaccinePickerPageState extends State<VaccinePickerPage> {
                           Text(
                             name,
                             style: const TextStyle(
-                              color: Colors.white,
+                              color: Colors.black,
                               fontFamily: "Raleway",
                               fontWeight: FontWeight.w600,
                               fontSize: 16,
@@ -147,7 +147,7 @@ class _VaccinePickerPageState extends State<VaccinePickerPage> {
                             Text(
                               desc,
                               style: const TextStyle(
-                                color: Colors.white54,
+                                color: Colors.black,
                                 fontFamily: "Raleway",
                                 fontSize: 13,
                               ),

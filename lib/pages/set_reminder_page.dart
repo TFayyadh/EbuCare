@@ -392,12 +392,7 @@ class _SetReminderPageState extends State<SetReminderPage> {
                                     final pending = await notiService
                                         .notificationsPlugin
                                         .pendingNotificationRequests();
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                            'Reminder set. Pending: ${pending.length}'),
-                                      ),
-                                    );
+
                                     Navigator.pop(context);
                                   }
                                 },

@@ -537,7 +537,7 @@ class _EntryCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(18),
       ),
       child: DefaultTextStyle(
-        style: const TextStyle(fontSize: 13.5, color: Colors.white),
+        style: const TextStyle(fontSize: 13.5, color: Colors.black),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -545,7 +545,7 @@ class _EntryCard extends StatelessWidget {
               "$title • $dateLabel",
               style: const TextStyle(
                 fontWeight: FontWeight.w900,
-                color: Colors.white,
+                color: Colors.black,
               ),
             ),
             const SizedBox(height: 10),

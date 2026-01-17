@@ -43,9 +43,10 @@ class _VaccineHistoryPageState extends State<VaccineHistoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF2D3140), // same as MedicalHistoryPage UI
+      backgroundColor:
+          Color.fromARGB(255, 247, 226, 226), // same as MedicalHistoryPage UI
       appBar: AppBar(
-        backgroundColor: const Color(0xFF7FAE67),
+        backgroundColor: Color.fromARGB(255, 205, 222, 158),
         title: const Text(
           "Vaccine Records",
           style: TextStyle(fontFamily: "Calsans"),
@@ -54,7 +55,7 @@ class _VaccineHistoryPageState extends State<VaccineHistoryPage> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: const Color(0xFF2E8B57),
         onPressed: _openAdd,
-        child: const Icon(Icons.add, color: Colors.white, size: 30),
+        child: const Icon(Icons.add, color: Colors.black, size: 30),
       ),
       body: FutureBuilder<List<Map<String, dynamic>>>(
         future: _svc.fetchVaccineEntries(),
@@ -68,7 +69,7 @@ class _VaccineHistoryPageState extends State<VaccineHistoryPage> {
               child: Text(
                 "Error: ${snap.error}",
                 style: const TextStyle(
-                  color: Colors.white,
+                  color: Colors.black,
                   fontFamily: "Raleway",
                 ),
                 textAlign: TextAlign.center,
@@ -81,7 +82,7 @@ class _VaccineHistoryPageState extends State<VaccineHistoryPage> {
             return const Center(
               child: Text(
                 "No records yet",
-                style: TextStyle(color: Colors.white, fontFamily: "Raleway"),
+                style: TextStyle(color: Colors.black, fontFamily: "Raleway"),
               ),
             );
           }
@@ -108,7 +109,7 @@ class _VaccineHistoryPageState extends State<VaccineHistoryPage> {
                   margin: const EdgeInsets.only(bottom: 12),
                   padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF3B3F4E),
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Column(
@@ -119,7 +120,7 @@ class _VaccineHistoryPageState extends State<VaccineHistoryPage> {
                         Text(
                           _prettyDate(e['entry_date']),
                           style: const TextStyle(
-                            color: Colors.white54,
+                            color: Colors.black,
                             fontFamily: "Raleway",
                             fontSize: 12,
                           ),
@@ -130,7 +131,7 @@ class _VaccineHistoryPageState extends State<VaccineHistoryPage> {
                       Text(
                         mainLine,
                         style: const TextStyle(
-                          color: Colors.white,
+                          color: Colors.black,
                           fontFamily: "Raleway",
                           fontWeight: FontWeight.w600,
                         ),
@@ -142,7 +143,7 @@ class _VaccineHistoryPageState extends State<VaccineHistoryPage> {
                         Text(
                           notes,
                           style: const TextStyle(
-                            color: Colors.white70,
+                            color: Colors.black,
                             fontFamily: "Raleway",
                             fontSize: 14,
                           ),

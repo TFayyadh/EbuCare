@@ -113,7 +113,7 @@ class _GrowthAddRecordPageState extends State<GrowthAddRecordPage> {
     final label = DateFormat.yMMMMd().format(_date);
 
     return Scaffold(
-      backgroundColor: const Color(0xFF2D3140),
+      backgroundColor: Color(0xFFFFE6EC),
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 205, 222, 158),
         title: const Text("Growth", style: TextStyle(fontFamily: "Calsans")),
@@ -123,12 +123,12 @@ class _GrowthAddRecordPageState extends State<GrowthAddRecordPage> {
         children: [
           ListTile(
             title: const Text("Date",
-                style: TextStyle(color: Colors.white, fontFamily: "Raleway")),
+                style: TextStyle(color: Colors.black, fontFamily: "Raleway")),
             trailing: TextButton(
               onPressed: _pickDate,
               child: Text(label,
                   style: const TextStyle(
-                      color: Colors.white, fontFamily: "Raleway")),
+                      color: Colors.black, fontFamily: "Raleway")),
             ),
           ),
           const Divider(color: Colors.white24),
@@ -139,15 +139,15 @@ class _GrowthAddRecordPageState extends State<GrowthAddRecordPage> {
 
           const SizedBox(height: 12),
           const Text("Notes",
-              style: TextStyle(color: Colors.white, fontFamily: "Raleway")),
+              style: TextStyle(color: Colors.black, fontFamily: "Raleway")),
           const SizedBox(height: 6),
           TextField(
             controller: _notes,
             maxLines: 4,
-            style: const TextStyle(color: Colors.white, fontFamily: "Raleway"),
+            style: const TextStyle(color: Colors.black, fontFamily: "Raleway"),
             decoration: InputDecoration(
               filled: true,
-              fillColor: const Color(0xFF3B3F4E),
+              fillColor: Colors.white,
               border:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
             ),
@@ -217,12 +217,12 @@ class _GrowthAddRecordPageState extends State<GrowthAddRecordPage> {
       child: TextField(
         controller: c,
         keyboardType: const TextInputType.numberWithOptions(decimal: true),
-        style: const TextStyle(color: Colors.white, fontFamily: "Raleway"),
+        style: const TextStyle(color: Colors.black, fontFamily: "Raleway"),
         decoration: InputDecoration(
           labelText: label,
-          labelStyle: const TextStyle(color: Colors.white70),
+          labelStyle: const TextStyle(color: Colors.black),
           filled: true,
-          fillColor: const Color(0xFF3B3F4E),
+          fillColor: Colors.white,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
         ),
       ),

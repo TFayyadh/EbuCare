@@ -12,7 +12,7 @@ class _NewReminderPageState extends State<NewReminderPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 207, 241, 238),
+      backgroundColor: const Color.fromARGB(255, 247, 226, 226),
       appBar: AppBar(
         title: Text(
           "New Reminder",
@@ -22,7 +22,7 @@ class _NewReminderPageState extends State<NewReminderPage> {
           ),
         ),
         centerTitle: true,
-        backgroundColor: const Color.fromARGB(255, 207, 241, 238),
+        backgroundColor: const Color.fromARGB(255, 247, 226, 226),
         leading: IconButton(
             onPressed: () {
               Navigator.pop(context);
